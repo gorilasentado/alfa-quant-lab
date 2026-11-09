@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALFA Strategy | Simulador Cuantitativo & Gestión de Riesgo</title>
+    <title>ALFA Strategy | Backtesting, Gestión de Riesgo & Simulador Cuantitativo</title>
+    <!-- Favicon oficial extraído de alfamarkets.io con respaldo local -->
+    <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=alfamarkets.io&sz=128">
+    <link rel="alternate icon" href="https://alfamarkets.io/favicon.ico">
+    <link rel="apple-touch-icon" href="https://www.google.com/s2/favicons?domain=alfamarkets.io&sz=180">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -34,11 +38,11 @@
         body {
             background-color: var(--bg-deep);
             background-image:
-                radial-gradient(circle at 15% 0%, rgba(245, 158, 11, 0.08), transparent 35%),
-                radial-gradient(circle at 85% 10%, rgba(16, 185, 129, 0.06), transparent 35%);
+                radial-gradient(circle at 12% 0%, rgba(245, 158, 11, 0.08), transparent 32%),
+                radial-gradient(circle at 88% 8%, rgba(16, 185, 129, 0.06), transparent 32%);
             color: var(--text-main);
             font-family: var(--font-sans);
-            line-height: 1.5;
+            line-height: 1.55;
             min-height: 100vh;
             overflow-x: hidden;
         }
@@ -46,27 +50,32 @@
         /* NAVBAR */
         .navbar {
             position: sticky; top: 0; z-index: 50;
-            background: rgba(5, 7, 11, 0.90);
-            backdrop-filter: blur(14px);
+            background: rgba(5, 7, 11, 0.92);
+            backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--border-subtle);
-            padding: 14px 28px;
+            padding: 12px 28px;
             display: flex; align-items: center; justify-content: space-between;
             flex-wrap: wrap; gap: 14px;
         }
-        .brand-wrap { display: flex; align-items: center; gap: 14px; }
+        .brand-wrap {
+            display: flex; align-items: center; gap: 14px; text-decoration: none;
+        }
+        .brand-logo {
+            height: 40px; width: auto; max-width: 210px;
+            object-fit: contain; display: block;
+        }
         .brand-badge {
             width: 40px; height: 40px; border-radius: 10px;
             background: linear-gradient(135deg, var(--alfa-gold), var(--alfa-orange));
-            display: flex; align-items: center; justify-content: center;
+            display: none; align-items: center; justify-content: center;
             font-weight: 900; font-size: 21px; color: #05070b;
             box-shadow: 0 0 22px rgba(245, 158, 11, 0.35);
         }
-        .brand-text h1 {
-            font-size: 18px; font-weight: 900; letter-spacing: -0.4px; color: #fff;
+        .brand-divider {
+            width: 1px; height: 24px; background: var(--border-subtle);
         }
-        .brand-sub {
-            font-size: 12px; color: var(--alfa-gold-light); font-family: var(--font-mono);
-            font-weight: 600; margin-top: 2px;
+        .brand-text h1 {
+            font-size: 16px; font-weight: 900; letter-spacing: 0.6px; color: #fff;
         }
 
         .nav-actions { display: flex; align-items: center; gap: 10px; }
@@ -76,69 +85,137 @@
             padding: 10px 18px; border-radius: 8px; border: none;
             cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
             box-shadow: 0 4px 16px rgba(245, 158, 11, 0.28);
-            display: flex; align-items: center; gap: 7px;
+            display: inline-flex; align-items: center; gap: 7px;
         }
         .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(245, 158, 11, 0.42); }
 
         .tag-pill {
-            font-size: 10px; font-family: var(--font-mono); font-weight: 700;
-            padding: 2px 8px; border-radius: 999px;
+            font-size: 10.5px; font-family: var(--font-mono); font-weight: 700;
+            padding: 3px 9px; border-radius: 999px;
             background: rgba(245, 158, 11, 0.14); color: var(--alfa-gold-light);
             border: 1px solid var(--border-gold);
-            text-transform: uppercase;
+            text-transform: uppercase; letter-spacing: 0.4px;
         }
 
-        .container { max-width: 1440px; margin: 0 auto; padding: 24px 24px 60px; display: flex; flex-direction: column; gap: 22px; }
+        .container {
+            max-width: 1440px; margin: 0 auto; padding: 26px 24px 70px;
+            display: flex; flex-direction: column; gap: 26px;
+        }
 
-        /* HERO */
-        .hero-banner {
-            background: linear-gradient(135deg, rgba(16, 22, 34, 0.96), rgba(11, 15, 23, 0.96));
+        /* TARJETAS Y PANELES GENERALES */
+        .section-block {
+            background: linear-gradient(160deg, rgba(16, 22, 34, 0.95), rgba(11, 15, 23, 0.97));
             border: 1px solid var(--border-subtle);
-            border-top: 2px solid var(--alfa-gold);
             border-radius: 16px; padding: 24px 28px;
-            display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px;
-            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.48);
+            display: flex; flex-direction: column; gap: 18px;
         }
-        @media (max-width: 1024px) { .hero-banner { grid-template-columns: 1fr; } }
+        .section-block.gold-top { border-top: 2px solid var(--alfa-gold); }
+        .section-block.emerald-top { border-top: 2px solid var(--emerald); }
+        .section-block.cyan-top { border-top: 2px solid var(--cyan); }
 
-        .hero-left h2 {
-            font-size: 23px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;
-            background: linear-gradient(90deg, #ffffff, #cbd5e1);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
+            padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle);
         }
-        .hero-left p { font-size: 13.5px; color: var(--text-secondary); margin-bottom: 14px; line-height: 1.6; }
+        .section-title-group { display: flex; flex-direction: column; gap: 3px; }
+        .section-eyebrow {
+            font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px; color: var(--alfa-gold-light);
+        }
+        .section-title {
+            font-size: 20px; font-weight: 900; letter-spacing: -0.4px; color: #ffffff;
+            display: flex; align-items: center; gap: 10px;
+        }
 
-        .audit-badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .audit-pill {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px; padding: 6px 11px;
-            font-size: 11px; font-weight: 600; color: #e2e8f0;
-            display: flex; align-items: center; gap: 6px; cursor: help;
+        /* BLOQUE 1: DESCRIPCIÓN DE LA ESTRATEGIA */
+        .strategy-intro-grid {
+            display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px; align-items: stretch;
+        }
+        @media (max-width: 1024px) { .strategy-intro-grid { grid-template-columns: 1fr; } }
+
+        .prose-text {
+            font-size: 13.8px; color: #cbd5e1; line-height: 1.72;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .prose-text b { color: #ffffff; font-weight: 700; }
+        .prose-text .hl-gold { color: var(--alfa-gold-light); font-weight: 700; }
+        .prose-text .hl-emerald { color: var(--emerald); font-weight: 700; }
+
+        .pillars-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start;
+        }
+        @media (max-width: 600px) { .pillars-grid { grid-template-columns: 1fr; } }
+        .pillar-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 11px; padding: 13px 14px;
+            display: flex; flex-direction: column; gap: 5px;
+            transition: border-color 0.15s, transform 0.15s;
+        }
+        .pillar-card:hover { border-color: var(--border-gold); transform: translateY(-1px); }
+        .pillar-card h4 { font-size: 12px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
+        .pillar-card p { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+
+        /* BLOQUE 2: BACKTESTING DE LA ESTRATEGIA (9 KPIs) */
+        .backtest-grid-9 {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+        }
+        @media (max-width: 960px) { .backtest-grid-9 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 560px) { .backtest-grid-9 { grid-template-columns: 1fr; } }
+
+        .bt-stat-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 14px 16px;
+            display: flex; flex-direction: column; gap: 4px;
+            position: relative; overflow: hidden; cursor: help;
             transition: border-color 0.15s;
         }
-        .audit-pill:hover { border-color: var(--alfa-gold); }
-
-        .hero-stats-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;
-            align-content: center;
+        .bt-stat-card:hover { border-color: var(--alfa-gold); }
+        .bt-stat-card span {
+            font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
+            color: var(--text-secondary); font-weight: 700;
         }
-        .stat-box-hero {
-            background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px;
-            cursor: help;
+        .bt-stat-card b {
+            font-family: var(--font-mono); font-size: 23px; font-weight: 800; color: #fff;
         }
-        .stat-box-hero span { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); font-weight: 600; }
-        .stat-box-hero b { font-family: var(--font-mono); font-size: 21px; font-weight: 800; }
-        .stat-box-hero small { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); }
+        .bt-stat-card small {
+            font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
+        }
 
-        /* LAB GRID */
+        /* BLOQUE 3: GESTIÓN DE RIESGO */
+        .risk-edu-grid {
+            display: grid; grid-template-columns: 1.2fr 1fr; gap: 22px; align-items: center;
+        }
+        @media (max-width: 1024px) { .risk-edu-grid { grid-template-columns: 1fr; } }
+
+        .capital-calc-showcase {
+            background: linear-gradient(145deg, rgba(16, 22, 34, 0.98), rgba(8, 13, 22, 0.98));
+            border: 1px solid rgba(56, 189, 248, 0.32);
+            border-radius: 14px; padding: 18px 20px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .cap-compare-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        @media (max-width: 560px) { .cap-compare-row { grid-template-columns: 1fr; } }
+        .cap-mode-box {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px; padding: 12px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .cap-mode-box span { font-size: 10.5px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; }
+        .cap-mode-box b { font-family: var(--font-mono); font-size: 18px; font-weight: 800; }
+        .cap-mode-box small { font-size: 10.5px; color: var(--text-muted); line-height: 1.4; }
+
+        /* BLOQUE 4: CONFIGURADOR + MONTE CARLO */
         .lab-grid {
             display: grid;
-            grid-template-columns: 410px minmax(0, 1fr);
+            grid-template-columns: 420px minmax(0, 1fr);
             gap: 20px; align-items: start;
         }
-        @media (max-width: 1120px) { .lab-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1140px) { .lab-grid { grid-template-columns: 1fr; } }
 
         .card-panel {
             background: var(--bg-panel);
@@ -150,8 +227,9 @@
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
             padding-bottom: 10px; border-bottom: 1px solid var(--border-subtle);
+            flex-wrap: wrap; gap: 8px;
         }
-        .card-header h3 { font-size: 14px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .card-header h3 { font-size: 14.5px; font-weight: 800; display: flex; align-items: center; gap: 8px; }
 
         .inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .field-box { display: flex; flex-direction: column; gap: 4px; }
@@ -173,42 +251,46 @@
         .btn-preset {
             background: var(--bg-card); color: var(--text-secondary);
             border: 1px solid var(--border-subtle); border-radius: 7px;
-            padding: 6px 8px; font-size: 11px; font-weight: 700; cursor: pointer;
+            padding: 7px 9px; font-size: 11px; font-weight: 700; cursor: pointer;
             transition: all 0.15s;
         }
         .btn-preset:hover, .btn-preset.active {
             border-color: var(--alfa-gold); color: var(--alfa-gold-light);
-            background: rgba(245, 158, 11, 0.1);
+            background: rgba(245, 158, 11, 0.12);
         }
 
-        .collateral-box {
-            background: linear-gradient(135deg, rgba(16, 22, 34, 0.9), rgba(15, 23, 42, 0.9));
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 10px; padding: 12px; font-size: 11.5px;
-            display: flex; flex-direction: column; gap: 6px;
+        .viability-alert-box {
+            background: linear-gradient(135deg, rgba(16, 22, 34, 0.95), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            border-radius: 11px; padding: 13px 14px; font-size: 11.5px;
+            display: flex; flex-direction: column; gap: 7px;
         }
-        .collateral-row { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); }
-
-        .story-card {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(16, 185, 129, 0.06));
-            border: 1px solid var(--border-gold);
-            border-radius: 12px; padding: 16px 20px;
-            font-size: 13px; line-height: 1.65; color: #f1f5f9;
+        .collateral-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-family: var(--font-mono); font-size: 11.2px;
         }
-        .story-card b { color: var(--alfa-gold-light); font-family: var(--font-mono); }
-        .story-card .hl-green { color: var(--emerald); font-weight: 800; font-family: var(--font-mono); }
-        .story-card .hl-red { color: var(--crimson); font-weight: 800; font-family: var(--font-mono); }
 
         .kpi-row-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-        @media (max-width: 900px) { .kpi-row-5 { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 920px) { .kpi-row-5 { grid-template-columns: repeat(2, 1fr); } }
         .kpi-card {
             background: var(--bg-card); border: 1px solid var(--border-subtle);
             border-radius: 10px; padding: 11px 12px; display: flex; flex-direction: column; gap: 3px;
             cursor: help;
         }
         .kpi-card span { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; font-weight: 700; }
-        .kpi-card b { font-family: var(--font-mono); font-size: 17px; font-weight: 800; }
+        .kpi-card b { font-family: var(--font-mono); font-size: 16.5px; font-weight: 800; }
         .kpi-card small { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+
+        .dd-percentiles-strip {
+            background: rgba(244, 63, 94, 0.05);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            border-radius: 10px; padding: 10px 14px;
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+        }
+        .dd-pct-items {
+            display: flex; flex-wrap: wrap; gap: 14px; font-family: var(--font-mono); font-size: 11.5px;
+        }
+        .dd-pct-items span b { color: var(--crimson); }
 
         .canvas-wrap {
             width: 100%; height: 270px; position: relative;
@@ -223,14 +305,55 @@
         .quant-table th {
             font-family: var(--font-sans); font-size: 10px; font-weight: 700;
             text-transform: uppercase; color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.02); cursor: help;
+            background: rgba(255, 255, 255, 0.025); cursor: help;
+            position: sticky; top: 0; z-index: 2; backdrop-filter: blur(8px);
         }
-        .quant-table tr:hover { background: rgba(255, 255, 255, 0.03); }
-        .scroll-table-box { max-height: 310px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
+        .quant-table tr:hover { background: rgba(255, 255, 255, 0.035); }
+        .scroll-table-box { max-height: 330px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
+
+        .story-card {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(16, 185, 129, 0.06));
+            border: 1px solid var(--border-gold);
+            border-radius: 12px; padding: 18px 20px;
+            font-size: 13.2px; line-height: 1.68; color: #f1f5f9;
+        }
+        .story-card b { color: var(--alfa-gold-light); font-family: var(--font-mono); }
+        .story-card .hl-green { color: var(--emerald); font-weight: 800; font-family: var(--font-mono); }
+        .story-card .hl-red { color: var(--crimson); font-weight: 800; font-family: var(--font-mono); }
 
         .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         @media (max-width: 980px) { .two-col-grid { grid-template-columns: 1fr; } }
 
+        /* BLOQUE 7: BOT DE TELEGRAM */
+        .bot-steps-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+        }
+        @media (max-width: 1100px) { .bot-steps-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .bot-steps-grid { grid-template-columns: 1fr; } }
+
+        .bot-step-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 16px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .bot-step-num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 8px;
+            background: rgba(56, 189, 248, 0.14); color: var(--cyan);
+            font-family: var(--font-mono); font-weight: 800; font-size: 12px;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+        .bot-step-card h4 { font-size: 13.5px; font-weight: 800; color: #fff; }
+        .bot-step-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+        .link-subtle-btn {
+            background: none; border: none; color: var(--cyan);
+            font-size: 11.5px; font-weight: 600; cursor: pointer;
+            text-decoration: underline; padding: 2px 0; text-align: left;
+        }
+        .link-subtle-btn:hover { color: var(--alfa-gold-light); }
+
+        /* TOOLTIPS */
         #custom-tooltip {
             position: fixed; display: none; z-index: 9999;
             max-width: 340px; padding: 11px 14px; border-radius: 10px;
@@ -238,23 +361,34 @@
             border: 1px solid var(--alfa-gold); font-size: 11.5px; line-height: 1.5;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85); pointer-events: none;
         }
+        #chart-hover-tooltip {
+            position: fixed; display: none; z-index: 9998;
+            padding: 9px 12px; border-radius: 9px;
+            background: rgba(7, 10, 16, 0.96); color: #f8fafc;
+            border: 1px solid rgba(245, 158, 11, 0.65);
+            font-family: var(--font-mono); font-size: 11.2px; line-height: 1.45;
+            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.85); pointer-events: none;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
 
     <div id="custom-tooltip"></div>
+    <div id="chart-hover-tooltip"></div>
 
-    <!-- NAVBAR LIMPIA CON SUBTÍTULO EXACTO SOLICITADO -->
+    <!-- NAVBAR CON LOGO-MARCA.PNG Y BOTÓN DE CUENTA / TELEGRAM -->
     <nav class="navbar">
-        <div class="brand-wrap">
-            <div class="brand-badge">α</div>
+        <a href="#" class="brand-wrap">
+            <img src="logo-marca.png" alt="Alfa Markets" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brand-fallback-badge').style.display='flex';">
+            <div id="brand-fallback-badge" class="brand-badge">α</div>
+            <div class="brand-divider"></div>
             <div class="brand-text">
                 <h1>ALFA STRATEGY</h1>
-                <div class="brand-sub" id="status-dataset">Muestra auditada: 105 semanas; 6.254 activos rastreados; 2.756 operaciones estudiadas</div>
             </div>
-        </div>
+        </a>
         <div class="nav-actions">
-            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta o inicia sesión en nuestra base de datos en la nube (Supabase) para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
+            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta, recupera tu contraseña o inicia sesión en nuestra base de datos en la nube (Supabase) para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
                 📲 Cuenta / Conectar Bot de Telegram
             </button>
         </div>
@@ -262,319 +396,570 @@
 
     <div class="container">
 
-        <!-- BLOQUE 1: DEFINICIÓN SOMERA DE LA ESTRATEGIA + AUDITORÍA -->
-        <section class="hero-banner">
-            <div class="hero-left">
-                <h2>Algoritmo Cuantitativo de Relleno de Ineficiencias de Liquidez (FVG)</h2>
-                <p>
-                    <b>ALFA Strategy</b> monitoriza de forma automatizada más de <b>6.200 activos</b> cotizados en EE. UU. y Europa buscando zonas donde el precio dejó vacíos de liquidez institucionales (<i>Fair Value Gaps</i>) a favor de la tendencia principal. Tras confirmar el giro al cierre de la vela horaria, el sistema sitúa una <b>Orden Limit Anti-Slippage</b> ligeramente más favorable en función del ATR del activo, buscando un recorrido simétrico <b>Ratio 1.0 : 1</b>.
-                </p>
-                <div class="audit-badges">
-                    <div class="audit-pill" data-tip="<b>Cero Sesgo de Visión a Futuro (No Look-Ahead Bias):</b><br>El algoritmo jamás entra antes de que cierre la vela horaria de confirmación. Todos los cálculos utilizan exclusivamente datos históricos cerrados.">
-                        🛡️ Sin Look-Ahead Bias
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 1: DESCRIPCIÓN DE LA ESTRATEGIA                                  -->
+        <!-- ======================================================================= -->
+        <section class="section-block gold-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Fundamentos Operativos & Reglas Cuantitativas</span>
+                    <h2 class="section-title">📐 DESCRIPCIÓN DE LA ESTRATEGIA</h2>
+                </div>
+                <span class="tag-pill">Sin Look-Ahead Bias · Ejecución Horaria</span>
+            </div>
+
+            <div class="strategy-intro-grid">
+                <div class="prose-text">
+                    <p>
+                        Esta estrategia cuantitativa se basa en captar rebotes institucionales del precio en zonas de ineficiencia conocidas como <b>Fair Value Gaps (FVG)</b> o vacíos de liquidez. El motor rastrea el mercado en busca de <b>FVG semanales válidos</b> —aquellos que acompañan la tendencia principal confirmada por la alineación de sus medias móviles de 20 semanas— y monitoriza su mitigación progresiva sin que el vacío sea invalidado.
+                    </p>
+                    <p>
+                        Una vez que el precio penetra en el FVG semanal, el algoritmo hace zoom al <b>gráfico horario (1H)</b> para localizar el <b>Order Block (OB)</b> o último nivel estructural clave previo al extremo de mitigación. Las entradas se evalúan exclusivamente a <b>cierre de vela horaria</b>: solo cuando una vela de 1H cierra superando dicho nivel se confirma el giro. Además, se descartan o adaptan operaciones cuya distancia al Stop Loss supere el umbral máximo calculado según la volatilidad histórica de cada activo, así como rupturas con velas erráticas o de agotamiento climático.
+                    </p>
+                    <p>
+                        Por defecto se establece un objetivo simétrico con <b>Ratio 1:1</b>, pero cuando convergen métricas de alta tracción temprana el sistema amplía automáticamente el recorrido a <span class="hl-emerald">Ratio 1.5:1 (Runner)</span>. Asimismo, se priorizan las <span class="hl-gold">entradas A+</span> —setups con características estadísticas de mayor tasa de acierto— en las que se asigna un porcentaje adicional de riesgo (<b>1.25x R</b>). Para eliminar el <i>slippage</i>, todas las entradas y salidas se ejecutan mediante <b>órdenes límite</b> situadas a una ligera distancia favorable respecto al cierre horario (cancelándose automáticamente si no se ejecutan en las <b>4 horas</b> siguientes).
+                    </p>
+                </div>
+
+                <div class="pillars-grid">
+                    <div class="pillar-card">
+                        <h4>🗓️ Ventana Lunes – Miércoles</h4>
+                        <p>Se priorizan las rupturas tempranas entre lunes y miércoles (&le; 65h efectivas de mercado desde la mitigación), evitando abrir riesgo tardío expuesto a la incertidumbre del fin de semana.</p>
                     </div>
-                    <div class="audit-pill" data-tip="<b>Ejecución Limit Anti-Slippage (-6% caja / ~0.15 ATR):</b><br>En lugar de perseguir el precio a mercado, se coloca una orden Limit un 6% más favorable dentro de la estructura. Si la acción no toca la orden en las 4 horas siguientes o llega antes al TP, la operación se cancela y se excluye.">
-                        🎯 Orden Limit Anti-Slippage (-0.15 ATR)
+                    <div class="pillar-card">
+                        <h4>🛡️ Protocolo de Viernes y Break Even</h4>
+                        <p>Antes del cierre del viernes, las operaciones abiertas con flotante débil (&lt; +0.35R) se cierran para evitar el azar de los <i>gaps</i> del lunes; las fuertes (&ge; +0.35R) se protegen moviendo el Stop a Break Even.</p>
                     </div>
-                    <div class="audit-pill" data-tip="<b>Gaps de Apertura Reales Contabilizados:</b><br>Se descuentan las pérdidas adicionales (>1R) cuando un Gap de apertura salta el Stop Loss, y se abonan las aperturas favorables que superan el Take Profit.">
-                        ⚡ Gaps Reales en SL y TP
+                    <div class="pillar-card">
+                        <h4>🎯 Órdenes Límite Anti-Slippage</h4>
+                        <p>La orden de entrada se sitúa ligeramente por debajo del cierre horario en largos (o por encima en cortos) según el ATR. Si el precio se escapa sin tocarla en 4 velas de 1H, la orden queda anulada.</p>
                     </div>
-                    <div class="audit-pill" data-tip="<b>Límite Físico de Margen (Buying Power):</b><br>El simulador limita automáticamente cuántas operaciones puedes abrir cada semana en función del colateral real de tu cuenta.">
-                        🏦 Ajustado por Margen Real
+                    <div class="pillar-card">
+                        <h4>⭐ Jerarquía A+ y Runners Dinámicos</h4>
+                        <p>Los setups con penetración limpia en el FVG, volumen relativo alto y distancia óptima en ATR reciben calificación A+ (mayor ponderación de R) o extienden su Take Profit en busca de mayor beneficio.</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <div class="hero-stats-grid">
-                <div class="stat-box-hero" data-tip="Porcentaje de acierto histórico real sobre las operaciones que tocaron la orden Limit de entrada y cerraron en Ratio 1.0:1 durante los últimos 2 años.">
-                    <span>Winrate Histórico (1:1)</span>
-                    <b id="hero-wr" style="color:var(--emerald);">62.5%</b>
-                    <small id="hero-wl-sub">Cargando muestra...</small>
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 2: BACKTESTING DE LA ESTRATEGIA                                  -->
+        <!-- ======================================================================= -->
+        <section class="section-block emerald-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Muestra Histórica Real Auditada (Incluyendo Gaps y Protocolo de Viernes)</span>
+                    <h2 class="section-title">📊 BACKTESTING DE LA ESTRATEGIA</h2>
                 </div>
-                <div class="stat-box-hero" data-tip="Unidades de Riesgo (R) netas acumuladas tras descontar Stop Loss, Gaps de apertura y comisiones del bróker.">
+                <span class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">Datos Reales de Mercado</span>
+            </div>
+
+            <div class="backtest-grid-9">
+                <div class="bt-stat-card" data-tip="Número total de semanas completas auditadas de forma continua en el estudio histórico.">
+                    <span>Histórico Estudiado</span>
+                    <b id="bt-weeks">105 semanas</b>
+                    <small>2 años completos de mercado</small>
+                </div>
+                <div class="bt-stat-card" data-tip="Universo total de acciones de EE. UU. (NYSE / NASDAQ / AMEX) y Europa filtradas por liquidez y calidad de cotización.">
+                    <span>Activos Rastreados</span>
+                    <b id="bt-assets" style="color:var(--cyan);">6.254</b>
+                    <small>Acciones líquidas US & EU</small>
+                </div>
+                <div class="bt-stat-card" data-tip="Total de operaciones reales ejecutadas tras aplicar todos los filtros de tendencia, volatilidad, horario y ejecución Limit.">
+                    <span>Operaciones Estudiadas</span>
+                    <b id="bt-trades">1.833</b>
+                    <small id="bt-trades-sub">Muestra cerrada auditada</small>
+                </div>
+                <div class="bt-stat-card" data-tip="Porcentaje real de operaciones ganadoras contemplando el objetivo base 1:1, las operaciones con ampliación de ratio (Runners 1.5R) y la gestión de los viernes.">
+                    <span>Winrate Real</span>
+                    <b id="bt-winrate" style="color:var(--emerald);">62.5%</b>
+                    <small id="bt-wl-detail">Base 1:1 + Runners ampliados</small>
+                </div>
+                <div class="bt-stat-card" data-tip="Suma total neta de Unidades de Riesgo (R) generadas durante las 105 semanas estudiadas, descontando pérdidas y gaps adversos.">
                     <span>Ganancia Neta Acumulada</span>
-                    <b id="hero-net-r" style="color:var(--alfa-gold-light);">+0.0 R</b>
-                    <small id="hero-exp-sub">Esperanza neta real</small>
+                    <b id="bt-net-r" style="color:var(--alfa-gold-light);">+0.0 R</b>
+                    <small id="bt-exp-trade">Esperanza matemática por trade</small>
                 </div>
-                <div class="stat-box-hero" data-tip="Peor caída acumulada en Unidades de Riesgo (R) registrada en todo el periodo estudiado.">
-                    <span>Drawdown Máx en R</span>
-                    <b id="hero-dd-r" style="color:var(--crimson);">-12.7 R</b>
-                    <small id="hero-weeks-sub">En 105 semanas auditadas</small>
+                <div class="bt-stat-card" data-tip="Rendimiento mediano semanal en Unidades de Riesgo (R) a lo largo de las 105 semanas estudiadas.">
+                    <span>Ganancia Mediana Semanal</span>
+                    <b id="bt-median-wk-r" style="color:var(--emerald);">+0.00 R</b>
+                    <small id="bt-mean-wk-r">Media semanal: +0.00 R</small>
                 </div>
-                <div class="stat-box-hero" data-tip="Relación rentabilidad/volatilidad anualizada de la estrategia aplicando las restricciones reales de margen y ejecución.">
-                    <span>Ratio de Sharpe Realista</span>
-                    <b id="hero-sharpe" style="color:var(--cyan);">3.80</b>
-                    <small id="hero-freq-sub">Operaciones ejecutables</small>
+                <div class="bt-stat-card" data-tip="Frecuencia semanal real de oportunidades válidas generadas por la estrategia durante las 105 semanas.">
+                    <span>Operaciones por Semana</span>
+                    <b id="bt-ops-wk">17.5 / sem</b>
+                    <small id="bt-ops-wk-sub">Mediana y rango semanal</small>
                 </div>
-            </div>
-        </section>
-
-        <!-- BLOQUE 2: CONFIGURADOR DEL USUARIO + MONTE CARLO 10.000 ESCENARIOS -->
-        <section class="lab-grid">
-
-            <!-- COLUMNA IZQUIERDA: PARÁMETROS DEL USUARIO -->
-            <div class="card-panel">
-                <div class="card-header">
-                    <h3 data-tip="Configura tu capital real y tus reglas. El simulador aplica automáticamente el límite de operaciones que tu colateral permite abrir simultáneamente.">
-                        ⚙️ 1. Tus Condicionantes y Gestión de Riesgo
-                    </h3>
-                    <span class="tag-pill">Ratio 1:1</span>
+                <div class="bt-stat-card" data-tip="Mayor caída acumulada desde un máximo histórico (pico a valle) medida en Unidades de Riesgo (R) dentro de las 105 semanas.">
+                    <span>Drawdown Máximo (105 Sem)</span>
+                    <b id="bt-max-dd-r" style="color:var(--crimson);">-0.00 R</b>
+                    <small>Bache máximo histórico en R</small>
                 </div>
-
-                <div class="preset-row">
-                    <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Fijo (0% Variación R): Arriesgas siempre la misma cantidad fija sin interés compuesto.">📏 Sin Compuesto (0%)</button>
-                    <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Realista y Prudente: Riesgo inicial del 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
-                    <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Compuesto Dinámico: Riesgo inicial del 2% y variación del 2.5% semanal con techo de seguridad.">⚖️ Dinámico (2.5%)</button>
-                </div>
-
-                <div class="inputs-grid">
-                    <div class="field-box">
-                        <label data-tip="Capital real depositado en tu cuenta operativa en el Día 1. Determina tu Poder de Compra máximo (Buying Power).">Capital Inicial ($/€)</label>
-                        <input type="number" id="inp-cap-ini" value="2000" step="250" min="200">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Dinero que arriesgas en tu primera operación (1R). Si pones un 1R alto para tu capital inicial, el bróker te dejará abrir menos operaciones simultáneas.">Tu 1R Inicial ($/€)</label>
-                        <input type="number" id="inp-r-ini" value="40" step="5" min="5">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Porcentaje en que sube o baja tu unidad 1R al final de cada semana por cada +1R ganado o -1R perdido. Pon 0% si no quieres interés compuesto.">% Variación de R</label>
-                        <input type="number" id="inp-var-r" value="1.5" step="0.5" min="0" max="6">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Capital tope hasta el que quieres hacer crecer tu cuenta antes de retirar el 100% de las ganancias como sueldo.">Techo Cuenta ($/€)</label>
-                        <input type="number" id="inp-cap-top" value="25000" step="1000" min="1000">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta crece.">Tope 1R Máximo ($/€)</label>
-                        <input type="number" id="inp-r-max" value="500" step="50" min="50">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Número máximo de operaciones semanales que deseas hacer (sujeto al margen libre de tu cuenta).">Máx Operaciones / Sem</label>
-                        <input type="number" id="inp-max-trades" value="15" step="1" min="1" max="25">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Porcentaje de las ganancias semanales que retiras a tu bolsillo para tus gastos ANTES de llegar al Techo de Cuenta.">% Retiro en Crecimiento</label>
-                        <input type="number" id="inp-withdraw-growth" value="20" step="5" min="0" max="80">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Sueldo mensual neto en Euros (descontando impuestos) que te marcas como meta personal.">🎯 Sueldo Objetivo (€/mes)</label>
-                        <input type="number" id="inp-target-salary" value="2500" step="250" min="500">
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Elige cómo entras tras el cierre de la vela horaria y las comisiones del bróker.">Modo de Ejecución</label>
-                        <select id="inp-exec-mode">
-                            <option value="limit_015" selected>🎯 Limit Anti-Slippage (-0.15 ATR · 0 Slippage)</option>
-                            <option value="limit_025">🎯 Limit Más Profunda (-0.25 ATR / -10% caja)</option>
-                            <option value="market_real">⚡ A Mercado con Slippage (-0.08R / op)</option>
-                        </select>
-                    </div>
-                    <div class="field-box">
-                        <label data-tip="Comisión de compra/venta por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/op)</label>
-                        <input type="number" id="inp-comm-usd" value="0.00" step="0.25" min="0" max="15">
-                    </div>
-                    <div class="field-box" style="grid-column: span 2;">
-                        <label data-tip="Periodo histórico real sobre el que evaluar el desempeño (hasta las 105 semanas completas = 2 años).">Rango Temporal del Estudio Histórico</label>
-                        <select id="inp-weeks-study">
-                            <option value="26">Últimas 26 Semanas (Últimos 6 Meses)</option>
-                            <option value="52">Últimas 52 Semanas (Último Año)</option>
-                            <option value="105" selected>Máximo Histórico Auditado (105 Semanas · 2 Años Completos)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- CALCULADORA INTELIGENTE DE COLATERAL Y MARGEN -->
-                <div class="collateral-box" data-tip="Muestra cuántas operaciones puedes llevar abiertas simultáneamente con tu Capital Inicial y un Stop Loss medio del 3.05%, evitando proyecciones irreales cuando el capital inicial es pequeño.">
-                    <div style="font-weight:800; color:var(--cyan); display:flex; justify-content:space-between;">
-                        <span>🏦 Límite Físico de Margen (Día 1)</span>
-                        <span id="collat-status-badge" style="color:var(--emerald);">✔ VIABLE</span>
-                    </div>
-                    <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Posiciones Simultáneas Permitidas:</span>
-                        <b id="collat-sim-trades">8 abiertas a la vez</b>
-                    </div>
-                    <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Exposición Nominal por Trade (R0):</span>
-                        <b id="collat-bp-ini">$1,311 / trade</b>
-                    </div>
-                    <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Operaciones Ejecutables en Sem. 1:</span>
-                        <b id="collat-qf-min" style="color:var(--alfa-gold-light);">~12 ops / semana</b>
-                    </div>
-                    <div id="collat-warning-text" style="font-size:10.5px; color:var(--text-secondary); border-top:1px solid rgba(255,255,255,0.06); padding-top:4px;"></div>
-                </div>
-            </div>
-
-            <!-- COLUMNA DERECHA: MONTE CARLO 10.000 ESCENARIOS + MEDIDOR DE RUINA -->
-            <div class="card-panel">
-                <div class="card-header">
-                    <h3 data-tip="Simulación de 10.000 escenarios posibles combinando las semanas del estudio y respetando el límite físico de margen de tu cuenta en cada paso.">
-                        🎲 2. Simulación Monte Carlo (10.000 Escenarios) & Medidor de Ruina
-                    </h3>
-                    <span id="mc-header-sub" style="font-family:var(--font-mono); font-size:11px; color:var(--alfa-gold-light);">10.000 rutas evaluadas</span>
-                </div>
-
-                <div class="kpi-row-5">
-                    <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Porcentaje de los 10.000 escenarios de Monte Carlo en los que la cuenta perdió el 70% o más de su capital inicial.">
-                        <span>💀 Riesgo Quemar Cuenta</span>
-                        <b id="mc-ruin-prob" style="color:var(--emerald);">0.00%</b>
-                        <small id="mc-ruin-sub">0 de 10.000 rutas</small>
-                    </div>
-                    <div class="kpi-card" data-tip="Tiempo mediano (Percentil 50) necesario para alcanzar tu Sueldo Mensual Objetivo neto en Euros.">
-                        <span>🎯 Tiempo a Sueldo Obj.</span>
-                        <b id="mc-time-salary" style="color:var(--alfa-gold-light);">-- sem</b>
-                        <small id="mc-time-cap-sub">Techo cuenta: -- sem</small>
-                    </div>
-                    <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros acumulados) al finalizar el rango temporal seleccionado.">
-                        <span>🏆 Patrimonio Mediano (P50)</span>
-                        <b id="mc-wealth-p50" style="color:var(--cyan);">$0</b>
-                        <small id="mc-ret-p50">Retirado: $0</small>
-                    </div>
-                    <div class="kpi-card" data-tip="Caída máxima porcentual desde el pico de la cuenta en el escenario mediano (P50) y en el 10% peor de los casos (P90).">
-                        <span>📉 Drawdown Máx (P50)</span>
-                        <b id="mc-dd-p50" style="color:var(--crimson);">-0.0%</b>
-                        <small id="mc-dd-p90">Estrés P90: -0.0%</small>
-                    </div>
-                    <div class="kpi-card" data-tip="Patrimonio final en el 5% de las peores simulaciones de Monte Carlo.">
-                        <span>🛡️ Peor Escenario (P5%)</span>
-                        <b id="mc-wealth-p05" style="color:#facc15;">$0</b>
-                        <small id="mc-prob-profit">Rentables: 100%</small>
-                    </div>
-                </div>
-
-                <div class="canvas-wrap" data-tip="Curvas de Patrimonio Total (Capital en Cuenta + Dinero Retirado) sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo Punteado = Techo de Cuenta.">
-                    <canvas id="canvas-mc"></canvas>
-                </div>
-
-                <div>
-                    <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">
-                        📊 Resultados en los Principales Percentiles (En el rango temporal de <span id="lbl-weeks-table">105</span> semanas)
-                    </div>
-                    <table class="quant-table">
-                        <thead>
-                            <tr>
-                                <th data-tip="Percentil estadístico sobre los 10.000 escenarios.">Escenario Monte Carlo</th>
-                                <th data-tip="Saldo que queda en la cuenta operativa.">Saldo Cuenta</th>
-                                <th data-tip="Dinero retirado a tu bolsillo (por retiros parciales y exceso sobre el techo).">Retirado</th>
-                                <th data-tip="Suma de Saldo en Cuenta + Retirado.">Patrimonio Total</th>
-                                <th data-tip="Multiplicador sobre tu capital inicial (ej. 2.1x).">Múltiplo</th>
-                                <th data-tip="Tamaño de tu unidad 1R al final del periodo.">1R Final</th>
-                                <th data-tip="Sueldo mensual neto estimado en Euros (tras 21% IRPF) con ese 1R.">Sueldo Neto (€/mes)</th>
-                                <th data-tip="Máxima caída porcentual sufrida durante el camino.">Max DD</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-mc-percentiles"></tbody>
-                    </table>
+                <div class="bt-stat-card" data-tip="Relación rentabilidad / volatilidad semanal anualizada obtenida sobre los retornos reales de las 105 semanas.">
+                    <span>Ratio de Sharpe</span>
+                    <b id="bt-sharpe" style="color:var(--cyan);">0.00</b>
+                    <small>Consistencia ajustada a riesgo</small>
                 </div>
             </div>
         </section>
 
-        <!-- BLOQUE 3: GUÍA NARRATIVA DE CASOS REALES (PASADO AUDITADO + PROYECCIÓN A FECHA X) -->
-        <section class="card-panel">
-            <div class="card-header" style="flex-wrap:wrap; gap:10px;">
-                <h3>📖 3. Guía de Casos Reales: Tu Desempeño Histórico y Proyección a Fecha X</h3>
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 3: GESTIÓN DE RIESGO                                             -->
+        <!-- ======================================================================= -->
+        <section class="section-block cyan-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Interés Compuesto Controlado, Exposición Nominal & Apalancamiento</span>
+                    <h2 class="section-title">🛡️ GESTIÓN DE RIESGO</h2>
+                </div>
+                <span class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">Crecimiento Exponencial vs. Lineal</span>
+            </div>
+
+            <div class="risk-edu-grid">
+                <div class="prose-text">
+                    <p>
+                        No es lo mismo arriesgar una cantidad fija de dinero en cada operación que adaptar dinámicamente tu riesgo a la evolución de tu cuenta. Si arriesgas siempre un importe constante (<b>0% de variación</b>), tu curva de ganancias crece como una línea recta; en cambio, al establecer un <b>% de Variación de R</b>, tu unidad de riesgo (<b>1R</b>) se incrementa proporcionalmente tras las semanas ganadoras y se reduce automáticamente durante las rachas perdedoras. Esto protege el capital en los baches y convierte una ventaja estadística constante en una <span class="hl-gold">curva de crecimiento exponencial</span>.
+                    </p>
+                    <p>
+                        Para diseñar un plan realista debes conjugar cinco variables: <b>tu capital inicial</b>, <b>tu unidad de riesgo inicial (1R)</b>, <b>las comisiones de tu bróker</b>, <b>el % de retiros</b> y <b>el número máximo de operaciones semanales</b> que estás dispuesto a asumir.
+                    </p>
+                    <p>
+                        <b>¿Cuánto capital necesitas disponible en tu cuenta?</b> Con una distancia media al Stop Loss en el histórico del <b id="txt-sl-medio">3.05%</b> y tu riesgo actual de <b id="txt-r-ejemplo">$40</b> por operación, abrir una posición implica mover un capital nominal medio de <b id="txt-nominal-ejemplo">$1,311</b> (<span style="font-family:var(--font-mono); font-size:12px;">Capital Posición = 1R / %StopLoss</span>). Si planteas un tope de <b id="txt-maxops-ejemplo">15 operaciones semanales</b> (lo que supone llevar unas <b id="txt-sim-ejemplo">10 posiciones simultáneas</b> abiertas a mitad de semana), necesitarás disponer de ese capital nominal completo si operas al contado, o bien utilizar una cuenta con margen/apalancamiento manteniendo siempre un colchón holgado frente al Drawdown.
+                    </p>
+                </div>
+
+                <div class="capital-calc-showcase">
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
+                        <span style="font-size:12px; font-weight:800; color:#fff;">🧮 Capital Requerido según tus Parámetros</span>
+                        <span style="font-family:var(--font-mono); font-size:11px; color:var(--alfa-gold-light);" id="cap-req-params-lbl">1R = $40 · Tope 15 ops/sem</span>
+                    </div>
+
+                    <div class="collateral-row">
+                        <span style="color:var(--text-secondary);">Distancia media histórica al Stop Loss:</span>
+                        <b id="cap-req-sl">3.05%</b>
+                    </div>
+                    <div class="collateral-row">
+                        <span style="color:var(--text-secondary);">Capital empleado de media por cada operación:</span>
+                        <b style="color:var(--alfa-gold-light);" id="cap-req-per-trade">$1,311 / trade</b>
+                    </div>
+                    <div class="collateral-row">
+                        <span style="color:var(--text-secondary);">Pico estimado de operaciones abiertas a la vez:</span>
+                        <b id="cap-req-concurrent">~10 simultáneas</b>
+                    </div>
+
+                    <div class="cap-compare-row">
+                        <div class="cap-mode-box">
+                            <span>💵 Cuenta Contado (1:1 Sin Apalancar)</span>
+                            <b style="color:#f8fafc;" id="cap-req-cash">$13,115</b>
+                            <small>Capital necesario en cuenta para cubrir el 100% del nominal sin margen.</small>
+                        </div>
+                        <div class="cap-mode-box" style="border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.05);">
+                            <span>⚡ Con Margen / Apalancamientoprudente</span>
+                            <b style="color:var(--emerald);" id="cap-req-margin">$1,381</b>
+                            <small>Colateral mínimo operativo (poder de compra ~9.5x) manteniendo el mismo riesgo 1R.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 4: CONFIGURADOR DEL USUARIO + VIABILIDAD + MONTE CARLO 10.000    -->
+        <!-- ======================================================================= -->
+        <section class="section-block gold-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Personalización Operativa & Prueba de Estrés Estadística</span>
+                    <h2 class="section-title">⚙️ CONFIGURACIÓN PERSONAL & MONTE CARLO (10.000 ESCENARIOS)</h2>
+                </div>
+                <span class="tag-pill">Ejecución Limit Predefinida · Muestra Base 105 Semanas</span>
+            </div>
+
+            <div class="lab-grid">
+
+                <!-- COLUMNA IZQUIERDA: DATOS DEL USUARIO Y ALERTA DE VIABILIDAD -->
+                <div class="card-panel">
+                    <div class="card-header">
+                        <h3 data-tip="Introduce tus cifras reales. El motor comprueba si tus fondos permiten abrir el máximo de operaciones semanales y simula 10.000 rutas en el rango de fechas elegido.">
+                            🎛️ Tus Datos y Reglas de Riesgo
+                        </h3>
+                    </div>
+
+                    <div class="preset-row">
+                        <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Fijo (0% Variación R): Arriesgas siempre la misma cantidad fija por operación (curva lineal).">📏 Lineal (0%)</button>
+                        <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Compuesto Prudente: Riesgo inicial del 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
+                        <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Exponencial Dinámico: Riesgo inicial del 2% y variación del 2.5% semanal con techo de seguridad.">⚖️ Dinámico (2.5%)</button>
+                    </div>
+
+                    <div class="inputs-grid">
+                        <div class="field-box">
+                            <label data-tip="Capital real depositado en tu cuenta operativa en el Día 1.">Capital Inicial ($/€)</label>
+                            <input type="number" id="inp-cap-ini" value="2000" step="250" min="200">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Dinero que arriesgas en tu primera operación (1R) si salta el Stop Loss.">Tu 1R Inicial ($/€)</label>
+                            <input type="number" id="inp-r-ini" value="40" step="5" min="5">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Porcentaje en que sube o baja tu unidad 1R cada semana por cada +1R ganado o -1R perdido. Pon 0% para riesgo constante.">% Variación de R</label>
+                            <input type="number" id="inp-var-r" value="1.5" step="0.5" min="0" max="6">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Capital tope hasta el que quieres hacer crecer tu cuenta antes de retirar el 100% de los beneficios excedentes.">Techo Cuenta ($/€)</label>
+                            <input type="number" id="inp-cap-top" value="25000" step="1000" min="1000">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta alcanza gran tamaño.">Tope 1R Máximo ($/€)</label>
+                            <input type="number" id="inp-r-max" value="500" step="50" min="50">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Número máximo de operaciones a la semana que estás dispuesto a ejecutar.">Máx Operaciones / Sem</label>
+                            <input type="number" id="inp-max-trades" value="15" step="1" min="1" max="30">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Porcentaje de las ganancias semanales que retiras a tu bolsillo mientras la cuenta aún está creciendo hacia su techo.">% Retiro en Crecimiento</label>
+                            <input type="number" id="inp-withdraw-growth" value="20" step="5" min="0" max="80">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Sueldo mensual neto en Euros (descontando IRPF) que te marcas como meta.">🎯 Sueldo Objetivo (€/mes)</label>
+                            <input type="number" id="inp-target-salary" value="2500" step="250" min="500">
+                        </div>
+                        <div class="field-box" style="grid-column: span 2;">
+                            <label data-tip="Comisión de compra/venta por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
+                            <input type="number" id="inp-comm-usd" value="0.00" step="0.25" min="0" max="15">
+                        </div>
+
+                        <!-- RANGO DE FECHAS EDITABLE PARA EL MONTE CARLO -->
+                        <div class="field-box">
+                            <label data-tip="Fecha de inicio del horizonte temporal para evaluar los 10.000 escenarios de Monte Carlo.">📅 Fecha Inicio Monte Carlo</label>
+                            <input type="date" id="inp-mc-start">
+                        </div>
+                        <div class="field-box">
+                            <label data-tip="Fecha final del horizonte temporal para evaluar el riesgo de ruina, llegada al techo de cuenta y percentiles.">📅 Fecha Fin Monte Carlo</label>
+                            <input type="date" id="inp-mc-end">
+                        </div>
+                    </div>
+
+                    <!-- CUADRO RESUMEN DE VIABILIDAD DE FONDOS -->
+                    <div class="viability-alert-box" id="viability-box">
+                        <div style="font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:6px;">
+                            <span style="color:var(--cyan);">🏦 Diagnóstico de Fondos Disponibles</span>
+                            <span id="collat-status-badge" style="color:var(--emerald);">✔ VIABLE CON MARGEN</span>
+                        </div>
+                        <div class="collateral-row">
+                            <span style="color:var(--text-secondary);">Tope deseado vs. Ejecutable Día 1:</span>
+                            <b id="collat-qf-min" style="color:var(--alfa-gold-light);">15 de 15 ops / sem</b>
+                        </div>
+                        <div class="collateral-row">
+                            <span style="color:var(--text-secondary);">Posiciones abiertas a la vez soportadas:</span>
+                            <b id="collat-sim-trades">14 simultáneas</b>
+                        </div>
+                        <div class="collateral-row">
+                            <span style="color:var(--text-secondary);">Capital medio por posición (SL 3.05%):</span>
+                            <b id="collat-bp-ini">$1,311 / op</b>
+                        </div>
+                        <div id="collat-warning-text" style="font-size:11px; color:#e2e8f0; border-top:1px solid rgba(255,255,255,0.08); padding-top:6px; line-height:1.48;"></div>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA: RESUMEN MONTE CARLO + PERCENTILES DD + TABLA -->
+                <div class="card-panel">
+                    <div class="card-header">
+                        <h3 data-tip="Simulación de 10.000 caminos aleatorios muestreando las 105 semanas reales en el rango de fechas indicado y respetando el margen disponible de tu cuenta.">
+                            🎲 Cuadro Resumen Monte Carlo (10.000 Escenarios)
+                        </h3>
+                        <span id="mc-header-sub" style="font-family:var(--font-mono); font-size:11.5px; color:var(--alfa-gold-light);">Horizonte: 105 semanas</span>
+                    </div>
+
+                    <!-- 5 MÉTRICAS CLAVE SOLICITADAS EN EL CUADRO RESUMEN -->
+                    <div class="kpi-row-5">
+                        <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Porcentaje de los 10.000 escenarios en los que la cuenta perdió el 70% o más de su capital inicial.">
+                            <span>💀 Riesgo Quemar Cuenta</span>
+                            <b id="mc-ruin-prob" style="color:var(--emerald);">0.00%</b>
+                            <small id="mc-ruin-sub">0 de 10.000 rutas</small>
+                        </div>
+                        <div class="kpi-card" data-tip="Número mediano de semanas necesarias para alcanzar el Techo de Cuenta configurado.">
+                            <span>🏔️ Semanas a Techo Cuenta</span>
+                            <b id="mc-time-cap" style="color:var(--alfa-gold-light);">-- sem</b>
+                            <small id="mc-time-salary-sub">Sueldo obj.: -- sem</small>
+                        </div>
+                        <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros acumulados) al concluir el rango de fechas.">
+                            <span>🏆 Patrimonio Mediano (P50)</span>
+                            <b id="mc-wealth-p50" style="color:var(--cyan);">$0</b>
+                            <small id="mc-ret-p50">Retirado: $0</small>
+                        </div>
+                        <div class="kpi-card" data-tip="Caída máxima porcentual desde el pico de patrimonio en el escenario mediano (P50) y en estrés severo (P90).">
+                            <span>📉 Drawdown Máx (P50)</span>
+                            <b id="mc-dd-p50" style="color:var(--crimson);">-0.0%</b>
+                            <small id="mc-dd-p90">Estrés P90: -0.0%</small>
+                        </div>
+                        <div class="kpi-card" data-tip="Patrimonio total final en el 5% peor de las 10.000 simulaciones (Percentil 5%).">
+                            <span>🛡️ Peor Escenario (P5%)</span>
+                            <b id="mc-wealth-p05" style="color:#facc15;">$0</b>
+                            <small id="mc-prob-profit">Rentables: 100%</small>
+                        </div>
+                    </div>
+
+                    <!-- BANDA DE DRAWDOWN MÁXIMO EN LOS DIFERENTES PERCENTILES -->
+                    <div class="dd-percentiles-strip" data-tip="Distribución completa del Drawdown Máximo porcentual sufrido a lo largo de los 10.000 escenarios, desde el 10% más suave (P10) hasta el 5% más adverso (P95).">
+                        <div style="font-size:11px; font-weight:800; color:#f8fafc; text-transform:uppercase;">
+                            📐 Drawdown Máx. por Percentiles:
+                        </div>
+                        <div class="dd-pct-items">
+                            <span>P10 (Suave): <b id="dd-p10">-0.0%</b></span>
+                            <span>P25: <b id="dd-p25">-0.0%</b></span>
+                            <span>P50 (Mediano): <b id="dd-p50-inline">-0.0%</b></span>
+                            <span>P75: <b id="dd-p75">-0.0%</b></span>
+                            <span>P90 (Estrés): <b id="dd-p90-inline">-0.0%</b></span>
+                            <span>P95 (Extremo): <b id="dd-p95">-0.0%</b></span>
+                        </div>
+                    </div>
+
+                    <!-- ABANICO DE CURVAS MONTE CARLO -->
+                    <div class="canvas-wrap" data-tip="Curvas de Patrimonio Total (Saldo en Cuenta + Dinero Retirado) sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo punteado = Techo de Cuenta.">
+                        <canvas id="canvas-mc"></canvas>
+                    </div>
+
+                    <!-- TABLA DE PERCENTILES MONTE CARLO -->
+                    <div>
+                        <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">
+                            📊 Tabla Desglosada de Escenarios Monte Carlo (<span id="lbl-weeks-table">105</span> semanas simuladas entre las fechas elegidas)
+                        </div>
+                        <div style="overflow-x:auto;">
+                            <table class="quant-table">
+                                <thead>
+                                    <tr>
+                                        <th data-tip="Percentil estadístico sobre los 10.000 escenarios.">Escenario Monte Carlo</th>
+                                        <th data-tip="Saldo líquido que permanece en la cuenta operativa.">Saldo Cuenta</th>
+                                        <th data-tip="Dinero total retirado a tu bolsillo.">Retirado</th>
+                                        <th data-tip="Suma de Saldo en Cuenta + Dinero Retirado.">Patrimonio Total</th>
+                                        <th data-tip="Multiplicador sobre tu capital inicial.">Múltiplo</th>
+                                        <th data-tip="Tamaño alcanzado por tu unidad de riesgo 1R.">1R Final</th>
+                                        <th data-tip="Flujo mensual neto estimado en Euros (descontando 21% IRPF) con ese 1R.">Sueldo Neto (€/mes)</th>
+                                        <th data-tip="Drawdown máximo asociado al percentil.">Max DD</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-mc-percentiles"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 5: SIMULADOR A FUTURO (DESDE HOY HASTA FECHA X)                  -->
+        <!-- ======================================================================= -->
+        <section class="section-block emerald-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Proyección Temporal Personalizada desde Hoy</span>
+                    <h2 class="section-title">🚀 SIMULADOR DE DESEMPEÑO A FUTURO</h2>
+                </div>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                    <span style="font-size:11px; color:var(--text-secondary);">Simular mi desempeño de aquí a la fecha:</span>
-                    <input type="date" id="inp-future-date" value="2027-07-09" style="background:var(--bg-card); color:var(--alfa-gold-light); border:1px solid var(--alfa-gold); border-radius:6px; padding:4px 8px; font-family:var(--font-mono); font-size:11.5px; font-weight:700;">
-                    <button class="btn-preset active" onclick="fijarMesesFuturo(8, event)">+8 Meses</button>
-                    <button class="btn-preset" onclick="fijarMesesFuturo(12, event)">+1 Año</button>
+                    <span style="font-size:12px; color:var(--text-secondary); font-weight:600;">Simular desde hoy hasta:</span>
+                    <input type="date" id="inp-future-date" style="background:var(--bg-card); color:var(--alfa-gold-light); border:1px solid var(--alfa-gold); border-radius:7px; padding:6px 10px; font-family:var(--font-mono); font-size:12px; font-weight:700;">
+                    <button class="btn-preset" onclick="fijarMesesFuturo(6, event)">+6 Meses</button>
+                    <button class="btn-preset active" onclick="fijarMesesFuturo(12, event)">+1 Año</button>
                     <button class="btn-preset" onclick="fijarMesesFuturo(24, event)">+2 Años</button>
                     <button class="btn-preset" onclick="fijarMesesFuturo(36, event)">+3 Años</button>
                 </div>
             </div>
 
+            <div class="story-card" id="story-future-box" style="border-color: rgba(16, 185, 129, 0.45);">
+                Calculando proyección futura...
+            </div>
+
             <div class="two-col-grid">
-                <div class="story-card" id="story-past-box">
-                    Cargando reconstrucción histórica...
+                <div>
+                    <div style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">
+                        📈 Curva Proyectada de Patrimonio Total (Pasa el cursor sobre la curva para ver fecha e importe)
+                    </div>
+                    <div class="canvas-wrap" style="height:265px;">
+                        <canvas id="canvas-future-curve"></canvas>
+                    </div>
                 </div>
-                <div class="story-card" id="story-future-box" style="border-color: rgba(16, 185, 129, 0.45);">
-                    Calculando proyección futura...
+                <div>
+                    <div style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">
+                        🗓️ Hoja de Ruta por Hitos (Escenario Mediano P50)
+                    </div>
+                    <div class="scroll-table-box" style="max-height:265px;">
+                        <table class="quant-table">
+                            <thead>
+                                <tr>
+                                    <th>Plazo</th>
+                                    <th>Tu 1R ($)</th>
+                                    <th>Saldo Cuenta</th>
+                                    <th>Retirado Acum.</th>
+                                    <th>Patrimonio</th>
+                                    <th>Sueldo Neto (€/m)</th>
+                                    <th>DD Esperado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-future-roadmap"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- BLOQUE 4: DESGLOSE HISTÓRICO REAL SEMANA A SEMANA Y HOJA DE RUTA FUTURA -->
-        <section class="two-col-grid">
-            <div class="card-panel">
-                <div class="card-header">
-                    <h3 data-tip="Resultado real semana a semana aplicando tus condicionantes, el modo de orden Limit por ATR y el límite de margen de tu cuenta sobre el estudio de 2 años.">
-                        📅 Desglose Histórico Real Semana a Semana
-                    </h3>
-                    <span id="hist-summary-badge" class="tag-pill">-- semanas</span>
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 6: HISTÓRICO DE LAS 105 SEMANAS Y DESGLOSE MENSUAL               -->
+        <!-- ======================================================================= -->
+        <section class="section-block gold-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Auditoría Temporal Interactiva · Pasa el cursor por cada barra para inspeccionar</span>
+                    <h2 class="section-title">📅 HISTÓRICO DE LAS 105 SEMANAS Y CIERRES MENSUALES</h2>
                 </div>
-                <div class="canvas-wrap" style="height:185px;">
-                    <canvas id="canvas-weekly-bars"></canvas>
-                </div>
-                <div class="scroll-table-box">
-                    <table class="quant-table">
-                        <thead>
-                            <tr>
-                                <th>Semana</th>
-                                <th data-tip="Operaciones que tocaron tu orden Limit y que tu margen permitía ejecutar esa semana.">Ops Ejec.</th>
-                                <th>W / L (WR%)</th>
-                                <th>R Neto Real</th>
-                                <th>Tu 1R ($)</th>
-                                <th>Retirado ($)</th>
-                                <th>Patrimonio ($)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-weekly-real"></tbody>
-                    </table>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <span id="wk-pos-neg-badge" class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">-- sem positivas / -- negativas</span>
+                    <span id="mo-pos-neg-badge" class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">-- meses positivos / -- negativos</span>
                 </div>
             </div>
 
-            <div class="card-panel">
+            <!-- GRÁFICA 1 ANCHO COMPLETO: RESULTADO EN R DE LAS 105 SEMANAS -->
+            <div class="card-panel" style="padding:16px 18px;">
                 <div class="card-header">
-                    <h3 data-tip="Evolución proyectada por plazos futuros en el escenario mediano realista (P50).">
-                        🚀 Hoja de Ruta a Futuro: Evolución de Capital, 1R y Sueldo
-                    </h3>
-                    <span class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">Escenario Mediano P50</span>
+                    <h3>📊 1. Resultado Neto (en R) de cada una de las 105 Semanas Estudiadas</h3>
+                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);">Pasa el ratón sobre cualquier barra para ver Fecha, Semana y Rs</span>
                 </div>
-                <div class="canvas-wrap" style="height:185px;">
-                    <canvas id="canvas-future-curve"></canvas>
+                <div class="canvas-wrap" style="height:260px;">
+                    <canvas id="canvas-weekly-bars"></canvas>
                 </div>
-                <div class="scroll-table-box">
-                    <table class="quant-table">
-                        <thead>
-                            <tr>
-                                <th>Plazo</th>
-                                <th>Tu 1R ($)</th>
-                                <th>Saldo Cuenta</th>
-                                <th>Retirado Acum.</th>
-                                <th>Patrimonio</th>
-                                <th>Sueldo Neto (€/m)</th>
-                                <th>DD Esperado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tbody-future-roadmap"></tbody>
-                    </table>
+            </div>
+
+            <!-- GRÁFICA 2 ANCHO COMPLETO: NÚMERO DE OPERACIONES POR SEMANA -->
+            <div class="card-panel" style="padding:16px 18px;">
+                <div class="card-header">
+                    <h3>📈 2. Volumen de Operaciones en cada una de las 105 Semanas Estudiadas</h3>
+                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);" id="lbl-avg-ops-chart">Media semanal: -- ops</span>
+                </div>
+                <div class="canvas-wrap" style="height:220px;">
+                    <canvas id="canvas-weekly-ops"></canvas>
+                </div>
+            </div>
+
+            <!-- GRÁFICA 3 + TABLA MENSUAL: RENDIMIENTO AGRUPADO MES A MES -->
+            <div class="two-col-grid">
+                <div class="card-panel" style="padding:16px 18px;">
+                    <div class="card-header">
+                        <h3>🗓️ 3. Balance Neto Mensual (Rs por Mes)</h3>
+                        <span id="mo-winrate-pill" class="tag-pill">--% Meses en Positivo</span>
+                    </div>
+                    <div class="canvas-wrap" style="height:310px;">
+                        <canvas id="canvas-monthly-bars"></canvas>
+                    </div>
+                </div>
+
+                <div class="card-panel" style="padding:16px 18px;">
+                    <div class="card-header">
+                        <h3>📋 4. Tabla Histórica Mensual con tu Configuración</h3>
+                        <span style="font-size:11px; color:var(--text-secondary); font-family:var(--font-mono);">Simulación real mes a mes</span>
+                    </div>
+                    <div class="scroll-table-box" style="max-height:310px;">
+                        <table class="quant-table">
+                            <thead>
+                                <tr>
+                                    <th>Mes</th>
+                                    <th data-tip="Operaciones ejecutadas en el mes según tu límite y margen.">Ops</th>
+                                    <th>W / L (WR%)</th>
+                                    <th>R Neto Mes</th>
+                                    <th>Tu 1R ($)</th>
+                                    <th>Retirado Acum.</th>
+                                    <th>Patrimonio ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-monthly-real"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================= -->
+        <!-- BLOQUE 7: FUNCIONAMIENTO DEL BOT DE TELEGRAM                            -->
+        <!-- ======================================================================= -->
+        <section class="section-block cyan-top">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <span class="section-eyebrow">Ejecución Guiada en Tiempo Real & Auditoría Interactiva</span>
+                    <h2 class="section-title">🤖 FUNCIONAMIENTO OPERATIVO DEL BOT DE TELEGRAM</h2>
+                </div>
+                <button class="btn-gold" onclick="abrirModalCuenta()">🔗 Vincular mi Telegram ahora</button>
+            </div>
+
+            <div class="prose-text">
+                <p>
+                    Para que puedas seguir la estrategia sin tener que vigilar miles de gráficos frente a la pantalla, nuestro motor en la nube se conecta directamente con el <b>Bot de Telegram de ALFA Strategy</b> y adapta cada cálculo en tiempo real a tu capital, tu unidad <b>1R</b> y tu límite semanal guardados en tu cuenta:
+                </p>
+            </div>
+
+            <div class="bot-steps-grid">
+                <div class="bot-step-card">
+                    <span class="bot-step-num">01</span>
+                    <h4>⏳ Pre-Alerta antes del Cierre 1H</h4>
+                    <p>Entre 5 y 10 minutos antes de que cierre cada vela horaria (minutos <code>:20</code> y <code>:50</code>), el bot te avisa de las operaciones que están a punto de activarse. Así puedes ir abriendo tu bróker con calma y localizando el activo sin prisas.</p>
+                </div>
+                <div class="bot-step-card">
+                    <span class="bot-step-num">02</span>
+                    <h4>🚨 Señal Exacta + Gráfico Doble</h4>
+                    <p>Al cerrar la vela horaria confirmando la ruptura (<code>:01</code> y <code>:31</code>), recibes la orden activada con lámina HD (<code>1WK + 1H</code>), distintivo <b>Setup A+</b> o <b>Runner</b>, precio exacto de Entrada Limit, Take Profit, Stop Loss y el <b>número exacto de acciones</b> para tu 1R.</p>
+                </div>
+                <div class="bot-step-card">
+                    <span class="bot-step-num">03</span>
+                    <h4>🔔 Notificación de los Viernes</h4>
+                    <p>Cada viernes antes del cierre de Wall Street, el bot audita las operaciones abiertas de la semana y te envía la lista exacta de cuáles debes <b>cerrar a mercado</b> (&lt; +0.35R) y cuáles mantener al lunes moviendo el Stop Loss a <b>Break Even</b>.</p>
+                </div>
+                <div class="bot-step-card">
+                    <span class="bot-step-num">04</span>
+                    <h4>📈 Seguimiento de Cuenta e Histórico</h4>
+                    <p>Selecciona directamente desde el propio bot en qué operaciones has entrado para llevar el seguimiento real de tu cuenta. Además, puedes consultar el balance de la semana anterior, simular <b>X semanas hacia atrás</b> o inspeccionar con gráficos cualquier semana concreta de las 105 estudiadas.</p>
                 </div>
             </div>
         </section>
 
     </div>
 
-    <!-- MODAL COMPLETO DE ALTA / LOGIN EN SUPABASE + VINCULACIÓN CON BOT DE TELEGRAM -->
-    <div id="modal-cuenta" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.84); z-index:100; align-items:center; justify-content:center; padding:16px;">
-        <div class="card-panel" style="width:100%; max-width:430px; border-color:var(--alfa-gold);">
+    <!-- ======================================================================= -->
+    <!-- MODAL DE ALTA / LOGIN / RECUPERAR CONTRASEÑA EN SUPABASE + TELEGRAM     -->
+    <!-- ======================================================================= -->
+    <div id="modal-cuenta" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; padding:16px;">
+        <div class="card-panel" style="width:100%; max-width:445px; border-color:var(--alfa-gold);">
             <div class="card-header">
-                <h3>☁️ Alta / Acceso en Base de Datos & Bot Telegram</h3>
+                <h3>☁️ Cuenta ALFA Strategy & Bot de Telegram</h3>
                 <span style="cursor:pointer; font-size:16px; color:var(--text-secondary);" onclick="cerrarModalCuenta()">✕</span>
             </div>
             <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.5;">
-                Crea tu cuenta o inicia sesión para guardar tus parámetros en nuestra base de datos (<b>Supabase</b>) y vincular tu <b>Telegram Chat ID</b> (escribe <code>/id</code> a nuestro bot de Telegram para obtenerlo).
+                Crea tu cuenta o inicia sesión para guardar tu configuración de riesgo en <b>Supabase</b> y vincular tu <b>Telegram Chat ID</b> (envía <code>/id</code> al bot de Telegram para obtener tu código).
             </div>
+
             <div class="field-box">
-                <label>Correo Electrónico (Tu identificador de cuenta)</label>
+                <label>Correo Electrónico</label>
                 <input type="email" id="sync-email" placeholder="tu@email.com">
             </div>
-            <div class="field-box">
+            <div class="field-box" id="box-sync-pass">
                 <label>Contraseña</label>
                 <input type="password" id="sync-pass" placeholder="Mínimo 6 caracteres">
             </div>
+            <div style="display:flex; justify-content:flex-end; margin-top:-6px;">
+                <button type="button" class="link-subtle-btn" onclick="recuperarContrasenaSupabase()">
+                    🔑 ¿Olvidaste tu contraseña? Enviar enlace de recuperación
+                </button>
+            </div>
+
+            <!-- CAJA OCULTA QUE SE ACTIVA AUTOMÁTICAMENTE SI EL USUARIO VIENE DEL EMAIL DE RECUPERACIÓN -->
+            <div id="box-new-password" style="display:none; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.4); border-radius:9px; padding:12px; flex-direction:column; gap:8px;">
+                <div style="font-size:11.5px; font-weight:700; color:var(--emerald);">🔐 Enlace de recuperación verificado: Escribe tu nueva contraseña</div>
+                <input type="password" id="sync-new-pass" placeholder="Nueva contraseña (mín. 6 caracteres)" style="background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); border-radius:7px; padding:8px 10px; font-family:var(--font-mono); font-size:12px;">
+                <button class="btn-gold" style="justify-content:center;" onclick="guardarNuevaContrasenaRecuperada()">💾 Guardar Nueva Contraseña</button>
+            </div>
+
             <div class="field-box">
                 <label>Tu Telegram Chat ID (Escribe /id en el bot)</label>
                 <input type="text" id="sync-chat-id" placeholder="Ej: 123456789 o -5491701041">
             </div>
+
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
                 <button class="btn-gold" style="justify-content:center;" onclick="autenticarYGuardarEnSupabase('login')">
                     🔑 Iniciar Sesión y Guardar
@@ -586,7 +971,7 @@
             <button class="btn-preset" style="width:100%; padding:8px; margin-top:2px;" onclick="cargarMisDatosDesdeSupabase()">
                 📥 Recuperar mi Configuración Guardada en la Nube
             </button>
-            <div id="sync-msg" style="font-size:11.5px; font-family:var(--font-mono); min-height:18px;"></div>
+            <div id="sync-msg" style="font-size:11.5px; font-family:var(--font-mono); min-height:18px; line-height:1.45;"></div>
         </div>
     </div>
 
@@ -595,41 +980,55 @@
         const SUPABASE_KEY = "sb_publishable_sirnHwi_5gGS4hluQQBEWw_WFPf1HFm";
         let supabaseClient = null;
         try {
-            if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            if (window.supabase) {
+                supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                supabaseClient.auth.onAuthStateChange((event) => {
+                    if (event === "PASSWORD_RECOVERY") {
+                        abrirModalCuenta();
+                        document.getElementById("box-new-password").style.display = "flex";
+                        const msg = document.getElementById("sync-msg");
+                        msg.style.color = "var(--emerald)";
+                        msg.innerText = "🔐 Sesión de recuperación activa. Introduce arriba tu nueva contraseña.";
+                    }
+                });
+            }
         } catch (e) {}
 
+        // Parámetros maestros predefinidos de la estrategia (lógica intacta)
         const STOP_LOSS_MEDIO_PCT = 3.05;
         const APLUS_MULT_LOCKED = 1.25;
+        const EXEC_MODE_PREDEFINIDO = "limit_015";
 
         let datasetPublico = null;
         let datasetYaVieneConLimit015 = false;
         let semanasOrdenadas = [];
 
-        // TOOLTIPS CON RETARDO DE 1 SEGUNDO (1000ms)
+        // TOOLTIPS DE AYUDA CON RETARDO DE 1 SEGUNDO
         let tipTimer = null;
-        const tipEl = document.getElementById('custom-tooltip');
+        const tipEl = document.getElementById("custom-tooltip");
+        const chartTipEl = document.getElementById("chart-hover-tooltip");
 
-        document.addEventListener('mouseover', e => {
-            const target = e.target.closest('[data-tip]');
+        document.addEventListener("mouseover", e => {
+            const target = e.target.closest("[data-tip]");
             clearTimeout(tipTimer);
-            tipEl.style.display = 'none';
+            tipEl.style.display = "none";
             if (!target) return;
-            const txt = target.getAttribute('data-tip');
+            const txt = target.getAttribute("data-tip");
             if (!txt) return;
             const cx = e.clientX, cy = e.clientY;
             tipTimer = setTimeout(() => {
                 tipEl.innerHTML = txt;
-                tipEl.style.display = 'block';
+                tipEl.style.display = "block";
                 const r = tipEl.getBoundingClientRect();
                 let left = cx + 14, top = cy + 16;
                 if (left + r.width > window.innerWidth - 12) left = window.innerWidth - r.width - 12;
                 if (top + r.height > window.innerHeight - 12) top = cy - r.height - 10;
                 tipEl.style.left = `${Math.max(8, left)}px`;
                 tipEl.style.top = `${Math.max(8, top)}px`;
-            }, 1000);
+            }, 900);
         });
-        document.addEventListener('mousemove', e => {
-            if (tipEl.style.display === 'block') {
+        document.addEventListener("mousemove", e => {
+            if (tipEl.style.display === "block") {
                 const r = tipEl.getBoundingClientRect();
                 let left = e.clientX + 14, top = e.clientY + 16;
                 if (left + r.width > window.innerWidth - 12) left = window.innerWidth - r.width - 12;
@@ -638,17 +1037,44 @@
                 tipEl.style.top = `${Math.max(8, top)}px`;
             }
         });
-        document.addEventListener('mouseout', e => {
-            if (e.target.closest('[data-tip]')) {
+        document.addEventListener("mouseout", e => {
+            if (e.target.closest("[data-tip]")) {
                 clearTimeout(tipTimer);
-                tipEl.style.display = 'none';
+                tipEl.style.display = "none";
             }
         });
 
+        function posicionarTooltipGrafico(ev, html) {
+            chartTipEl.innerHTML = html;
+            chartTipEl.style.display = "block";
+            const r = chartTipEl.getBoundingClientRect();
+            let left = ev.clientX + 14;
+            let top = ev.clientY - r.height - 12;
+            if (left + r.width > window.innerWidth - 10) left = ev.clientX - r.width - 14;
+            if (top < 10) top = ev.clientY + 16;
+            chartTipEl.style.left = `${Math.max(8, left)}px`;
+            chartTipEl.style.top = `${Math.max(8, top)}px`;
+        }
+
+        function ocultarTooltipGrafico() {
+            chartTipEl.style.display = "none";
+        }
+
+        function inicializarFechasPorDefecto() {
+            const hoy = new Date();
+            const finMc = new Date(hoy.getTime() + 105 * 7 * 86400000);
+            document.getElementById("inp-mc-start").value = hoy.toISOString().slice(0, 10);
+            document.getElementById("inp-mc-end").value = finMc.toISOString().slice(0, 10);
+
+            const fut = new Date(hoy);
+            fut.setMonth(fut.getMonth() + 12);
+            document.getElementById("inp-future-date").value = fut.toISOString().slice(0, 10);
+        }
+
         async function cargarDatasetAuditado() {
             const urlsCandidatas = [
-                'datos/dataset_publico.json?t=' + Date.now(),
-                'https://gorilasentado.github.io/fvg-backtester/datos/dataset_publico.json?t=' + Date.now()
+                "datos/dataset_publico.json?t=" + Date.now(),
+                "https://gorilasentado.github.io/fvg-backtester/datos/dataset_publico.json?t=" + Date.now()
             ];
             for (const url of urlsCandidatas) {
                 try {
@@ -664,8 +1090,6 @@
                 datasetPublico = generarDatasetRespaldoFiel();
             }
 
-            // Si el JSON ya trae el campo 'mae' generado por el nuevo proyecto3B.py con DEFAULT_ENTRY_OFFSET_PCT = -0.06,
-            // significa que Python ya filtró las órdenes Limit (-0.15 ATR) que no se llenaron en 4h.
             datasetYaVieneConLimit015 = datasetPublico.trades.some(t => t.mae !== undefined);
 
             const tradesLimpios = datasetPublico.trades.filter((tr, idx) => {
@@ -690,14 +1114,8 @@
             });
             semanasOrdenadas = Object.values(mapSem).sort((a, b) => (a.ts - b.ts) || a.key.localeCompare(b.key));
 
-            const numSem = semanasOrdenadas.length;
-            const numActivos = (datasetPublico.universo_analizado || 6254).toLocaleString('es-ES');
-            const numOps = tradesLimpios.length.toLocaleString('es-ES');
-
-            document.getElementById('status-dataset').innerText =
-                `Muestra auditada: ${numSem} semanas; ${numActivos} activos rastreados; ${numOps} operaciones estudiadas`;
-
-            fijarMesesFuturo(8);
+            renderizarBacktestingBaseEstrategia();
+            ejecutarSimulacionCompleta();
         }
 
         function generarDatasetRespaldoFiel() {
@@ -706,33 +1124,103 @@
             for (let w = 0; w < 105; w++) {
                 const ts = baseTs + w * 7 * 86400;
                 const d = new Date(ts * 1000);
-                const wKey = `${d.getUTCFullYear()}-W${String((w % 52) + 1).padStart(2, '0')}`;
-                const lbl = `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${String(d.getUTCFullYear()).slice(-2)} (W${String((w % 52) + 1).padStart(2, '0')})`;
+                const wKey = `${d.getUTCFullYear()}-W${String((w % 52) + 1).padStart(2, "0")}`;
+                const lbl = `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(d.getUTCFullYear()).slice(-2)} (W${String((w % 52) + 1).padStart(2, "0")})`;
                 const nTr = 15 + (w % 6);
                 for (let k = 1; k <= nTr; k++) {
                     const seed = Math.sin(w * 31 + k * 17) * 10000;
                     const rnd = seed - Math.floor(seed);
                     const isWin = rnd < 0.625 ? 1 : 0;
+                    const isRun = rnd > 0.78 ? 1 : 0;
                     const gapTp = isWin && rnd < 0.08 ? 1 : 0;
                     const gapSl = !isWin && rnd > 0.94 ? 1 : 0;
                     trades.push({
                         w: wKey, lbl, ts, ord: k,
-                        reg: k % 6 === 0 ? 'EU' : 'US',
-                        dir: k % 3 === 0 ? 'S' : 'L',
+                        reg: k % 6 === 0 ? "EU" : "US",
+                        dir: k % 3 === 0 ? "S" : "L",
                         ap: rnd > 0.65 ? 1 : 0,
-                        sl_pct: 2.8,
+                        run: isRun,
+                        sl_pct: 3.05,
                         mae: isWin ? 24.0 : 100.0,
                         res: isWin,
-                        wr: gapTp ? 1.25 : 1.0,
+                        wr: isRun ? 1.5 : (gapTp ? 1.25 : 1.0),
                         lr: gapSl ? 1.35 : 1.0,
                         gtp: gapTp,
                         gsl: gapSl
                     });
                 }
             }
-            return { actualizado: 'Hoy', universo_analizado: 6254, trades };
+            return { actualizado: "Hoy", universo_analizado: 6254, trades };
         }
 
+        // =========================================================================
+        // BLOQUE 2: CÁLCULO PURO DE LAS BASES DEL BACKTESTING (105 SEMANAS REALES)
+        // =========================================================================
+        function renderizarBacktestingBaseEstrategia() {
+            if (!semanasOrdenadas.length) return;
+            const nSem = semanasOrdenadas.length;
+            const numActivos = (datasetPublico.universo_analizado || 6254).toLocaleString("es-ES");
+
+            let wTot = 0, lTot = 0, rAcum = 0, eqR = 0, pkR = 0, maxDdR = 0, runnersCount = 0;
+            let retornosSem = [];
+            let opsPorSem = [];
+
+            semanasOrdenadas.forEach(sem => {
+                let rSem = 0, nSemOps = 0;
+                sem.trades.forEach(tr => {
+                    const rOp = evaluarTradeIndividualSegunModo(tr, EXEC_MODE_PREDEFINIDO, 0);
+                    if (rOp === null) return;
+                    nSemOps++;
+                    if (tr.run) runnersCount++;
+                    if (rOp > 0) wTot++;
+                    else lTot++;
+                    rSem += rOp;
+                    rAcum += rOp;
+                    eqR += rOp;
+                    if (eqR > pkR) pkR = eqR;
+                    if (pkR - eqR > maxDdR) maxDdR = pkR - eqR;
+                });
+                retornosSem.push(rSem);
+                opsPorSem.push(nSemOps);
+            });
+
+            const totEstudiadas = wTot + lTot;
+            const wrReal = totEstudiadas > 0 ? (wTot / totEstudiadas) * 100.0 : 0;
+            const expPorOp = totEstudiadas > 0 ? rAcum / totEstudiadas : 0;
+
+            const retOrd = [...retornosSem].sort((a, b) => a - b);
+            const medianaRSem = retOrd.length % 2 === 1
+                ? retOrd[Math.floor(retOrd.length / 2)]
+                : (retOrd[retOrd.length / 2 - 1] + retOrd[retOrd.length / 2]) / 2.0;
+            const mediaRSem = rAcum / Math.max(1, nSem);
+
+            const opsOrd = [...opsPorSem].sort((a, b) => a - b);
+            const medianaOps = opsOrd[Math.floor(opsOrd.length / 2)] || 0;
+            const maxOps = opsOrd[opsOrd.length - 1] || 0;
+            const mediaOps = totEstudiadas / Math.max(1, nSem);
+
+            const varSem = retornosSem.reduce((acc, v) => acc + Math.pow(v - mediaRSem, 2), 0) / Math.max(1, nSem - 1);
+            const sharpe = (mediaRSem / Math.sqrt(Math.max(varSem, 1e-4))) * Math.sqrt(52);
+
+            document.getElementById("bt-weeks").innerText = `${nSem} semanas`;
+            document.getElementById("bt-assets").innerText = numActivos;
+            document.getElementById("bt-trades").innerText = totEstudiadas.toLocaleString("es-ES");
+            document.getElementById("bt-trades-sub").innerText = `${wTot.toLocaleString("es-ES")} ganadas · ${lTot.toLocaleString("es-ES")} perdidas`;
+            document.getElementById("bt-winrate").innerText = `${wrReal.toFixed(1)}%`;
+            document.getElementById("bt-wl-detail").innerText = `Ratio 1:1 + ${runnersCount} Runners ampliados`;
+            document.getElementById("bt-net-r").innerText = `${rAcum >= 0 ? "+" : ""}${rAcum.toFixed(1)} R`;
+            document.getElementById("bt-exp-trade").innerText = `Esperanza: +${expPorOp.toFixed(2)} R / operación`;
+            document.getElementById("bt-median-wk-r").innerText = `${medianaRSem >= 0 ? "+" : ""}${medianaRSem.toFixed(2)} R`;
+            document.getElementById("bt-mean-wk-r").innerText = `Media semanal: ${mediaRSem >= 0 ? "+" : ""}${mediaRSem.toFixed(2)} R`;
+            document.getElementById("bt-ops-wk").innerText = `${mediaOps.toFixed(1)} ops/sem`;
+            document.getElementById("bt-ops-wk-sub").innerText = `Mediana: ${medianaOps} · Pico máx: ${maxOps}/sem`;
+            document.getElementById("bt-max-dd-r").innerText = `-${maxDdR.toFixed(2)} R`;
+            document.getElementById("bt-sharpe").innerText = sharpe.toFixed(2);
+        }
+
+        // =========================================================================
+        // MOTOR DE SIMULACIÓN PERSONAL Y MONTE CARLO (LÓGICA ORIGINAL INTACTA)
+        // =========================================================================
         function calcularCupoSemanalPorMargen(capitalActual, rActual, maxTradesDeseados) {
             const nominalPorTrade = rActual / (STOP_LOSS_MEDIO_PCT / 100.0);
             const poderCompraEfectivoSeguro = capitalActual * 9.5;
@@ -741,46 +1229,52 @@
             return {
                 cupoEfectivo: Math.min(maxTradesDeseados, maxSemanalesPorMargen),
                 maxSimultaneas,
+                maxSemanalesPorMargen,
                 nominalPorTrade
             };
         }
 
         function leerConfigUsuario() {
+            const dIniStr = document.getElementById("inp-mc-start").value;
+            const dFinStr = document.getElementById("inp-mc-end").value;
+            let mcWeeks = 105;
+            if (dIniStr && dFinStr) {
+                const ms = new Date(dFinStr + "T00:00:00Z") - new Date(dIniStr + "T00:00:00Z");
+                mcWeeks = Math.max(4, Math.min(260, Math.round(ms / (7 * 86400000))));
+            }
+
             return {
-                capIni: Math.max(200, parseFloat(document.getElementById('inp-cap-ini').value) || 2000),
-                rIni: Math.max(5, parseFloat(document.getElementById('inp-r-ini').value) || 40),
-                varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById('inp-var-r').value) || 0)) / 100.0,
-                capTop: Math.max(500, parseFloat(document.getElementById('inp-cap-top').value) || 25000),
-                rMax: Math.max(25, parseFloat(document.getElementById('inp-r-max').value) || 500),
-                maxTradesWk: Math.max(1, Math.min(25, parseInt(document.getElementById('inp-max-trades').value) || 15)),
-                withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById('inp-withdraw-growth').value) || 0)) / 100.0,
-                targetSalaryEur: Math.max(200, parseFloat(document.getElementById('inp-target-salary').value) || 2500),
-                execMode: document.getElementById('inp-exec-mode').value || 'limit_015',
-                commUsd: Math.max(0, parseFloat(document.getElementById('inp-comm-usd').value) || 0),
-                weeksStudy: parseInt(document.getElementById('inp-weeks-study').value) || 105
+                capIni: Math.max(200, parseFloat(document.getElementById("inp-cap-ini").value) || 2000),
+                rIni: Math.max(5, parseFloat(document.getElementById("inp-r-ini").value) || 40),
+                varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById("inp-var-r").value) || 0)) / 100.0,
+                capTop: Math.max(500, parseFloat(document.getElementById("inp-cap-top").value) || 25000),
+                rMax: Math.max(25, parseFloat(document.getElementById("inp-r-max").value) || 500),
+                maxTradesWk: Math.max(1, Math.min(30, parseInt(document.getElementById("inp-max-trades").value) || 15)),
+                withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById("inp-withdraw-growth").value) || 0)) / 100.0,
+                targetSalaryEur: Math.max(200, parseFloat(document.getElementById("inp-target-salary").value) || 2500),
+                execMode: EXEC_MODE_PREDEFINIDO,
+                commUsd: Math.max(0, parseFloat(document.getElementById("inp-comm-usd").value) || 0),
+                weeksStudy: semanasOrdenadas.length || 105,
+                mcWeeks
             };
         }
 
-        // Evalúa cada operación evitando duplicar el filtro Limit si proyecto3B.py ya lo aplicó
         function evaluarTradeIndividualSegunModo(tr, execMode, commR) {
             const mae = tr.mae ?? 100.0;
             const multAplus = tr.ap ? APLUS_MULT_LOCKED : 1.0;
             const winUnit = Math.min(1.85, tr.wr || 1.0);
             const lossUnit = tr.lr || 1.0;
 
-            if (execMode === 'limit_015') {
-                // Si el dataset antiguo no venía pre-filtrado por Python, filtramos mae < 6%
+            if (execMode === "limit_015") {
                 if (!datasetYaVieneConLimit015 && tr.res === 1 && mae < 6.0) return null;
                 if (tr.res === 1) return (winUnit * multAplus) - commR;
                 return -((lossUnit * multAplus) + commR);
-            } else if (execMode === 'limit_025') {
-                // Orden Limit más exigente (-0.25 ATR): requiere un retroceso adicional tras el -0.15 ATR
+            } else if (execMode === "limit_025") {
                 const umbralExtra = datasetYaVieneConLimit015 ? 4.5 : 10.0;
                 if (tr.res === 1 && mae < umbralExtra) return null;
                 if (tr.res === 1) return (winUnit * 1.04 * multAplus) - commR;
                 return -((lossUnit * 0.96 * multAplus) + commR);
             } else {
-                // Entrada a mercado con -0.08R de slippage/spread
                 if (tr.res === 1) return (winUnit * multAplus) - 0.08 - commR;
                 return -((lossUnit * multAplus) + 0.08 + commR);
             }
@@ -789,44 +1283,36 @@
         function ejecutarSimulacionCompleta() {
             if (!semanasOrdenadas.length) return;
             const cfg = leerConfigUsuario();
-            const semanasSlice = semanasOrdenadas.slice(-cfg.weeksStudy);
-            const nSemanas = semanasSlice.length;
+            const semanasSlice = semanasOrdenadas; // Estudio histórico completo de las 105 semanas
             const commR = cfg.commUsd / Math.max(cfg.rIni, 10.0);
-            document.getElementById('lbl-weeks-table').innerText = nSemanas;
 
-            let totalW = 0, totalL = 0, totalEscapadas = 0, sumaNetR = 0;
-            let equityR = 0, peakR = 0, maxDdR = 0;
+            document.getElementById("lbl-weeks-table").innerText = cfg.mcWeeks;
+            document.getElementById("mc-header-sub").innerText = `Horizonte elegido: ${cfg.mcWeeks} semanas`;
+
+            let totalW = 0, totalL = 0, sumaNetR = 0;
             let semanasEvaluadas = [];
 
             let capHist = cfg.capIni;
             let rUnitHist = cfg.rIni;
             let retirosHist = 0;
             let rachaHist = 0;
-            let peakWealthHist = cfg.capIni;
-            let maxDdPctHist = 0, maxDdUsdHist = 0;
-            let semanaAlcanzaTechoHist = null;
 
-            semanasSlice.forEach((sem, idxW) => {
+            semanasSlice.forEach((sem) => {
                 const infoMargen = calcularCupoSemanalPorMargen(capHist, rUnitHist, cfg.maxTradesWk);
-                let wSem = 0, lSem = 0, netRSem = 0, ejecutadasSem = 0;
+                let wSem = 0, lSem = 0, netRSem = 0, ejecutadasSem = 0, dispValidas = 0;
 
                 for (let i = 0; i < sem.trades.length; i++) {
-                    if (ejecutadasSem >= infoMargen.cupoEfectivo) break;
                     const tr = sem.trades[i];
                     const rOp = evaluarTradeIndividualSegunModo(tr, cfg.execMode, commR);
-                    if (rOp === null) {
-                        totalEscapadas++;
-                        continue;
-                    }
+                    if (rOp === null) continue;
+                    dispValidas++;
+                    if (ejecutadasSem >= infoMargen.cupoEfectivo) continue;
+
                     ejecutadasSem++;
                     if (rOp > 0) { wSem++; totalW++; }
                     else { lSem++; totalL++; }
-
                     netRSem += rOp;
                     sumaNetR += rOp;
-                    equityR += rOp;
-                    if (equityR > peakR) peakR = equityR;
-                    if (peakR - equityR > maxDdR) maxDdR = peakR - equityR;
                 }
 
                 const rUsadoSemana = rUnitHist;
@@ -842,17 +1328,11 @@
 
                 if (capHist < 20) capHist = 20;
                 if (capHist >= cfg.capTop) {
-                    if (semanaAlcanzaTechoHist === null) semanaAlcanzaTechoHist = idxW + 1;
                     retirosHist += (capHist - cfg.capTop);
                     capHist = cfg.capTop;
                 }
 
                 const wealthNow = capHist + retirosHist;
-                if (wealthNow > peakWealthHist) peakWealthHist = wealthNow;
-                const ddUsd = peakWealthHist - wealthNow;
-                const ddPct = (ddUsd / Math.max(peakWealthHist, 1)) * 100.0;
-                if (ddPct > maxDdPctHist) maxDdPctHist = ddPct;
-                if (ddUsd > maxDdUsdHist) maxDdUsdHist = ddUsd;
 
                 if ((wSem + lSem) > 0 && capHist > 20 && cfg.varRPct > 0) {
                     rachaHist = netRSem >= 0 ? (rachaHist >= 0 ? rachaHist + 1 : 1) : (rachaHist <= 0 ? rachaHist - 1 : -1);
@@ -864,8 +1344,9 @@
                 semanasEvaluadas.push({
                     key: sem.key,
                     label: sem.label,
+                    ts: sem.ts,
                     trades: ejecutadasSem,
-                    totalDisponibles: sem.trades.length,
+                    totalDisponibles: dispValidas,
                     wins: wSem,
                     losses: lSem,
                     netR: netRSem,
@@ -877,51 +1358,58 @@
             });
 
             const totalCerradas = totalW + totalL;
-            const wrGlobal = totalCerradas > 0 ? (totalW / totalCerradas) * 100.0 : 0;
-            const expTrade = totalCerradas > 0 ? sumaNetR / totalCerradas : 0;
-            const avgTradesSem = totalCerradas / Math.max(1, nSemanas);
-            const meanNetRSem = sumaNetR / Math.max(1, nSemanas);
+            const expTrade = totalCerradas > 0 ? sumaNetR / totalCerradas : 0.22;
 
-            const arrR = semanasEvaluadas.map(s => s.netR);
-            const varianceR = arrR.reduce((a, v) => a + Math.pow(v - meanNetRSem, 2), 0) / Math.max(1, arrR.length - 1);
-            const sharpe = (meanNetRSem / Math.sqrt(Math.max(varianceR, 1e-4))) * Math.sqrt(52);
-
-            document.getElementById('hero-wr').innerText = `${wrGlobal.toFixed(1)}%`;
-            document.getElementById('hero-wl-sub').innerText = `${totalW.toLocaleString()}W / ${totalL.toLocaleString()}L (${totalCerradas.toLocaleString()} ejecutadas)`;
-            document.getElementById('hero-net-r').innerText = `+${sumaNetR.toFixed(1)} R`;
-            document.getElementById('hero-exp-sub').innerText = `Esperanza neta: +${expTrade.toFixed(2)}R / op.`;
-            document.getElementById('hero-dd-r').innerText = `-${maxDdR.toFixed(2)} R`;
-            document.getElementById('hero-weeks-sub').innerText = `En ${nSemanas} semanas estudiadas`;
-            document.getElementById('hero-sharpe').innerText = sharpe.toFixed(2);
-            document.getElementById('hero-freq-sub').innerText = `Media ejecutada: ${avgTradesSem.toFixed(1)} ops/sem`;
-
-            actualizarCalculadoraColateral(cfg);
-            const mc = correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
-            renderizarTablaYBarrasSemanales(semanasEvaluadas, nSemanas);
-            renderizarProyeccionYCasosReales(cfg, semanasSlice, semanasEvaluadas, mc, {
-                totalCerradas, totalW, totalL, totalEscapadas, wrGlobal, sumaNetR,
-                capHist, retirosHist, rUnitHist, maxDdPctHist, maxDdUsdHist,
-                semanaAlcanzaTechoHist, meanNetRSem, expTrade, commR, nSemanas
-            });
+            actualizarBloqueGestionYViabilidad(cfg);
+            correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
+            renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR);
+            renderizarHistorico105SemanasYMensual(semanasEvaluadas);
         }
 
-        function actualizarCalculadoraColateral(cfg) {
+        function actualizarBloqueGestionYViabilidad(cfg) {
             const infoM = calcularCupoSemanalPorMargen(cfg.capIni, cfg.rIni, cfg.maxTradesWk);
-            document.getElementById('collat-sim-trades').innerText = `${infoM.maxSimultaneas} abiertas a la vez`;
-            document.getElementById('collat-bp-ini').innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString()} / operación`;
-            document.getElementById('collat-qf-min').innerText = `${infoM.cupoEfectivo} de ${cfg.maxTradesWk} ops / semana`;
+            const simDeseadas = Math.max(1, Math.ceil(cfg.maxTradesWk * 0.65));
+            const capContadoNecesario = simDeseadas * infoM.nominalPorTrade;
+            const capMargenNecesario = capContadoNecesario / 9.5;
 
-            const badge = document.getElementById('collat-status-badge');
-            const warn = document.getElementById('collat-warning-text');
+            // Actualizar textos dinámicos del Bloque 3 (Gestión de Riesgo)
+            document.getElementById("txt-sl-medio").innerText = `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`;
+            document.getElementById("txt-r-ejemplo").innerText = `$${cfg.rIni.toLocaleString("es-ES")}`;
+            document.getElementById("txt-nominal-ejemplo").innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")}`;
+            document.getElementById("txt-maxops-ejemplo").innerText = `${cfg.maxTradesWk} operaciones semanales`;
+            document.getElementById("txt-sim-ejemplo").innerText = `${simDeseadas} posiciones simultáneas`;
 
-            if (infoM.cupoEfectivo >= cfg.maxTradesWk) {
-                badge.innerText = '✔ MARGEN HOLGADO';
-                badge.style.color = 'var(--emerald)';
-                warn.innerHTML = `Tu capital inicial de <b>$${cfg.capIni.toLocaleString()}</b> tiene margen suficiente para ejecutar las <b>${cfg.maxTradesWk} operaciones semanales</b> con 1R = $${cfg.rIni}.`;
+            document.getElementById("cap-req-params-lbl").innerText = `1R = $${cfg.rIni} · Tope ${cfg.maxTradesWk} ops/sem`;
+            document.getElementById("cap-req-sl").innerText = `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`;
+            document.getElementById("cap-req-per-trade").innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / trade`;
+            document.getElementById("cap-req-concurrent").innerText = `~${simDeseadas} simultáneas`;
+            document.getElementById("cap-req-cash").innerText = `$${Math.round(capContadoNecesario).toLocaleString("es-ES")}`;
+            document.getElementById("cap-req-margin").innerText = `$${Math.round(capMargenNecesario).toLocaleString("es-ES")}`;
+
+            // Actualizar Diagnóstico de Viabilidad del Bloque 4
+            document.getElementById("collat-sim-trades").innerText = `${infoM.maxSimultaneas} abiertas a la vez`;
+            document.getElementById("collat-bp-ini").innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / operación`;
+            document.getElementById("collat-qf-min").innerText = `${infoM.cupoEfectivo} de ${cfg.maxTradesWk} ops / semana`;
+
+            const badge = document.getElementById("collat-status-badge");
+            const warn = document.getElementById("collat-warning-text");
+            const box = document.getElementById("viability-box");
+
+            if (cfg.capIni >= capContadoNecesario) {
+                badge.innerText = "✔ VIABLE AL CONTADO (1:1)";
+                badge.style.color = "var(--emerald)";
+                box.style.borderColor = "rgba(16, 185, 129, 0.45)";
+                warn.innerHTML = `✅ Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> dispones de fondos suficientes incluso operando <b>sin apalancamiento (1:1 al contado)</b> para abrir las <b>${cfg.maxTradesWk} operaciones semanales</b> con 1R = $${cfg.rIni}.`;
+            } else if (infoM.cupoEfectivo >= cfg.maxTradesWk) {
+                badge.innerText = "⚡ VIABLE CON MARGEN";
+                badge.style.color = "var(--cyan)";
+                box.style.borderColor = "rgba(56, 189, 248, 0.45)";
+                warn.innerHTML = `ℹ️ Al contado necesitarías <b>$${Math.round(capContadoNecesario).toLocaleString("es-ES")}</b>, pero operando en cuenta con margen/apalancamiento tus <b>$${cfg.capIni.toLocaleString("es-ES")}</b> cubren holgadamente las <b>${cfg.maxTradesWk} operaciones semanales</b> (mínimo requerido con margen: $${Math.round(capMargenNecesario).toLocaleString("es-ES")}).`;
             } else {
-                badge.innerText = '🔒 LIMITADO POR MARGEN';
-                badge.style.color = 'var(--alfa-gold-light)';
-                warn.innerHTML = `Con <b>$${cfg.capIni.toLocaleString()}</b> y 1R = <b>$${cfg.rIni}</b> ($${Math.round(infoM.nominalPorTrade)}/trade), tu cuenta puede llevar <b>${infoM.maxSimultaneas} posiciones a la vez</b> (~<b>${infoM.cupoEfectivo} ops/semana</b>). A medida que tu capital crezca, el simulador irá desbloqueando hasta ${cfg.maxTradesWk}/sem.`;
+                badge.innerText = "⚠️ FONDOS INSUFICIENTES PARA TU TOPE";
+                badge.style.color = "var(--alfa-gold-light)";
+                box.style.borderColor = "rgba(245, 158, 11, 0.55)";
+                warn.innerHTML = `⚠️ Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> y <b>1R = $${cfg.rIni}</b> ($${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} nominal/trade), no puedes abrir las ${cfg.maxTradesWk} ops/sem deseadas: tu margen limita el Día 1 a <b>${infoM.maxSimultaneas} posiciones simultáneas (~${infoM.cupoEfectivo} ops/sem)</b>. Necesitarías al menos <b>$${Math.round(capMargenNecesario).toLocaleString("es-ES")}</b> en margen (o bajar tu 1R inicial).`;
             }
         }
 
@@ -940,7 +1428,8 @@
 
         function correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR) {
             const NUM_PATHS = 10000;
-            const nWeeks = semanasSlice.length;
+            const nWeeksPool = semanasSlice.length;
+            const nWeeksSim = cfg.mcWeeks;
             const expPorTrade = Math.max(0.12, expTrade || 0.22);
 
             let finalSaldo = new Float64Array(NUM_PATHS);
@@ -955,7 +1444,7 @@
             let profitableCount = 0;
 
             const SAMPLE_CURVES = 800;
-            let wealthCurves = Array.from({ length: nWeeks + 1 }, () => new Float64Array(SAMPLE_CURVES));
+            let wealthCurves = Array.from({ length: nWeeksSim + 1 }, () => new Float64Array(SAMPLE_CURVES));
 
             for (let p = 0; p < NUM_PATHS; p++) {
                 let cap = cfg.capIni;
@@ -970,8 +1459,8 @@
 
                 if (p < SAMPLE_CURVES) wealthCurves[0][p] = cap;
 
-                for (let w = 1; w <= nWeeks; w++) {
-                    const randSem = semanasSlice[(Math.random() * nWeeks) | 0];
+                for (let w = 1; w <= nWeeksSim; w++) {
+                    const randSem = semanasSlice[(Math.random() * nWeeksPool) | 0];
                     const infoM = calcularCupoSemanalPorMargen(cap, rUnit, cfg.maxTradesWk);
                     const netRSem = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, commR);
                     const pnl = netRSem * rUnit;
@@ -1047,70 +1536,81 @@
             }
 
             const p90 = pickPct(0.90), p50 = pickPct(0.50), p25 = pickPct(0.25), p10 = pickPct(0.10), p05 = pickPct(0.05);
+            const dd10 = ddSorted[Math.floor(NUM_PATHS * 0.10)];
+            const dd25 = ddSorted[Math.floor(NUM_PATHS * 0.25)];
             const dd50 = ddSorted[Math.floor(NUM_PATHS * 0.50)];
+            const dd75 = ddSorted[Math.floor(NUM_PATHS * 0.75)];
             const dd90 = ddSorted[Math.floor(NUM_PATHS * 0.90)];
+            const dd95 = ddSorted[Math.floor(NUM_PATHS * 0.95)];
+
             const medCapW = validCapW.length ? validCapW[Math.floor(validCapW.length * 0.5)] : null;
             const medSalW = validSalW.length ? validSalW[Math.floor(validSalW.length * 0.5)] : null;
 
             const ruinPct = (ruinCount / NUM_PATHS) * 100.0;
             const profPct = (profitableCount / NUM_PATHS) * 100.0;
 
-            document.getElementById('mc-ruin-prob').innerText = `${ruinPct.toFixed(2)}%`;
-            document.getElementById('mc-ruin-prob').style.color = ruinPct === 0 ? 'var(--emerald)' : 'var(--crimson)';
-            document.getElementById('mc-ruin-sub').innerText = `${ruinCount} de 10.000 rutas`;
+            document.getElementById("mc-ruin-prob").innerText = `${ruinPct.toFixed(2)}%`;
+            document.getElementById("mc-ruin-prob").style.color = ruinPct === 0 ? "var(--emerald)" : "var(--crimson)";
+            document.getElementById("mc-ruin-sub").innerText = `${ruinCount} de 10.000 rutas`;
 
-            document.getElementById('mc-time-salary').innerText = medSalW ? `${medSalW} semanas` : `> ${nWeeks} sem`;
-            document.getElementById('mc-time-cap-sub').innerText = medCapW ? `Techo $${(cfg.capTop/1000).toFixed(0)}k en Sem ${medCapW}` : `En fase de capitalización`;
+            document.getElementById("mc-time-cap").innerText = medCapW ? `${medCapW} semanas` : `> ${nWeeksSim} sem`;
+            document.getElementById("mc-time-salary-sub").innerText = medSalW ? `Sueldo obj. en Sem ${medSalW}` : `Sueldo obj.: > ${nWeeksSim}s`;
 
-            document.getElementById('mc-wealth-p50').innerText = `$${Math.round(p50.wealth).toLocaleString()}`;
-            document.getElementById('mc-ret-p50').innerText = `Retirado: $${Math.round(p50.ret).toLocaleString()}`;
+            document.getElementById("mc-wealth-p50").innerText = `$${Math.round(p50.wealth).toLocaleString("es-ES")}`;
+            document.getElementById("mc-ret-p50").innerText = `Retirado: $${Math.round(p50.ret).toLocaleString("es-ES")}`;
 
-            document.getElementById('mc-dd-p50').innerText = `-${dd50.toFixed(1)}%`;
-            document.getElementById('mc-dd-p90').innerText = `Estrés P90: -${dd90.toFixed(1)}%`;
+            document.getElementById("mc-dd-p50").innerText = `-${dd50.toFixed(1)}%`;
+            document.getElementById("mc-dd-p90").innerText = `Estrés P90: -${dd90.toFixed(1)}%`;
 
-            document.getElementById('mc-wealth-p05').innerText = `$${Math.round(p05.wealth).toLocaleString()}`;
-            document.getElementById('mc-prob-profit').innerText = `Rentables: ${profPct.toFixed(1)}%`;
+            document.getElementById("mc-wealth-p05").innerText = `$${Math.round(p05.wealth).toLocaleString("es-ES")}`;
+            document.getElementById("mc-prob-profit").innerText = `Rentables: ${profPct.toFixed(1)}%`;
 
-            const tbody = document.getElementById('tbody-mc-percentiles');
-            tbody.innerHTML = '';
+            // Cinta completa de Drawdown por percentiles
+            document.getElementById("dd-p10").innerText = `-${dd10.toFixed(1)}%`;
+            document.getElementById("dd-p25").innerText = `-${dd25.toFixed(1)}%`;
+            document.getElementById("dd-p50-inline").innerText = `-${dd50.toFixed(1)}%`;
+            document.getElementById("dd-p75").innerText = `-${dd75.toFixed(1)}%`;
+            document.getElementById("dd-p90-inline").innerText = `-${dd90.toFixed(1)}%`;
+            document.getElementById("dd-p95").innerText = `-${dd95.toFixed(1)}%`;
+
+            const tbody = document.getElementById("tbody-mc-percentiles");
+            tbody.innerHTML = "";
             [
-                { name: '🟢 Optimista (P90)', d: p90, c: 'var(--emerald)' },
-                { name: '🟡 Mediano Realista (P50)', d: p50, c: 'var(--alfa-gold-light)' },
-                { name: '🔵 Moderado (P25)', d: p25, c: 'var(--cyan)' },
-                { name: '🟠 Prudente (P10)', d: p10, c: '#facc15' },
-                { name: '🔴 Adverso Extremo (P5%)', d: p05, c: 'var(--crimson)' }
+                { name: "🟢 Optimista (P90)", d: p90, c: "var(--emerald)" },
+                { name: "🟡 Mediano Realista (P50)", d: p50, c: "var(--alfa-gold-light)" },
+                { name: "🔵 Moderado (P25)", d: p25, c: "var(--cyan)" },
+                { name: "🟠 Prudente (P10)", d: p10, c: "#facc15" },
+                { name: "🔴 Peor Escenario (P5%)", d: p05, c: "var(--crimson)" }
             ].forEach(r => {
-                const mult = (r.d.wealth / cfg.capIni).toFixed(2) + 'x';
-                const tr = document.createElement('tr');
+                const mult = (r.d.wealth / cfg.capIni).toFixed(2) + "x";
+                const tr = document.createElement("tr");
                 tr.innerHTML = `
                     <td style="font-weight:800; color:${r.c};">${r.name}</td>
-                    <td>$${Math.round(r.d.saldo).toLocaleString()}</td>
-                    <td style="color:var(--purple); font-weight:700;">$${Math.round(r.d.ret).toLocaleString()}</td>
-                    <td style="font-weight:800;">$${Math.round(r.d.wealth).toLocaleString()}</td>
+                    <td>$${Math.round(r.d.saldo).toLocaleString("es-ES")}</td>
+                    <td style="color:var(--purple); font-weight:700;">$${Math.round(r.d.ret).toLocaleString("es-ES")}</td>
+                    <td style="font-weight:800;">$${Math.round(r.d.wealth).toLocaleString("es-ES")}</td>
                     <td style="color:var(--cyan); font-weight:700;">${mult}</td>
                     <td style="color:var(--alfa-gold-light);">$${r.d.rFinal.toFixed(0)}</td>
-                    <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString()} €/mes</td>
+                    <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString("es-ES")} €/mes</td>
                     <td style="color:var(--crimson);">-${r.d.dd.toFixed(1)}%</td>
                 `;
                 tbody.appendChild(tr);
             });
 
             let cP90 = [], cP50 = [], cP10 = [];
-            for (let w = 0; w <= nWeeks; w++) {
+            for (let w = 0; w <= nWeeksSim; w++) {
                 const col = Float64Array.from(wealthCurves[w]).sort();
                 cP90.push(col[Math.floor(SAMPLE_CURVES * 0.90)]);
                 cP50.push(col[Math.floor(SAMPLE_CURVES * 0.50)]);
                 cP10.push(col[Math.floor(SAMPLE_CURVES * 0.10)]);
             }
             dibujarCanvasMC(cP90, cP50, cP10, cfg.capTop, cfg.capIni);
-
-            return { p50, dd50, dd90, medCapW, medSalW };
         }
 
         function dibujarCanvasMC(cP90, cP50, cP10, capTop, capIni) {
-            const canvas = document.getElementById('canvas-mc');
+            const canvas = document.getElementById("canvas-mc");
             if (!canvas) return;
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext("2d");
             const dpr = window.devicePixelRatio || 1;
             const rect = canvas.parentElement.getBoundingClientRect();
             canvas.width = rect.width * dpr;
@@ -1122,7 +1622,7 @@
             const n = cP50.length - 1;
             if (n < 1) return;
 
-            const maxV = Math.max(capIni * 2.5, ...cP90) * 1.06;
+            const maxV = Math.max(capIni * 2.2, ...cP90) * 1.06;
             const minV = Math.min(capIni * 0.6, ...cP10);
             const padL = 62, padR = 20, padT = 18, padB = 26;
             const pw = w - padL - padR, ph = h - padT - padB;
@@ -1130,9 +1630,9 @@
             const xOf = i => padL + (i / n) * pw;
             const yOf = val => padT + ph - ((val - minV) / Math.max(1, maxV - minV)) * ph;
 
-            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-            ctx.fillStyle = '#64748b';
-            ctx.font = '10px JetBrains Mono';
+            ctx.strokeStyle = "rgba(255,255,255,0.06)";
+            ctx.fillStyle = "#64748b";
+            ctx.font = "10px JetBrains Mono";
             for (let g = 0; g <= 4; g++) {
                 const v = minV + ((maxV - minV) * g) / 4;
                 const y = yOf(v);
@@ -1141,7 +1641,12 @@
                 ctx.fillText(lbl, 6, y + 3);
             }
 
-            ctx.fillStyle = 'rgba(245, 158, 11, 0.08)';
+            for (let xStep = 0; xStep <= 4; xStep++) {
+                const wk = Math.round((n * xStep) / 4);
+                ctx.fillText(`Sem ${wk}`, xOf(wk) - 16, h - 8);
+            }
+
+            ctx.fillStyle = "rgba(245, 158, 11, 0.08)";
             ctx.beginPath();
             for (let i = 0; i <= n; i++) i === 0 ? ctx.moveTo(xOf(i), yOf(cP90[i])) : ctx.lineTo(xOf(i), yOf(cP90[i]));
             for (let i = n; i >= 0; i--) ctx.lineTo(xOf(i), yOf(cP10[i]));
@@ -1149,12 +1654,12 @@
 
             if (capTop <= maxV) {
                 const yT = yOf(capTop);
-                ctx.strokeStyle = 'rgba(244, 63, 94, 0.7)';
+                ctx.strokeStyle = "rgba(244, 63, 94, 0.75)";
                 ctx.setLineDash([5, 4]);
                 ctx.beginPath(); ctx.moveTo(padL, yT); ctx.lineTo(w - padR, yT); ctx.stroke();
                 ctx.setLineDash([]);
-                ctx.fillStyle = '#f43f5e';
-                ctx.fillText(`Techo Cuenta ($${capTop.toLocaleString()})`, padL + 8, Math.max(12, yT - 5));
+                ctx.fillStyle = "#f43f5e";
+                ctx.fillText(`Techo Cuenta ($${capTop.toLocaleString("es-ES")})`, padL + 8, Math.max(12, yT - 5));
             }
 
             const drawLine = (arr, col, lw) => {
@@ -1162,26 +1667,20 @@
                 for (let i = 0; i <= n; i++) i === 0 ? ctx.moveTo(xOf(i), yOf(arr[i])) : ctx.lineTo(xOf(i), yOf(arr[i]));
                 ctx.stroke();
             };
-            drawLine(cP90, '#10b981', 1.8);
-            drawLine(cP50, '#f59e0b', 2.8);
-            drawLine(cP10, '#38bdf8', 1.8);
+            drawLine(cP90, "#10b981", 1.8);
+            drawLine(cP50, "#f59e0b", 2.8);
+            drawLine(cP10, "#38bdf8", 1.8);
         }
 
-        function renderizarProyeccionYCasosReales(cfg, semanasSlice, semanasEvaluadas, mc, stats) {
-            const pastBox = document.getElementById('story-past-box');
-            const multHist = ((stats.capHist + stats.retirosHist) / cfg.capIni).toFixed(2);
-            const expPorTrade = Math.max(0.12, stats.expTrade || 0.22);
-
-            pastBox.innerHTML = `
-                <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--alfa-gold-light); font-weight:800; margin-bottom:6px;">
-                    ⏪ CASO REAL 1: DESEMPEÑO EN LAS ÚLTIMAS ${stats.nSemanas} SEMANAS CON TUS CONDICIONANTES
-                </div>
-                Partiendo de <b>$${cfg.capIni.toLocaleString()}</b> con <b>1R = $${cfg.rIni}</b> y variación semanal del <b>${(cfg.varRPct*100).toFixed(1)}%</b> (respetando el límite físico de margen y tu modo de entrada Limit/Mercado), habrías ejecutado <b>${stats.totalCerradas.toLocaleString()} operaciones</b> (<span class="hl-green">${stats.totalW} ganadas</span> y <span class="hl-red">${stats.totalL} perdidas</span> · <b>${stats.wrGlobal.toFixed(1)}% Winrate</b>).<br><br>
-                Tu caída máxima temporal (<i>Drawdown</i>) habría sido de <span class="hl-red">-${stats.maxDdPctHist.toFixed(1)}% (-$${Math.round(stats.maxDdUsdHist).toLocaleString()})</span>, cerrando el periodo con <b>$${Math.round(stats.capHist).toLocaleString()} líquidos en cuenta</b> más <span class="hl-green">$${Math.round(stats.retirosHist).toLocaleString()} retirados a tu bolsillo</span> (Patrimonio total: <span class="hl-green">$${Math.round(stats.capHist + stats.retirosHist).toLocaleString()}</span> · <b>${multHist}x</b> tu capital inicial).
-            `;
-
-            const dateStr = document.getElementById('inp-future-date').value || '2027-07-09';
-            const diffDays = Math.max(30, (new Date(dateStr + 'T00:00:00Z') - new Date()) / 86400000);
+        // =========================================================================
+        // BLOQUE 5: SIMULADOR A FUTURO DESDE HOY HASTA FECHA X
+        // =========================================================================
+        function renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR) {
+            const expPorTrade = Math.max(0.12, expTrade || 0.22);
+            const dateStr = document.getElementById("inp-future-date").value;
+            const hoy = new Date();
+            const targetDate = dateStr ? new Date(dateStr + "T00:00:00Z") : new Date(hoy.getTime() + 365 * 86400000);
+            const diffDays = Math.max(28, (targetDate - hoy) / 86400000);
             const targetWeeks = Math.max(4, Math.min(208, Math.round(diffDays / 7)));
             const targetMonths = Math.max(1, Math.round(diffDays / 30.4375));
 
@@ -1197,7 +1696,7 @@
                 for (let w = 1; w <= targetWeeks; w++) {
                     const randSem = semanasSlice[(Math.random() * semanasSlice.length) | 0];
                     const infoM = calcularCupoSemanalPorMargen(c, r, cfg.maxTradesWk);
-                    const nr = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, stats.commR);
+                    const nr = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, commR);
                     const pnl = nr * r;
                     if (pnl > 0 && c < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                         const s = pnl * cfg.withdrawGrowthPct;
@@ -1229,13 +1728,14 @@
                 const grossMoUsd = Math.max(0, rMed * (infoM.cupoEfectivo * expPorTrade * 4.333));
                 const netMoEur = grossMoUsd * 0.79 * 0.92;
                 const dds = Float64Array.from(matDD[w]).sort();
+                const fechaPunto = new Date(hoy.getTime() + w * 7 * 86400000).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
                 serieFut.push({
                     week: w,
+                    fechaStr: fechaPunto,
                     cap: cMed,
                     ret: matRet[w][mid],
                     wealth: cMed + matRet[w][mid],
                     rUnit: rMed,
-                    grossMoUsd,
                     netMoEur,
                     dd50: dds[Math.floor(nPathsFut * 0.50)]
                 });
@@ -1243,208 +1743,521 @@
 
             const snapFin = serieFut[targetWeeks];
             const multFut = (snapFin.wealth / cfg.capIni).toFixed(2);
-            const fechaNice = new Date(dateStr + 'T00:00:00Z').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
-            const futBox = document.getElementById('story-future-box');
+            const fechaNice = targetDate.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
 
-            futBox.innerHTML = `
+            document.getElementById("story-future-box").innerHTML = `
                 <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; margin-bottom:6px;">
-                    🚀 CASO REAL 2: PROYECCIÓN REALISTA DE AQUÍ A ${fechaNice.toUpperCase()} (${targetMonths} MESES)
+                    🚀 PROYECCIÓN PERSONALIZADA DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
                 </div>
-                Con tus condicionantes actuales en el escenario mediano (<b>P50</b>), de aquí a <b>${fechaNice}</b> (${targetWeeks} semanas) tu patrimonio total pasaría de <b>$${cfg.capIni.toLocaleString()}</b> a <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString()} (${multFut}x)</span>: <b>$${Math.round(snapFin.cap).toLocaleString()}</b> en cuenta más <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString()}</span> retirados.<br><br>
-                En esa fecha tu unidad de riesgo se situaría en <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando un flujo mensual estimado de <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString()} € netos/mes</span> (tras descontar un 21% de IRPF) con un Drawdown mediano esperado en el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.
+                Partiendo hoy con <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, <b>1R = $${cfg.rIni}</b> y una variación del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>, en el escenario mediano realista (<b>P50</b>) tu patrimonio total evolucionaría hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>: cerrarías con <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta más <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> ya retirados a tu bolsillo.<br>
+                En esa fecha tu unidad de riesgo habría escalado a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando un flujo mensual estimado de <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF) con un Drawdown mediano esperado en el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.
             `;
 
-            const hitos = [4, 8, 12, 18, 24, 36].filter(m => m <= Math.max(36, targetMonths));
+            const hitos = [3, 6, 9, 12, 18, 24, 36].filter(m => m <= Math.max(36, targetMonths));
             if (!hitos.includes(targetMonths)) { hitos.push(targetMonths); hitos.sort((a, b) => a - b); }
 
-            const tbodyFut = document.getElementById('tbody-future-roadmap');
-            tbodyFut.innerHTML = '';
+            const tbodyFut = document.getElementById("tbody-future-roadmap");
+            tbodyFut.innerHTML = "";
             hitos.forEach(m => {
                 const wIdx = Math.min(serieFut.length - 1, Math.round(m * 4.333));
                 const s = serieFut[wIdx];
-                const tr = document.createElement('tr');
-                if (m === targetMonths) tr.style.background = 'rgba(245, 158, 11, 0.12)';
+                if (!s) return;
+                const tr = document.createElement("tr");
+                if (m === targetMonths) tr.style.background = "rgba(245, 158, 11, 0.14)";
                 tr.innerHTML = `
-                    <td style="font-weight:800; color:${m === targetMonths ? 'var(--alfa-gold-light)' : '#fff'};">${m} Meses (${wIdx}s)</td>
+                    <td style="font-weight:800; color:${m === targetMonths ? "var(--alfa-gold-light)" : "#fff"};">${m} Meses (${wIdx}s)</td>
                     <td style="color:var(--alfa-gold-light); font-weight:700;">$${s.rUnit.toFixed(0)}</td>
-                    <td>$${Math.round(s.cap).toLocaleString()}</td>
-                    <td style="color:var(--purple); font-weight:700;">$${Math.round(s.ret).toLocaleString()}</td>
-                    <td style="font-weight:800;">$${Math.round(s.wealth).toLocaleString()}</td>
-                    <td style="color:var(--emerald); font-weight:800;">~${Math.round(s.netMoEur).toLocaleString()} €/m</td>
+                    <td>$${Math.round(s.cap).toLocaleString("es-ES")}</td>
+                    <td style="color:var(--purple); font-weight:700;">$${Math.round(s.ret).toLocaleString("es-ES")}</td>
+                    <td style="font-weight:800;">$${Math.round(s.wealth).toLocaleString("es-ES")}</td>
+                    <td style="color:var(--emerald); font-weight:800;">~${Math.round(s.netMoEur).toLocaleString("es-ES")} €/m</td>
                     <td style="color:var(--crimson);">-${s.dd50.toFixed(1)}%</td>
                 `;
                 tbodyFut.appendChild(tr);
             });
 
-            dibujarCurvaFutura(serieFut);
+            dibujarCurvaFuturaInteractiva(serieFut);
         }
 
-        function renderizarTablaYBarrasSemanales(semanasEvaluadas, nSemanas) {
-            document.getElementById('hist-summary-badge').innerText = `${nSemanas} semanas auditadas`;
-            const tbody = document.getElementById('tbody-weekly-real');
-            tbody.innerHTML = '';
-
-            semanasEvaluadas.slice().reverse().forEach(s => {
-                const wr = s.trades > 0 ? (s.wins / s.trades) * 100.0 : 0;
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td style="font-weight:700;">${s.label}</td>
-                    <td>${s.trades}/${s.totalDisponibles}</td>
-                    <td style="color:${wr >= 50 ? 'var(--emerald)' : 'var(--crimson)'}; font-weight:700;">${s.wins}W / ${s.losses}L (${wr.toFixed(0)}%)</td>
-                    <td style="color:${s.netR >= 0 ? 'var(--emerald)' : 'var(--crimson)'}; font-weight:800;">${s.netR >= 0 ? '+' : ''}${s.netR.toFixed(1)}R</td>
-                    <td>$${s.rUnit.toFixed(0)}</td>
-                    <td style="color:var(--purple);">$${Math.round(s.retirosAcum).toLocaleString()}</td>
-                    <td style="font-weight:800;">$${Math.round(s.wealthClose).toLocaleString()}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-
-            const canvas = document.getElementById('canvas-weekly-bars');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            const w = rect.width, h = rect.height;
-            ctx.clearRect(0, 0, w, h);
-
-            const maxAbs = Math.max(4, ...semanasEvaluadas.map(x => Math.abs(x.netR))) * 1.15;
-            const yZero = h * 0.55;
-            const padX = 10;
-            const stepW = (w - padX * 2) / semanasEvaluadas.length;
-            const barW = Math.max(2, stepW - 2);
-
-            ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-            ctx.beginPath(); ctx.moveTo(0, yZero); ctx.lineTo(w, yZero); ctx.stroke();
-
-            semanasEvaluadas.forEach((it, idx) => {
-                const x = padX + idx * stepW;
-                const bh = (Math.abs(it.netR) / maxAbs) * (h * 0.44);
-                const y = it.netR >= 0 ? (yZero - bh) : yZero;
-                ctx.fillStyle = it.netR >= 0 ? '#10b981' : '#f43f5e';
-                ctx.fillRect(x, y, barW, Math.max(2, bh));
-            });
-        }
-
-        function dibujarCurvaFutura(serieFut) {
-            const canvas = document.getElementById('canvas-future-curve');
+        function dibujarCurvaFuturaInteractiva(serieFut) {
+            const canvas = document.getElementById("canvas-future-curve");
             if (!canvas || serieFut.length < 2) return;
-            const ctx = canvas.getContext('2d');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.parentElement.getBoundingClientRect();
-            canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            const w = rect.width, h = rect.height;
-            ctx.clearRect(0, 0, w, h);
 
-            const n = serieFut.length - 1;
-            const maxW = Math.max(1000, ...serieFut.map(x => x.wealth)) * 1.12;
-            const padL = 56, padR = 16, padT = 14, padB = 22;
-            const pw = w - padL - padR, ph = h - padT - padB;
-            const xOf = i => padL + (i / n) * pw;
-            const yOf = v => padT + ph - (v / maxW) * ph;
+            function render(hoverIdx = -1) {
+                const ctx = canvas.getContext("2d");
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width * dpr; canvas.height = rect.height * dpr;
+                ctx.scale(dpr, dpr);
+                const w = rect.width, h = rect.height;
+                ctx.clearRect(0, 0, w, h);
 
-            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
-            ctx.fillStyle = '#64748b'; ctx.font = '10px JetBrains Mono';
-            for (let g = 0; g <= 3; g++) {
-                const v = (maxW * g) / 3;
-                const y = yOf(v);
-                ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
-                ctx.fillText(`$${Math.round(v)}`, 6, y + 3);
+                const n = serieFut.length - 1;
+                const maxW = Math.max(1000, ...serieFut.map(x => x.wealth)) * 1.12;
+                const padL = 62, padR = 18, padT = 16, padB = 26;
+                const pw = w - padL - padR, ph = h - padT - padB;
+                const xOf = i => padL + (i / n) * pw;
+                const yOf = v => padT + ph - (v / maxW) * ph;
+
+                ctx.strokeStyle = "rgba(255,255,255,0.06)";
+                ctx.fillStyle = "#64748b"; ctx.font = "10px JetBrains Mono";
+                for (let g = 0; g <= 4; g++) {
+                    const v = (maxW * g) / 4;
+                    const y = yOf(v);
+                    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+                    ctx.fillText(v >= 10000 ? `$${(v / 1000).toFixed(0)}k` : `$${Math.round(v)}`, 6, y + 3);
+                }
+
+                for (let k = 0; k <= 4; k++) {
+                    const idx = Math.round((n * k) / 4);
+                    ctx.fillText(serieFut[idx].fechaStr, Math.min(w - 68, Math.max(padL, xOf(idx) - 24)), h - 7);
+                }
+
+                ctx.fillStyle = "rgba(16, 185, 129, 0.14)";
+                ctx.beginPath(); ctx.moveTo(xOf(0), yOf(0));
+                for (let i = 0; i <= n; i++) ctx.lineTo(xOf(i), yOf(serieFut[i].wealth));
+                ctx.lineTo(xOf(n), yOf(0)); ctx.closePath(); ctx.fill();
+
+                ctx.strokeStyle = "#10b981"; ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                for (let i = 0; i <= n; i++) i === 0 ? ctx.moveTo(xOf(i), yOf(serieFut[i].wealth)) : ctx.lineTo(xOf(i), yOf(serieFut[i].wealth));
+                ctx.stroke();
+
+                if (hoverIdx >= 0 && hoverIdx <= n) {
+                    const hx = xOf(hoverIdx), hy = yOf(serieFut[hoverIdx].wealth);
+                    ctx.strokeStyle = "rgba(245, 158, 11, 0.65)";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(hx, padT); ctx.lineTo(hx, padT + ph); ctx.stroke();
+                    ctx.fillStyle = "#fbbf24";
+                    ctx.beginPath(); ctx.arc(hx, hy, 4.5, 0, Math.PI * 2); ctx.fill();
+                }
+
+                canvas._futMeta = { padL, pw, n, serieFut };
             }
 
-            ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
-            ctx.beginPath(); ctx.moveTo(xOf(0), yOf(0));
-            for (let i = 0; i <= n; i++) ctx.lineTo(xOf(i), yOf(serieFut[i].wealth));
-            ctx.lineTo(xOf(n), yOf(0)); ctx.closePath(); ctx.fill();
+            render(-1);
 
-            ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2.5;
-            ctx.beginPath();
-            for (let i = 0; i <= n; i++) i === 0 ? ctx.moveTo(xOf(i), yOf(serieFut[i].wealth)) : ctx.lineTo(xOf(i), yOf(serieFut[i].wealth));
-            ctx.stroke();
+            canvas.onmousemove = ev => {
+                const m = canvas._futMeta;
+                if (!m) return;
+                const r = canvas.getBoundingClientRect();
+                const relX = ev.clientX - r.left - m.padL;
+                const idx = Math.max(0, Math.min(m.n, Math.round((relX / Math.max(1, m.pw)) * m.n)));
+                render(idx);
+                const pt = m.serieFut[idx];
+                posicionarTooltipGrafico(
+                    ev,
+                    `<b style="color:var(--alfa-gold-light);">📅 ${pt.fechaStr} (Sem ${pt.week})</b><br>` +
+                    `Patrimonio: <b style="color:var(--emerald);">$${Math.round(pt.wealth).toLocaleString("es-ES")}</b><br>` +
+                    `En cuenta: $${Math.round(pt.cap).toLocaleString("es-ES")} · Retirado: $${Math.round(pt.ret).toLocaleString("es-ES")}<br>` +
+                    `Tu 1R: $${pt.rUnit.toFixed(0)} · Sueldo est.: ~${Math.round(pt.netMoEur).toLocaleString("es-ES")} €/mes`
+                );
+            };
+            canvas.onmouseleave = () => {
+                render(-1);
+                ocultarTooltipGrafico();
+            };
         }
 
+        // =========================================================================
+        // BLOQUE 6: GRÁFICAS FULL-WIDTH 105 SEMANAS + AGRUPACIÓN Y TABLA MENSUAL
+        // =========================================================================
+        function extraerClaveYEtiquetaMes(sem) {
+            if (sem.ts && sem.ts > 100000000) {
+                const d = new Date(sem.ts * 1000);
+                const y = d.getUTCFullYear();
+                const m = d.getUTCMonth() + 1;
+                const nombres = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+                return {
+                    key: `${y}-${String(m).padStart(2, "0")}`,
+                    label: `${nombres[m - 1]} ${y}`,
+                    shortDate: `${String(d.getUTCDate()).padStart(2, "0")}/${String(m).padStart(2, "0")}/${String(y).slice(-2)}`
+                };
+            }
+            const mLbl = String(sem.label || "").match(/(\d{2})\/(\d{2})\/(\d{2})/);
+            if (mLbl) {
+                const nombres = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"];
+                const mm = parseInt(mLbl[2], 10);
+                const yy = 2000 + parseInt(mLbl[3], 10);
+                return {
+                    key: `${yy}-${String(mm).padStart(2, "0")}`,
+                    label: `${nombres[Math.max(0, mm - 1)]} ${yy}`,
+                    shortDate: `${mLbl[1]}/${mLbl[2]}/${mLbl[3]}`
+                };
+            }
+            return { key: sem.key, label: sem.label, shortDate: sem.label };
+        }
+
+        function renderizarHistorico105SemanasYMensual(semanasEvaluadas) {
+            const semPos = semanasEvaluadas.filter(s => s.netR >= 0).length;
+            const semNeg = semanasEvaluadas.length - semPos;
+            const pctSemPos = semanasEvaluadas.length ? ((semPos / semanasEvaluadas.length) * 100).toFixed(0) : 0;
+            document.getElementById("wk-pos-neg-badge").innerText =
+                `${semPos} sem positivas (${pctSemPos}%) · ${semNeg} negativas`;
+
+            // Enriquecer con fecha corta para ejes
+            const semanasConFecha = semanasEvaluadas.map(s => {
+                const infoF = extraerClaveYEtiquetaMes(s);
+                return { ...s, monthKey: infoF.key, monthLabel: infoF.label, shortDate: infoF.shortDate };
+            });
+
+            // 1. Dibujar Gráfica Full-Width de Rs por Semana (105 semanas)
+            dibujarGraficoBarrasInteractivo({
+                canvasId: "canvas-weekly-bars",
+                items: semanasConFecha,
+                getValue: it => it.netR,
+                getXLabel: it => it.shortDate,
+                formatY: v => `${v >= 0 ? "+" : ""}${v.toFixed(0)}R`,
+                isDiverging: true,
+                tooltipBuilder: it => {
+                    const wr = it.trades > 0 ? ((it.wins / it.trades) * 100).toFixed(0) : 0;
+                    const col = it.netR >= 0 ? "var(--emerald)" : "var(--crimson)";
+                    return `<b style="color:var(--alfa-gold-light);">📅 Semana ${it.label}</b><br>` +
+                           `Resultado: <b style="color:${col};">${it.netR >= 0 ? "+" : ""}${it.netR.toFixed(2)} R</b><br>` +
+                           `Operaciones: <b>${it.trades}</b> (${it.wins}W / ${it.losses}L · ${wr}%)`;
+                }
+            });
+
+            // 2. Dibujar Gráfica Full-Width de Nº de Operaciones por Semana
+            const mediaOps = semanasConFecha.reduce((a, b) => a + b.totalDisponibles, 0) / Math.max(1, semanasConFecha.length);
+            document.getElementById("lbl-avg-ops-chart").innerText = `Media estudiada: ${mediaOps.toFixed(1)} ops/sem`;
+
+            dibujarGraficoBarrasInteractivo({
+                canvasId: "canvas-weekly-ops",
+                items: semanasConFecha,
+                getValue: it => it.totalDisponibles,
+                getXLabel: it => it.shortDate,
+                formatY: v => `${Math.round(v)}`,
+                isDiverging: false,
+                fixedColor: "#38bdf8",
+                avgLine: mediaOps,
+                tooltipBuilder: it =>
+                    `<b style="color:var(--alfa-gold-light);">📅 Semana ${it.label}</b><br>` +
+                    `Operaciones estudiadas: <b style="color:var(--cyan);">${it.totalDisponibles} ops</b><br>` +
+                    `Ejecutadas con tu cupo: <b>${it.trades} ops</b> (${it.wins}W / ${it.losses}L)`
+            });
+
+            // 3. Agrupar las 105 semanas en Meses
+            const mapaMeses = {};
+            const mesesOrden = [];
+            semanasConFecha.forEach(s => {
+                if (!mapaMeses[s.monthKey]) {
+                    mapaMeses[s.monthKey] = {
+                        key: s.monthKey,
+                        label: s.monthLabel,
+                        trades: 0,
+                        wins: 0,
+                        losses: 0,
+                        netR: 0,
+                        rUnitClose: s.rUnit,
+                        retirosAcum: s.retirosAcum,
+                        wealthClose: s.wealthClose
+                    };
+                    mesesOrden.push(mapaMeses[s.monthKey]);
+                }
+                const m = mapaMeses[s.monthKey];
+                m.trades += s.trades;
+                m.wins += s.wins;
+                m.losses += s.losses;
+                m.netR += s.netR;
+                m.rUnitClose = s.rUnit;
+                m.retirosAcum = s.retirosAcum;
+                m.wealthClose = s.wealthClose;
+            });
+
+            const mesesPos = mesesOrden.filter(m => m.netR >= 0).length;
+            const mesesNeg = mesesOrden.length - mesesPos;
+            const pctMesPos = mesesOrden.length ? ((mesesPos / mesesOrden.length) * 100).toFixed(0) : 0;
+
+            document.getElementById("mo-pos-neg-badge").innerText =
+                `${mesesPos} meses positivos · ${mesesNeg} negativos`;
+            document.getElementById("mo-winrate-pill").innerText =
+                `${mesesPos}/${mesesOrden.length} Meses Positivos (${pctMesPos}%)`;
+
+            dibujarGraficoBarrasInteractivo({
+                canvasId: "canvas-monthly-bars",
+                items: mesesOrden,
+                getValue: it => it.netR,
+                getXLabel: it => it.label,
+                formatY: v => `${v >= 0 ? "+" : ""}${v.toFixed(0)}R`,
+                isDiverging: true,
+                tooltipBuilder: it => {
+                    const wr = it.trades > 0 ? ((it.wins / it.trades) * 100).toFixed(0) : 0;
+                    const col = it.netR >= 0 ? "var(--emerald)" : "var(--crimson)";
+                    return `<b style="color:var(--alfa-gold-light);">🗓️ ${it.label}</b><br>` +
+                           `Balance Mensual: <b style="color:${col};">${it.netR >= 0 ? "+" : ""}${it.netR.toFixed(2)} R</b><br>` +
+                           `Operaciones: <b>${it.trades}</b> (${it.wins}W / ${it.losses}L · ${wr}%)<br>` +
+                           `Patrimonio cierre: <b>$${Math.round(it.wealthClose).toLocaleString("es-ES")}</b>`;
+                }
+            });
+
+            // 4. Rellenar Tabla Mensual (de más reciente a más antiguo)
+            const tbodyMo = document.getElementById("tbody-monthly-real");
+            tbodyMo.innerHTML = "";
+            mesesOrden.slice().reverse().forEach(m => {
+                const wr = m.trades > 0 ? (m.wins / m.trades) * 100.0 : 0;
+                const colR = m.netR >= 0 ? "var(--emerald)" : "var(--crimson)";
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td style="font-weight:800; color:#fff;">${m.label}</td>
+                    <td>${m.trades}</td>
+                    <td style="color:${wr >= 50 ? "var(--emerald)" : "var(--crimson)"}; font-weight:700;">${m.wins}W / ${m.losses}L (${wr.toFixed(0)}%)</td>
+                    <td style="color:${colR}; font-weight:800;">${m.netR >= 0 ? "+" : ""}${m.netR.toFixed(2)}R</td>
+                    <td style="color:var(--alfa-gold-light);">$${m.rUnitClose.toFixed(0)}</td>
+                    <td style="color:var(--purple);">$${Math.round(m.retirosAcum).toLocaleString("es-ES")}</td>
+                    <td style="font-weight:800;">$${Math.round(m.wealthClose).toLocaleString("es-ES")}</td>
+                `;
+                tbodyMo.appendChild(tr);
+            });
+        }
+
+        // Motor universal de gráficas de barras con Eje X, Eje Y e inspección interactiva por cursor
+        function dibujarGraficoBarrasInteractivo({ canvasId, items, getValue, getXLabel, formatY, isDiverging, fixedColor, avgLine, tooltipBuilder }) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas || !items.length) return;
+
+            function render(hoverIdx = -1) {
+                const ctx = canvas.getContext("2d");
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.scale(dpr, dpr);
+
+                const w = rect.width, h = rect.height;
+                ctx.clearRect(0, 0, w, h);
+
+                const vals = items.map(getValue);
+                const padL = 52, padR = 14, padT = 16, padB = 28;
+                const pw = w - padL - padR;
+                const ph = h - padT - padB;
+
+                let minV, maxV;
+                if (isDiverging) {
+                    const maxPos = Math.max(2, ...vals.map(v => Math.max(0, v))) * 1.12;
+                    const maxNeg = Math.max(2, ...vals.map(v => Math.abs(Math.min(0, v)))) * 1.15;
+                    maxV = maxPos;
+                    minV = -maxNeg;
+                } else {
+                    minV = 0;
+                    maxV = Math.max(5, ...vals) * 1.15;
+                }
+
+                const yOf = val => padT + ph - ((val - minV) / Math.max(1e-4, maxV - minV)) * ph;
+                const yZero = yOf(0);
+
+                // Rejilla y etiquetas del Eje Y
+                ctx.font = "10px JetBrains Mono";
+                ctx.strokeStyle = "rgba(255,255,255,0.06)";
+                ctx.fillStyle = "#94a3b8";
+                const stepsY = 4;
+                for (let g = 0; g <= stepsY; g++) {
+                    const v = minV + ((maxV - minV) * g) / stepsY;
+                    const y = yOf(v);
+                    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
+                    ctx.fillText(formatY(v), 6, y + 3);
+                }
+
+                // Línea base 0 remarcada
+                ctx.strokeStyle = "rgba(255,255,255,0.24)";
+                ctx.lineWidth = 1.1;
+                ctx.beginPath(); ctx.moveTo(padL, yZero); ctx.lineTo(w - padR, yZero); ctx.stroke();
+
+                // Línea de media opcional
+                if (avgLine !== undefined) {
+                    const yAvg = yOf(avgLine);
+                    ctx.strokeStyle = "rgba(245, 158, 11, 0.7)";
+                    ctx.setLineDash([4, 4]);
+                    ctx.beginPath(); ctx.moveTo(padL, yAvg); ctx.lineTo(w - padR, yAvg); ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                const stepW = pw / items.length;
+                const barW = Math.max(2, stepW - (items.length > 60 ? 2 : 4));
+
+                // Dibujar barras
+                items.forEach((it, idx) => {
+                    const val = vals[idx];
+                    const x = padL + idx * stepW + (stepW - barW) / 2;
+                    const yVal = yOf(val);
+                    const topY = val >= 0 ? yVal : yZero;
+                    const barH = Math.max(2, Math.abs(yZero - yVal));
+
+                    let baseCol = fixedColor || (val >= 0 ? "#10b981" : "#f43f5e");
+                    if (idx === hoverIdx) {
+                        ctx.fillStyle = "rgba(255,255,255,0.06)";
+                        ctx.fillRect(padL + idx * stepW, padT, stepW, ph);
+                        ctx.fillStyle = "#fbbf24";
+                    } else {
+                        ctx.fillStyle = baseCol;
+                    }
+                    ctx.fillRect(x, topY, barW, barH);
+                });
+
+                // Etiquetas del Eje X (fechas espaciadas limpiamente)
+                ctx.fillStyle = "#94a3b8";
+                const maxTicks = Math.max(4, Math.floor(pw / 88));
+                const stride = Math.max(1, Math.ceil(items.length / maxTicks));
+                for (let i = 0; i < items.length; i += stride) {
+                    const xCenter = padL + (i + 0.5) * stepW;
+                    const txt = getXLabel(items[i]);
+                    ctx.fillText(txt, Math.max(padL, Math.min(w - padR - 46, xCenter - 22)), h - 8);
+                }
+
+                canvas._barMeta = { padL, pw, stepW, items };
+            }
+
+            render(-1);
+
+            canvas.onmousemove = ev => {
+                const m = canvas._barMeta;
+                if (!m) return;
+                const r = canvas.getBoundingClientRect();
+                const relX = ev.clientX - r.left - m.padL;
+                if (relX < 0 || relX > m.pw) {
+                    render(-1);
+                    ocultarTooltipGrafico();
+                    return;
+                }
+                const idx = Math.max(0, Math.min(m.items.length - 1, Math.floor(relX / m.stepW)));
+                render(idx);
+                posicionarTooltipGrafico(ev, tooltipBuilder(m.items[idx]));
+            };
+
+            canvas.onmouseleave = () => {
+                render(-1);
+                ocultarTooltipGrafico();
+            };
+        }
+
+        // =========================================================================
+        // PRESETS Y CONEXIÓN SUPABASE (CON RECUPERACIÓN DE CONTRASEÑA)
+        // =========================================================================
         function cargarPresetRiesgo(modo, ev) {
-            document.querySelectorAll('.preset-row .btn-preset').forEach(b => b.classList.remove('active'));
-            if (ev?.target) ev.target.classList.add('active');
-            const cap = parseFloat(document.getElementById('inp-cap-ini').value) || 2000;
-            if (modo === 'sin_compuesto') {
-                document.getElementById('inp-r-ini').value = Math.round(cap * 0.015);
-                document.getElementById('inp-var-r').value = 0.0;
-            } else if (modo === 'prudente') {
-                document.getElementById('inp-r-ini').value = Math.round(cap * 0.02);
-                document.getElementById('inp-var-r').value = 1.5;
+            document.querySelectorAll(".preset-row .btn-preset").forEach(b => b.classList.remove("active"));
+            if (ev?.target) ev.target.classList.add("active");
+            const cap = parseFloat(document.getElementById("inp-cap-ini").value) || 2000;
+            if (modo === "sin_compuesto") {
+                document.getElementById("inp-r-ini").value = Math.round(cap * 0.015);
+                document.getElementById("inp-var-r").value = 0.0;
+            } else if (modo === "prudente") {
+                document.getElementById("inp-r-ini").value = Math.round(cap * 0.02);
+                document.getElementById("inp-var-r").value = 1.5;
             } else {
-                document.getElementById('inp-r-ini').value = Math.round(cap * 0.02);
-                document.getElementById('inp-var-r').value = 2.5;
+                document.getElementById("inp-r-ini").value = Math.round(cap * 0.02);
+                document.getElementById("inp-var-r").value = 2.5;
             }
             ejecutarSimulacionCompleta();
         }
 
         function fijarMesesFuturo(meses, ev) {
             if (ev?.target) {
-                ev.target.parentElement.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
-                ev.target.classList.add('active');
+                ev.target.parentElement.querySelectorAll(".btn-preset").forEach(b => b.classList.remove("active"));
+                ev.target.classList.add("active");
             }
             const d = new Date();
             d.setMonth(d.getMonth() + meses);
-            document.getElementById('inp-future-date').value = d.toISOString().slice(0, 10);
+            document.getElementById("inp-future-date").value = d.toISOString().slice(0, 10);
             ejecutarSimulacionCompleta();
         }
 
         function abrirModalCuenta() {
-            document.getElementById('sync-email').value = localStorage.getItem('alfa_pub_email') || '';
-            document.getElementById('sync-chat-id').value = localStorage.getItem('alfa_pub_chat_id') || '';
-            document.getElementById('modal-cuenta').style.display = 'flex';
+            document.getElementById("sync-email").value = localStorage.getItem("alfa_pub_email") || "";
+            document.getElementById("sync-chat-id").value = localStorage.getItem("alfa_pub_chat_id") || "";
+            document.getElementById("modal-cuenta").style.display = "flex";
         }
-        function cerrarModalCuenta() { document.getElementById('modal-cuenta').style.display = 'none'; }
+        function cerrarModalCuenta() {
+            document.getElementById("modal-cuenta").style.display = "none";
+        }
+
+        async function recuperarContrasenaSupabase() {
+            const email = document.getElementById("sync-email").value.trim().toLowerCase();
+            const msg = document.getElementById("sync-msg");
+            if (!email) {
+                msg.style.color = "var(--alfa-gold-light)";
+                msg.innerText = "⚠️ Escribe primero tu correo electrónico arriba para enviarte el enlace.";
+                return;
+            }
+            if (!supabaseClient) {
+                msg.style.color = "var(--crimson)";
+                msg.innerText = "⚠️ Cliente de Supabase no disponible en este momento.";
+                return;
+            }
+            const urlRetorno = window.location.href.split("#")[0].split("?")[0];
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: urlRetorno });
+            if (error) {
+                msg.style.color = "var(--crimson)";
+                msg.innerText = "Error al solicitar recuperación: " + error.message;
+                return;
+            }
+            msg.style.color = "var(--emerald)";
+            msg.innerText = `📧 Enlace de recuperación enviado a ${email}. Revisa tu bandeja de entrada o carpeta de spam.`;
+        }
+
+        async function guardarNuevaContrasenaRecuperada() {
+            const newPass = document.getElementById("sync-new-pass").value;
+            const msg = document.getElementById("sync-msg");
+            if (!newPass || newPass.length < 6) {
+                msg.style.color = "var(--alfa-gold-light)";
+                msg.innerText = "⚠️ La nueva contraseña debe tener al menos 6 caracteres.";
+                return;
+            }
+            const { error } = await supabaseClient.auth.updateUser({ password: newPass });
+            if (error) {
+                msg.style.color = "var(--crimson)";
+                msg.innerText = "Error actualizando contraseña: " + error.message;
+                return;
+            }
+            document.getElementById("box-new-password").style.display = "none";
+            document.getElementById("sync-pass").value = newPass;
+            msg.style.color = "var(--emerald)";
+            msg.innerText = "✅ Tu contraseña se ha actualizado correctamente. Ya puedes iniciar sesión y guardar.";
+        }
 
         async function autenticarYGuardarEnSupabase(modoAuth) {
-            const email = document.getElementById('sync-email').value.trim().toLowerCase();
-            const pass = document.getElementById('sync-pass').value;
-            const chatId = document.getElementById('sync-chat-id').value.trim();
-            const msg = document.getElementById('sync-msg');
+            const email = document.getElementById("sync-email").value.trim().toLowerCase();
+            const pass = document.getElementById("sync-pass").value;
+            const chatId = document.getElementById("sync-chat-id").value.trim();
+            const msg = document.getElementById("sync-msg");
 
             if (!email || !pass) {
-                msg.style.color = 'var(--alfa-gold-light)';
-                msg.innerText = '⚠️ Introduce tu correo electrónico y contraseña.';
+                msg.style.color = "var(--alfa-gold-light)";
+                msg.innerText = "⚠️ Introduce tu correo electrónico y contraseña.";
                 return;
             }
             if (!chatId) {
-                msg.style.color = 'var(--alfa-gold-light)';
-                msg.innerText = '⚠️ Introduce tu Telegram Chat ID (escribe /id al bot).';
+                msg.style.color = "var(--alfa-gold-light)";
+                msg.innerText = "⚠️ Introduce tu Telegram Chat ID (escribe /id al bot).";
                 return;
             }
 
             if (supabaseClient) {
-                if (modoAuth === 'signup') {
+                if (modoAuth === "signup") {
                     const { error: errSign } = await supabaseClient.auth.signUp({ email, password: pass });
                     if (errSign) {
-                        msg.style.color = 'var(--crimson)';
-                        msg.innerText = 'Error alta: ' + errSign.message;
+                        msg.style.color = "var(--crimson)";
+                        msg.innerText = "Error alta: " + errSign.message;
                         return;
                     }
                 } else {
                     const { error: errLog } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
                     if (errLog) {
-                        msg.style.color = 'var(--crimson)';
-                        msg.innerText = 'Error login: ' + errLog.message;
+                        msg.style.color = "var(--crimson)";
+                        msg.innerText = "Error login: " + errLog.message;
                         return;
                     }
                 }
             }
 
             const cfg = leerConfigUsuario();
-            const offsetGuardar = cfg.execMode === 'limit_025' ? -10.0 : (cfg.execMode === 'limit_015' ? -6.0 : 0.0);
             const payload = {
                 id: email,
                 email: email,
                 telegram_chat_id: chatId,
                 alertas_activas: true,
-                ia_mode: 'francotirador',
+                ia_mode: "francotirador",
                 rr_ratio: 1.0,
-                entry_offset_pct: offsetGuardar,
+                entry_offset_pct: -6.0,
                 sl_buffer_pct: 0.20,
                 max_limit_atr: 3.5,
                 max_hours: 96,
@@ -1457,56 +2270,58 @@
             };
 
             if (supabaseClient) {
-                const { error } = await supabaseClient.from('user_configs').upsert(payload, { onConflict: 'id' });
+                const { error } = await supabaseClient.from("user_configs").upsert(payload, { onConflict: "id" });
                 if (error) {
-                    msg.style.color = 'var(--crimson)';
-                    msg.innerText = 'Error guardando en user_configs: ' + error.message;
+                    msg.style.color = "var(--crimson)";
+                    msg.innerText = "Error guardando en user_configs: " + error.message;
                     return;
                 }
             }
 
-            localStorage.setItem('alfa_pub_email', email);
-            localStorage.setItem('alfa_pub_chat_id', chatId);
-            document.getElementById('btn-nav-auth').innerHTML = `🟢 ${email}`;
-            msg.style.color = 'var(--emerald)';
-            msg.innerText = `✅ Cuenta y Bot sincronizados en Supabase (Capital $${cfg.capIni} | 1R=$${cfg.rIni}).`;
+            localStorage.setItem("alfa_pub_email", email);
+            localStorage.setItem("alfa_pub_chat_id", chatId);
+            document.getElementById("btn-nav-auth").innerHTML = `🟢 ${email}`;
+            msg.style.color = "var(--emerald)";
+            msg.innerText = `✅ Cuenta y Bot sincronizados en Supabase (Capital $${cfg.capIni} | 1R = $${cfg.rIni}).`;
         }
 
         async function cargarMisDatosDesdeSupabase() {
-            const email = document.getElementById('sync-email').value.trim().toLowerCase();
-            const chatId = document.getElementById('sync-chat-id').value.trim();
-            const msg = document.getElementById('sync-msg');
+            const email = document.getElementById("sync-email").value.trim().toLowerCase();
+            const chatId = document.getElementById("sync-chat-id").value.trim();
+            const msg = document.getElementById("sync-msg");
             if (!supabaseClient || (!email && !chatId)) {
-                msg.style.color = 'var(--alfa-gold-light)';
-                msg.innerText = 'Escribe tu Email o tu Telegram Chat ID para buscar tu ficha.';
+                msg.style.color = "var(--alfa-gold-light)";
+                msg.innerText = "Escribe tu Email o tu Telegram Chat ID para buscar tu ficha.";
                 return;
             }
-            let query = supabaseClient.from('user_configs').select('*');
-            query = email ? query.eq('id', email) : query.eq('telegram_chat_id', chatId);
+            let query = supabaseClient.from("user_configs").select("*");
+            query = email ? query.eq("id", email) : query.eq("telegram_chat_id", chatId);
             const { data, error } = await query.maybeSingle();
             if (error || !data) {
-                msg.style.color = 'var(--crimson)';
-                msg.innerText = 'No se encontró configuración guardada para ese usuario.';
+                msg.style.color = "var(--crimson)";
+                msg.innerText = "No se encontró configuración guardada para ese usuario.";
                 return;
             }
-            if (data.min_quality_score >= 100) document.getElementById('inp-cap-ini').value = data.min_quality_score;
-            if (data.current_risk_r) document.getElementById('inp-r-ini').value = data.current_risk_r;
-            if (data.var_r_pct !== undefined) document.getElementById('inp-var-r').value = data.var_r_pct;
-            if (data.max_trades_wk) document.getElementById('inp-max-trades').value = data.max_trades_wk;
-            if (data.telegram_chat_id) document.getElementById('sync-chat-id').value = data.telegram_chat_id;
+            if (data.min_quality_score >= 100) document.getElementById("inp-cap-ini").value = data.min_quality_score;
+            if (data.current_risk_r) document.getElementById("inp-r-ini").value = data.current_risk_r;
+            if (data.var_r_pct !== undefined) document.getElementById("inp-var-r").value = data.var_r_pct;
+            if (data.max_trades_wk) document.getElementById("inp-max-trades").value = data.max_trades_wk;
+            if (data.telegram_chat_id) document.getElementById("sync-chat-id").value = data.telegram_chat_id;
             ejecutarSimulacionCompleta();
-            msg.style.color = 'var(--emerald)';
-            msg.innerText = `📥 Datos recuperados: Capital $${data.min_quality_score} | 1R=$${data.current_risk_r}`;
+            msg.style.color = "var(--emerald)";
+            msg.innerText = `📥 Datos recuperados: Capital $${data.min_quality_score} | 1R = $${data.current_risk_r}`;
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const savedEmail = localStorage.getItem('alfa_pub_email');
-            if (savedEmail) document.getElementById('btn-nav-auth').innerHTML = `🟢 ${savedEmail}`;
-            document.querySelectorAll('input, select').forEach(el => {
-                el.addEventListener('input', () => ejecutarSimulacionCompleta());
-                el.addEventListener('change', () => ejecutarSimulacionCompleta());
+        window.addEventListener("DOMContentLoaded", () => {
+            inicializarFechasPorDefecto();
+            const savedEmail = localStorage.getItem("alfa_pub_email");
+            if (savedEmail) document.getElementById("btn-nav-auth").innerHTML = `🟢 ${savedEmail}`;
+
+            document.querySelectorAll(".container input, .container select").forEach(el => {
+                el.addEventListener("input", () => ejecutarSimulacionCompleta());
+                el.addEventListener("change", () => ejecutarSimulacionCompleta());
             });
-            window.addEventListener('resize', () => ejecutarSimulacionCompleta());
+            window.addEventListener("resize", () => ejecutarSimulacionCompleta());
             cargarDatasetAuditado();
         });
     </script>
