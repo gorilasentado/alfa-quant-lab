@@ -962,10 +962,13 @@
                 supabaseClient.auth.onAuthStateChange((event) => {
                     if (event === "PASSWORD_RECOVERY") {
                         abrirModalCuenta();
-                        document.getElementById("box-new-password").style.display = "flex";
+                        const boxNew = document.getElementById("box-new-password");
+                        if (boxNew) boxNew.style.display = "flex";
                         const msg = document.getElementById("sync-msg");
-                        msg.style.color = "var(--emerald)";
-                        msg.innerText = "🔐 Sesión de recuperación activa. Introduce arriba tu nueva contraseña.";
+                        if (msg) {
+                            msg.style.color = "var(--emerald)";
+                            msg.innerText = "🔐 Sesión de recuperación activa. Introduce arriba tu nueva contraseña.";
+                        }
                     }
                 });
             }
@@ -980,6 +983,11 @@
         let datasetYaVieneConLimit015 = false;
         let semanasOrdenadas = [];
 
+        function setTxt(id, val) {
+            const el = document.getElementById(id);
+            if (el) el.innerText = val;
+        }
+
         // TOOLTIPS DE AYUDA CON RETARDO
         let tipTimer = null;
         const tipEl = document.getElementById("custom-tooltip");
@@ -988,8 +996,8 @@
         document.addEventListener("mouseover", e => {
             const target = e.target.closest("[data-tip]");
             clearTimeout(tipTimer);
-            tipEl.style.display = "none";
-            if (!target) return;
+            if (tipEl) tipEl.style.display = "none";
+            if (!target || !tipEl) return;
             const txt = target.getAttribute("data-tip");
             if (!txt) return;
             const cx = e.clientX, cy = e.clientY;
@@ -1005,7 +1013,7 @@
             }, 900);
         });
         document.addEventListener("mousemove", e => {
-            if (tipEl.style.display === "block") {
+            if (tipEl && tipEl.style.display === "block") {
                 const r = tipEl.getBoundingClientRect();
                 let left = e.clientX + 14, top = e.clientY + 16;
                 if (left + r.width > window.innerWidth - 12) left = window.innerWidth - r.width - 12;
@@ -1015,13 +1023,14 @@
             }
         });
         document.addEventListener("mouseout", e => {
-            if (e.target.closest("[data-tip]")) {
+            if (e.target.closest("[data-tip]") && tipEl) {
                 clearTimeout(tipTimer);
                 tipEl.style.display = "none";
             }
         });
 
         function posicionarTooltipGrafico(ev, html) {
+            if (!chartTipEl) return;
             chartTipEl.innerHTML = html;
             chartTipEl.style.display = "block";
             const r = chartTipEl.getBoundingClientRect();
@@ -1034,18 +1043,22 @@
         }
 
         function ocultarTooltipGrafico() {
-            chartTipEl.style.display = "none";
+            if (chartTipEl) chartTipEl.style.display = "none";
         }
 
         function inicializarFechasPorDefecto() {
             const hoy = new Date();
             const finMc = new Date(hoy.getTime() + 105 * 7 * 86400000);
-            document.getElementById("inp-mc-start").value = hoy.toISOString().slice(0, 10);
-            document.getElementById("inp-mc-end").value = finMc.toISOString().slice(0, 10);
+            const elMcStart = document.getElementById("inp-mc-start");
+            const elMcEnd = document.getElementById("inp-mc-end");
+            const elFut = document.getElementById("inp-future-date");
+
+            if (elMcStart) elMcStart.value = hoy.toISOString().slice(0, 10);
+            if (elMcEnd) elMcEnd.value = finMc.toISOString().slice(0, 10);
 
             const fut = new Date(hoy);
             fut.setMonth(fut.getMonth() + 12);
-            document.getElementById("inp-future-date").value = fut.toISOString().slice(0, 10);
+            if (elFut) elFut.value = fut.toISOString().slice(0, 10);
         }
 
         async function cargarDatasetAuditado() {
@@ -1130,35 +1143,247 @@
             return { actualizado: "Hoy", universo_analizado: 6254, trades };
         }
 
+        // Localiza automáticamente el canvas de "Curva Histórica de Unidades R Acumuladas"
+        function obtenerCanvasCurvaAcumuladaR() {
+            const posiblesIds = [
+                "canvas-cum-r",
+                "canvas-cumulative-r",
+                "canvas-equity-r",
+                "canvas-r-acum",
+                "canvas-curva-r",
+                "canvas-bt-curve",
+                "canvas-backtest-curve",
+                "canvas-hist-equity",
+                "canvas-r-curve"
+            ];
+            for (const id of posiblesIds) {
+                const el = document.getElementById(id);
+                if (el && el.tagName === "CANVAS") return el;
+            }
+            const paneles = document.querySelectorAll(".card-panel, .section-block");
+            for (const panel of paneles) {
+                const header = panel.querySelector(".card-header h3, h3, h4");
+                if (header && /curva hist[oó]rica|unidades r acumuladas/i.test(header.textContent || "")) {
+                    const cv = panel.querySelector("canvas");
+                    if (cv) return cv;
+                }
+            }
+            return null;
+        }
+
+        function dibujarCurvaHistoricaAcumuladaR(serieCurva) {
+            const canvas = obtenerCanvasCurvaAcumuladaR();
+            if (!canvas || !serieCurva || serieCurva.length < 2) return;
+
+            function render(hoverIdx = -1) {
+                const ctx = canvas.getContext("2d");
+                const dpr = window.devicePixelRatio || 1;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const w = rect.width || 800;
+                const h = rect.height || 260;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, w, h);
+
+                const n = serieCurva.length - 1;
+                const allVals = serieCurva.flatMap(p => [p.acum125, p.acumBase]);
+                const minV = Math.min(0, ...allVals);
+                const maxV = Math.max(10, ...allVals) * 1.08;
+
+                const padL = 56, padR = 18, padT = 22, padB = 28;
+                const pw = w - padL - padR;
+                const ph = h - padT - padB;
+
+                const xOf = i => padL + (i / Math.max(1, n)) * pw;
+                const yOf = v => padT + ph - ((v - minV) / Math.max(1e-4, maxV - minV)) * ph;
+
+                // Rejilla horizontal y Eje Y
+                ctx.font = "10px JetBrains Mono";
+                ctx.strokeStyle = "rgba(255,255,255,0.06)";
+                ctx.fillStyle = "#94a3b8";
+                const stepsY = 4;
+                for (let g = 0; g <= stepsY; g++) {
+                    const v = minV + ((maxV - minV) * g) / stepsY;
+                    const y = yOf(v);
+                    ctx.beginPath();
+                    ctx.moveTo(padL, y);
+                    ctx.lineTo(w - padR, y);
+                    ctx.stroke();
+                    ctx.fillText(`${v >= 0 ? "+" : ""}${Math.round(v)}R`, 6, y + 3);
+                }
+
+                // Eje X con fechas espaciadas
+                const maxTicks = Math.max(4, Math.floor(pw / 95));
+                const stride = Math.max(1, Math.ceil(serieCurva.length / maxTicks));
+                for (let i = 0; i < serieCurva.length; i += stride) {
+                    const xPos = Math.max(padL, Math.min(w - padR - 48, xOf(i) - 22));
+                    ctx.fillText(serieCurva[i].shortDate, xPos, h - 8);
+                }
+
+                // Sombreado bajo la curva principal A+ 1.25x
+                const yZero = yOf(0);
+                const grad = ctx.createLinearGradient(0, padT, 0, padT + ph);
+                grad.addColorStop(0, "rgba(245, 158, 11, 0.22)");
+                grad.addColorStop(1, "rgba(245, 158, 11, 0.01)");
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.moveTo(xOf(0), yZero);
+                for (let i = 0; i <= n; i++) ctx.lineTo(xOf(i), yOf(serieCurva[i].acum125));
+                ctx.lineTo(xOf(n), yZero);
+                ctx.closePath();
+                ctx.fill();
+
+                // Curva Base 1.0x (azul discontinua)
+                ctx.strokeStyle = "#38bdf8";
+                ctx.lineWidth = 1.7;
+                ctx.setLineDash([5, 4]);
+                ctx.beginPath();
+                for (let i = 0; i <= n; i++) {
+                    if (i === 0) ctx.moveTo(xOf(i), yOf(serieCurva[i].acumBase));
+                    else ctx.lineTo(xOf(i), yOf(serieCurva[i].acumBase));
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Curva Ponderada A+ 1.25x (dorada sólida)
+                ctx.strokeStyle = "#f59e0b";
+                ctx.lineWidth = 2.6;
+                ctx.beginPath();
+                for (let i = 0; i <= n; i++) {
+                    if (i === 0) ctx.moveTo(xOf(i), yOf(serieCurva[i].acum125));
+                    else ctx.lineTo(xOf(i), yOf(serieCurva[i].acum125));
+                }
+                ctx.stroke();
+
+                // Leyenda integrada arriba a la izquierda
+                const ult = serieCurva[n];
+                const boxX = padL + 10, boxY = padT + 6;
+                ctx.fillStyle = "rgba(11, 15, 23, 0.88)";
+                ctx.strokeStyle = "rgba(255, 255, 255, 0.12)";
+                ctx.lineWidth = 1;
+                ctx.fillRect(boxX, boxY, 272, 42);
+                ctx.strokeRect(boxX, boxY, 272, 42);
+
+                ctx.strokeStyle = "#f59e0b";
+                ctx.lineWidth = 2.6;
+                ctx.beginPath(); ctx.moveTo(boxX + 10, boxY + 14); ctx.lineTo(boxX + 28, boxY + 14); ctx.stroke();
+                ctx.fillStyle = "#f8fafc";
+                ctx.font = "bold 10.5px JetBrains Mono";
+                ctx.fillText(`Ponderación A+ 1.25x (${ult.acum125 >= 0 ? "+" : ""}${ult.acum125.toFixed(1)} R)`, boxX + 35, boxY + 17);
+
+                ctx.strokeStyle = "#38bdf8";
+                ctx.lineWidth = 1.7;
+                ctx.setLineDash([4, 3]);
+                ctx.beginPath(); ctx.moveTo(boxX + 10, boxY + 31); ctx.lineTo(boxX + 28, boxY + 31); ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.fillStyle = "#94a3b8";
+                ctx.font = "10.5px JetBrains Mono";
+                ctx.fillText(`Base 1.0x sin A+     (${ult.acumBase >= 0 ? "+" : ""}${ult.acumBase.toFixed(1)} R)`, boxX + 35, boxY + 34);
+
+                // Guía vertical y puntos al pasar el cursor
+                if (hoverIdx >= 0 && hoverIdx <= n) {
+                    const hx = xOf(hoverIdx);
+                    const hy125 = yOf(serieCurva[hoverIdx].acum125);
+                    const hyBase = yOf(serieCurva[hoverIdx].acumBase);
+
+                    ctx.strokeStyle = "rgba(251, 191, 36, 0.55)";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath(); ctx.moveTo(hx, padT); ctx.lineTo(hx, padT + ph); ctx.stroke();
+
+                    ctx.fillStyle = "#38bdf8";
+                    ctx.beginPath(); ctx.arc(hx, hyBase, 4, 0, Math.PI * 2); ctx.fill();
+
+                    ctx.fillStyle = "#fbbf24";
+                    ctx.beginPath(); ctx.arc(hx, hy125, 4.8, 0, Math.PI * 2); ctx.fill();
+                }
+
+                canvas._cumRMeta = { padL, pw, n, serieCurva };
+            }
+
+            render(-1);
+
+            canvas.onmousemove = ev => {
+                const m = canvas._cumRMeta;
+                if (!m) return;
+                const r = canvas.getBoundingClientRect();
+                const relX = ev.clientX - r.left - m.padL;
+                if (relX < 0 || relX > m.pw) {
+                    render(-1);
+                    ocultarTooltipGrafico();
+                    return;
+                }
+                const idx = Math.max(0, Math.min(m.n, Math.round((relX / Math.max(1, m.pw)) * m.n)));
+                render(idx);
+                const pt = m.serieCurva[idx];
+                const signSem = pt.rSem125 >= 0 ? "+" : "";
+                const colSem = pt.rSem125 >= 0 ? "var(--emerald)" : "var(--crimson)";
+                posicionarTooltipGrafico(
+                    ev,
+                    `<b style="color:var(--alfa-gold-light);">📅 Semana ${pt.label} (#${pt.idx})</b><br>` +
+                    `Acumulado A+ 1.25x: <b style="color:var(--alfa-gold-light);">${pt.acum125 >= 0 ? "+" : ""}${pt.acum125.toFixed(2)} R</b> <span style="color:${colSem};">(${signSem}${pt.rSem125.toFixed(2)}R)</span><br>` +
+                    `Acumulado Base 1.0x: <b style="color:var(--cyan);">${pt.acumBase >= 0 ? "+" : ""}${pt.acumBase.toFixed(2)} R</b><br>` +
+                    `Operaciones semana: <b>${pt.ops}</b> (${pt.wins}W / ${pt.losses}L)`
+                );
+            };
+
+            canvas.onmouseleave = () => {
+                render(-1);
+                ocultarTooltipGrafico();
+            };
+        }
+
         // =========================================================================
-        // BLOQUE 2: CÁLCULO PURO DE LAS BASES DEL BACKTESTING (HISTÓRICO REAL)
+        // BLOQUE 2: CÁLCULO PURO DE LAS BASES DEL BACKTESTING + CURVA ACUMULADA R
         // =========================================================================
         function renderizarBacktestingBaseEstrategia() {
             if (!semanasOrdenadas.length) return;
             const nSem = semanasOrdenadas.length;
             const numActivos = (datasetPublico.universo_analizado || 6254).toLocaleString("es-ES");
 
-            let wTot = 0, lTot = 0, rAcum = 0, eqR = 0, pkR = 0, maxDdR = 0, runnersCount = 0;
+            let wTot = 0, lTot = 0, rAcum = 0, rAcumBase = 0, eqR = 0, pkR = 0, maxDdR = 0, runnersCount = 0;
             let retornosSem = [];
             let opsPorSem = [];
+            let serieCurvaR = [];
 
-            semanasOrdenadas.forEach(sem => {
-                let rSem = 0, nSemOps = 0;
+            semanasOrdenadas.forEach((sem, idxSem) => {
+                let rSem = 0, rSemBase = 0, nSemOps = 0, wSem = 0, lSem = 0;
                 sem.trades.forEach(tr => {
                     const rOp = evaluarTradeIndividualSegunModo(tr, EXEC_MODE_PREDEFINIDO, 0);
                     if (rOp === null) return;
+                    const multAp = tr.ap ? APLUS_MULT_LOCKED : 1.0;
+                    const rOpBase = rOp / multAp;
+
                     nSemOps++;
                     if (tr.run) runnersCount++;
-                    if (rOp > 0) wTot++;
-                    else lTot++;
+                    if (rOp > 0) { wTot++; wSem++; }
+                    else { lTot++; lSem++; }
+
                     rSem += rOp;
+                    rSemBase += rOpBase;
                     rAcum += rOp;
+                    rAcumBase += rOpBase;
                     eqR += rOp;
                     if (eqR > pkR) pkR = eqR;
                     if (pkR - eqR > maxDdR) maxDdR = pkR - eqR;
                 });
                 retornosSem.push(rSem);
                 opsPorSem.push(nSemOps);
+
+                const infoFecha = extraerClaveYEtiquetaMes(sem);
+                serieCurvaR.push({
+                    idx: idxSem + 1,
+                    key: sem.key,
+                    label: sem.label,
+                    shortDate: infoFecha.shortDate,
+                    ops: nSemOps,
+                    wins: wSem,
+                    losses: lSem,
+                    rSem125: rSem,
+                    rSemBase: rSemBase,
+                    acum125: rAcum,
+                    acumBase: rAcumBase
+                });
             });
 
             const totEstudiadas = wTot + lTot;
@@ -1179,20 +1404,22 @@
             const varSem = retornosSem.reduce((acc, v) => acc + Math.pow(v - mediaRSem, 2), 0) / Math.max(1, nSem - 1);
             const sharpe = (mediaRSem / Math.sqrt(Math.max(varSem, 1e-4))) * Math.sqrt(52);
 
-            document.getElementById("bt-weeks").innerText = `${nSem} semanas`;
-            document.getElementById("bt-assets").innerText = numActivos;
-            document.getElementById("bt-trades").innerText = totEstudiadas.toLocaleString("es-ES");
-            document.getElementById("bt-trades-sub").innerText = `${wTot.toLocaleString("es-ES")} ganadas · ${lTot.toLocaleString("es-ES")} perdidas`;
-            document.getElementById("bt-winrate").innerText = `${wrReal.toFixed(1)}%`;
-            document.getElementById("bt-wl-detail").innerText = `Ratio 1:1 + ${runnersCount} Runners ampliados`;
-            document.getElementById("bt-net-r").innerText = `${rAcum >= 0 ? "+" : ""}${rAcum.toFixed(1)} R`;
-            document.getElementById("bt-exp-trade").innerText = `Esperanza: +${expPorOp.toFixed(2)} R / operación`;
-            document.getElementById("bt-median-wk-r").innerText = `${medianaRSem >= 0 ? "+" : ""}${medianaRSem.toFixed(2)} R`;
-            document.getElementById("bt-mean-wk-r").innerText = `Media semanal: ${mediaRSem >= 0 ? "+" : ""}${mediaRSem.toFixed(2)} R`;
-            document.getElementById("bt-ops-wk").innerText = `${mediaOps.toFixed(1)} ops/sem`;
-            document.getElementById("bt-ops-wk-sub").innerText = `Mediana: ${medianaOps} · Pico máx: ${maxOps}/sem`;
-            document.getElementById("bt-max-dd-r").innerText = `-${maxDdR.toFixed(2)} R`;
-            document.getElementById("bt-sharpe").innerText = sharpe.toFixed(2);
+            setTxt("bt-weeks", `${nSem} semanas`);
+            setTxt("bt-assets", numActivos);
+            setTxt("bt-trades", totEstudiadas.toLocaleString("es-ES"));
+            setTxt("bt-trades-sub", `${wTot.toLocaleString("es-ES")} ganadas · ${lTot.toLocaleString("es-ES")} perdidas`);
+            setTxt("bt-winrate", `${wrReal.toFixed(1)}%`);
+            setTxt("bt-wl-detail", `Ratio 1:1 + ${runnersCount} Runners ampliados`);
+            setTxt("bt-net-r", `${rAcum >= 0 ? "+" : ""}${rAcum.toFixed(1)} R`);
+            setTxt("bt-exp-trade", `Esperanza: +${expPorOp.toFixed(2)} R / operación`);
+            setTxt("bt-median-wk-r", `${medianaRSem >= 0 ? "+" : ""}${medianaRSem.toFixed(2)} R`);
+            setTxt("bt-mean-wk-r", `Media semanal: ${mediaRSem >= 0 ? "+" : ""}${mediaRSem.toFixed(2)} R`);
+            setTxt("bt-ops-wk", `${mediaOps.toFixed(1)} ops/sem`);
+            setTxt("bt-ops-wk-sub", `Mediana: ${medianaOps} · Pico máx: ${maxOps}/sem`);
+            setTxt("bt-max-dd-r", `-${maxDdR.toFixed(2)} R`);
+            setTxt("bt-sharpe", sharpe.toFixed(2));
+
+            dibujarCurvaHistoricaAcumuladaR(serieCurvaR);
         }
 
         // =========================================================================
@@ -1212,8 +1439,8 @@
         }
 
         function leerConfigUsuario() {
-            const dIniStr = document.getElementById("inp-mc-start").value;
-            const dFinStr = document.getElementById("inp-mc-end").value;
+            const dIniStr = document.getElementById("inp-mc-start")?.value;
+            const dFinStr = document.getElementById("inp-mc-end")?.value;
             let mcWeeks = 105;
             if (dIniStr && dFinStr) {
                 const ms = new Date(dFinStr + "T00:00:00Z") - new Date(dIniStr + "T00:00:00Z");
@@ -1221,16 +1448,16 @@
             }
 
             return {
-                capIni: Math.max(200, parseFloat(document.getElementById("inp-cap-ini").value) || 2000),
-                rIni: Math.max(5, parseFloat(document.getElementById("inp-r-ini").value) || 40),
-                varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById("inp-var-r").value) || 0)) / 100.0,
-                capTop: Math.max(500, parseFloat(document.getElementById("inp-cap-top").value) || 25000),
-                rMax: Math.max(25, parseFloat(document.getElementById("inp-r-max").value) || 500),
-                maxTradesWk: Math.max(1, Math.min(30, parseInt(document.getElementById("inp-max-trades").value) || 15)),
-                withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById("inp-withdraw-growth").value) || 0)) / 100.0,
-                targetSalaryEur: Math.max(200, parseFloat(document.getElementById("inp-target-salary").value) || 2500),
+                capIni: Math.max(200, parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000),
+                rIni: Math.max(5, parseFloat(document.getElementById("inp-r-ini")?.value) || 40),
+                varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById("inp-var-r")?.value) || 0)) / 100.0,
+                capTop: Math.max(500, parseFloat(document.getElementById("inp-cap-top")?.value) || 25000),
+                rMax: Math.max(25, parseFloat(document.getElementById("inp-r-max")?.value) || 500),
+                maxTradesWk: Math.max(1, Math.min(30, parseInt(document.getElementById("inp-max-trades")?.value) || 15)),
+                withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById("inp-withdraw-growth")?.value) || 0)) / 100.0,
+                targetSalaryEur: Math.max(200, parseFloat(document.getElementById("inp-target-salary")?.value) || 2500),
                 execMode: EXEC_MODE_PREDEFINIDO,
-                commUsd: Math.max(0, parseFloat(document.getElementById("inp-comm-usd").value) || 0),
+                commUsd: Math.max(0, parseFloat(document.getElementById("inp-comm-usd")?.value) || 0),
                 weeksStudy: semanasOrdenadas.length || 105,
                 mcWeeks
             };
@@ -1263,8 +1490,8 @@
             const semanasSlice = semanasOrdenadas;
             const commR = cfg.commUsd / Math.max(cfg.rIni, 10.0);
 
-            document.getElementById("lbl-weeks-table").innerText = cfg.mcWeeks;
-            document.getElementById("mc-header-sub").innerText = `Horizonte elegido: ${cfg.mcWeeks} semanas`;
+            setTxt("lbl-weeks-table", cfg.mcWeeks);
+            setTxt("mc-header-sub", `Horizonte elegido: ${cfg.mcWeeks} semanas`);
 
             let totalW = 0, totalL = 0, sumaNetR = 0;
             let semanasEvaluadas = [];
@@ -1349,28 +1576,27 @@
             const capContadoNecesario = simDeseadas * infoM.nominalPorTrade;
             const capMargenNecesario = capContadoNecesario / 9.5;
 
-            // Actualizar textos dinámicos del Bloque 3 (Gestión de Riesgo)
-            document.getElementById("txt-sl-medio").innerText = `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`;
-            document.getElementById("txt-r-ejemplo").innerText = `$${cfg.rIni.toLocaleString("es-ES")}`;
-            document.getElementById("txt-nominal-ejemplo").innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")}`;
-            document.getElementById("txt-maxops-ejemplo").innerText = `${cfg.maxTradesWk} operaciones semanales`;
-            document.getElementById("txt-sim-ejemplo").innerText = `${simDeseadas} posiciones simultáneas`;
+            setTxt("txt-sl-medio", `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`);
+            setTxt("txt-r-ejemplo", `$${cfg.rIni.toLocaleString("es-ES")}`);
+            setTxt("txt-nominal-ejemplo", `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")}`);
+            setTxt("txt-maxops-ejemplo", `${cfg.maxTradesWk} operaciones semanales`);
+            setTxt("txt-sim-ejemplo", `${simDeseadas} posiciones simultáneas`);
 
-            document.getElementById("cap-req-params-lbl").innerText = `1R = $${cfg.rIni} · Tope ${cfg.maxTradesWk} ops/sem`;
-            document.getElementById("cap-req-sl").innerText = `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`;
-            document.getElementById("cap-req-per-trade").innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / trade`;
-            document.getElementById("cap-req-concurrent").innerText = `~${simDeseadas} simultáneas`;
-            document.getElementById("cap-req-cash").innerText = `$${Math.round(capContadoNecesario).toLocaleString("es-ES")}`;
-            document.getElementById("cap-req-margin").innerText = `$${Math.round(capMargenNecesario).toLocaleString("es-ES")}`;
+            setTxt("cap-req-params-lbl", `1R = $${cfg.rIni} · Tope ${cfg.maxTradesWk} ops/sem`);
+            setTxt("cap-req-sl", `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`);
+            setTxt("cap-req-per-trade", `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / trade`);
+            setTxt("cap-req-concurrent", `~${simDeseadas} simultáneas`);
+            setTxt("cap-req-cash", `$${Math.round(capContadoNecesario).toLocaleString("es-ES")}`);
+            setTxt("cap-req-margin", `$${Math.round(capMargenNecesario).toLocaleString("es-ES")}`);
 
-            // Actualizar Diagnóstico de Viabilidad del Bloque 4
-            document.getElementById("collat-sim-trades").innerText = `${infoM.maxSimultaneas} abiertas a la vez`;
-            document.getElementById("collat-bp-ini").innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / operación`;
-            document.getElementById("collat-qf-min").innerText = `${infoM.cupoEfectivo} de ${cfg.maxTradesWk} ops / semana`;
+            setTxt("collat-sim-trades", `${infoM.maxSimultaneas} abiertas a la vez`);
+            setTxt("collat-bp-ini", `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / operación`);
+            setTxt("collat-qf-min", `${infoM.cupoEfectivo} de ${cfg.maxTradesWk} ops / semana`);
 
             const badge = document.getElementById("collat-status-badge");
             const warn = document.getElementById("collat-warning-text");
             const box = document.getElementById("viability-box");
+            if (!badge || !warn || !box) return;
 
             if (cfg.capIni >= capContadoNecesario) {
                 badge.innerText = "✔ VIABLE AL CONTADO (1:1)";
@@ -1526,53 +1752,53 @@
             const ruinPct = (ruinCount / NUM_PATHS) * 100.0;
             const profPct = (profitableCount / NUM_PATHS) * 100.0;
 
-            document.getElementById("mc-ruin-prob").innerText = `${ruinPct.toFixed(2)}%`;
-            document.getElementById("mc-ruin-prob").style.color = ruinPct === 0 ? "var(--emerald)" : "var(--crimson)";
-            document.getElementById("mc-ruin-sub").innerText = `${ruinCount} de 10.000 rutas`;
+            const elRuin = document.getElementById("mc-ruin-prob");
+            if (elRuin) {
+                elRuin.innerText = `${ruinPct.toFixed(2)}%`;
+                elRuin.style.color = ruinPct === 0 ? "var(--emerald)" : "var(--crimson)";
+            }
+            setTxt("mc-ruin-sub", `${ruinCount} de 10.000 rutas`);
+            setTxt("mc-time-cap", medCapW ? `${medCapW} semanas` : `> ${nWeeksSim} sem`);
+            setTxt("mc-time-salary-sub", medSalW ? `Sueldo obj. en Sem ${medSalW}` : `Sueldo obj.: > ${nWeeksSim}s`);
+            setTxt("mc-wealth-p50", `$${Math.round(p50.wealth).toLocaleString("es-ES")}`);
+            setTxt("mc-ret-p50", `Retirado: $${Math.round(p50.ret).toLocaleString("es-ES")}`);
+            setTxt("mc-dd-p50", `-${dd50.toFixed(1)}%`);
+            setTxt("mc-dd-p90", `Estrés P90: -${dd90.toFixed(1)}%`);
+            setTxt("mc-wealth-p05", `$${Math.round(p05.wealth).toLocaleString("es-ES")}`);
+            setTxt("mc-prob-profit", `Rentables: ${profPct.toFixed(1)}%`);
 
-            document.getElementById("mc-time-cap").innerText = medCapW ? `${medCapW} semanas` : `> ${nWeeksSim} sem`;
-            document.getElementById("mc-time-salary-sub").innerText = medSalW ? `Sueldo obj. en Sem ${medSalW}` : `Sueldo obj.: > ${nWeeksSim}s`;
-
-            document.getElementById("mc-wealth-p50").innerText = `$${Math.round(p50.wealth).toLocaleString("es-ES")}`;
-            document.getElementById("mc-ret-p50").innerText = `Retirado: $${Math.round(p50.ret).toLocaleString("es-ES")}`;
-
-            document.getElementById("mc-dd-p50").innerText = `-${dd50.toFixed(1)}%`;
-            document.getElementById("mc-dd-p90").innerText = `Estrés P90: -${dd90.toFixed(1)}%`;
-
-            document.getElementById("mc-wealth-p05").innerText = `$${Math.round(p05.wealth).toLocaleString("es-ES")}`;
-            document.getElementById("mc-prob-profit").innerText = `Rentables: ${profPct.toFixed(1)}%`;
-
-            // Cinta completa de Drawdown por percentiles
-            document.getElementById("dd-p10").innerText = `-${dd10.toFixed(1)}%`;
-            document.getElementById("dd-p25").innerText = `-${dd25.toFixed(1)}%`;
-            document.getElementById("dd-p50-inline").innerText = `-${dd50.toFixed(1)}%`;
-            document.getElementById("dd-p75").innerText = `-${dd75.toFixed(1)}%`;
-            document.getElementById("dd-p90-inline").innerText = `-${dd90.toFixed(1)}%`;
-            document.getElementById("dd-p95").innerText = `-${dd95.toFixed(1)}%`;
+            setTxt("dd-p10", `-${dd10.toFixed(1)}%`);
+            setTxt("dd-p25", `-${dd25.toFixed(1)}%`);
+            setTxt("dd-p50-inline", `-${dd50.toFixed(1)}%`);
+            setTxt("dd-p75", `-${dd75.toFixed(1)}%`);
+            setTxt("dd-p90-inline", `-${dd90.toFixed(1)}%`);
+            setTxt("dd-p95", `-${dd95.toFixed(1)}%`);
 
             const tbody = document.getElementById("tbody-mc-percentiles");
-            tbody.innerHTML = "";
-            [
-                { name: "🟢 Optimista (P90)", d: p90, c: "var(--emerald)" },
-                { name: "🟡 Mediano Realista (P50)", d: p50, c: "var(--alfa-gold-light)" },
-                { name: "🔵 Moderado (P25)", d: p25, c: "var(--cyan)" },
-                { name: "🟠 Prudente (P10)", d: p10, c: "#facc15" },
-                { name: "🔴 Peor Escenario (P5%)", d: p05, c: "var(--crimson)" }
-            ].forEach(r => {
-                const mult = (r.d.wealth / cfg.capIni).toFixed(2) + "x";
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td style="font-weight:800; color:${r.c};">${r.name}</td>
-                    <td>$${Math.round(r.d.saldo).toLocaleString("es-ES")}</td>
-                    <td style="color:var(--purple); font-weight:700;">$${Math.round(r.d.ret).toLocaleString("es-ES")}</td>
-                    <td style="font-weight:800;">$${Math.round(r.d.wealth).toLocaleString("es-ES")}</td>
-                    <td style="color:var(--cyan); font-weight:700;">${mult}</td>
-                    <td style="color:var(--alfa-gold-light);">$${r.d.rFinal.toFixed(0)}</td>
-                    <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString("es-ES")} €/mes</td>
-                    <td style="color:var(--crimson);">-${r.d.dd.toFixed(1)}%</td>
-                `;
-                tbody.appendChild(tr);
-            });
+            if (tbody) {
+                tbody.innerHTML = "";
+                [
+                    { name: "🟢 Optimista (P90)", d: p90, c: "var(--emerald)" },
+                    { name: "🟡 Mediano Realista (P50)", d: p50, c: "var(--alfa-gold-light)" },
+                    { name: "🔵 Moderado (P25)", d: p25, c: "var(--cyan)" },
+                    { name: "🟠 Prudente (P10)", d: p10, c: "#facc15" },
+                    { name: "🔴 Peor Escenario (P5%)", d: p05, c: "var(--crimson)" }
+                ].forEach(r => {
+                    const mult = (r.d.wealth / cfg.capIni).toFixed(2) + "x";
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td style="font-weight:800; color:${r.c};">${r.name}</td>
+                        <td>$${Math.round(r.d.saldo).toLocaleString("es-ES")}</td>
+                        <td style="color:var(--purple); font-weight:700;">$${Math.round(r.d.ret).toLocaleString("es-ES")}</td>
+                        <td style="font-weight:800;">$${Math.round(r.d.wealth).toLocaleString("es-ES")}</td>
+                        <td style="color:var(--cyan); font-weight:700;">${mult}</td>
+                        <td style="color:var(--alfa-gold-light);">$${r.d.rFinal.toFixed(0)}</td>
+                        <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString("es-ES")} €/mes</td>
+                        <td style="color:var(--crimson);">-${r.d.dd.toFixed(1)}%</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
 
             let cP90 = [], cP50 = [], cP10 = [];
             for (let w = 0; w <= nWeeksSim; w++) {
@@ -1654,7 +1880,7 @@
         // =========================================================================
         function renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR) {
             const expPorTrade = Math.max(0.12, expTrade || 0.22);
-            const dateStr = document.getElementById("inp-future-date").value;
+            const dateStr = document.getElementById("inp-future-date")?.value;
             const hoy = new Date();
             const targetDate = dateStr ? new Date(dateStr + "T00:00:00Z") : new Date(hoy.getTime() + 365 * 86400000);
             const diffDays = Math.max(28, (targetDate - hoy) / 86400000);
@@ -1722,36 +1948,41 @@
             const multFut = (snapFin.wealth / cfg.capIni).toFixed(2);
             const fechaNice = targetDate.toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
 
-            document.getElementById("story-future-box").innerHTML = `
-                <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; margin-bottom:6px;">
-                    🚀 PROYECCIÓN PERSONALIZADA DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
-                </div>
-                Partiendo hoy con <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, <b>1R = $${cfg.rIni}</b> y una variación del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>, en el escenario mediano realista (<b>P50</b>) tu patrimonio total evolucionaría hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>: cerrarías con <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta más <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> ya retirados a tu bolsillo.<br>
-                En esa fecha tu unidad de riesgo habría escalado a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando un flujo mensual estimado de <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF) con un Drawdown mediano esperado en el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.
-            `;
+            const futBox = document.getElementById("story-future-box");
+            if (futBox) {
+                futBox.innerHTML = `
+                    <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; margin-bottom:6px;">
+                        🚀 PROYECCIÓN PERSONALIZADA DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
+                    </div>
+                    Partiendo hoy con <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, <b>1R = $${cfg.rIni}</b> y una variación del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>, en el escenario mediano realista (<b>P50</b>) tu patrimonio total evolucionaría hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>: cerrarías con <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta más <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> ya retirados a tu bolsillo.<br>
+                    En esa fecha tu unidad de riesgo habría escalado a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando un flujo mensual estimado de <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF) con un Drawdown mediano esperado en el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.
+                `;
+            }
 
             const hitos = [3, 6, 9, 12, 18, 24, 36].filter(m => m <= Math.max(36, targetMonths));
             if (!hitos.includes(targetMonths)) { hitos.push(targetMonths); hitos.sort((a, b) => a - b); }
 
             const tbodyFut = document.getElementById("tbody-future-roadmap");
-            tbodyFut.innerHTML = "";
-            hitos.forEach(m => {
-                const wIdx = Math.min(serieFut.length - 1, Math.round(m * 4.333));
-                const s = serieFut[wIdx];
-                if (!s) return;
-                const tr = document.createElement("tr");
-                if (m === targetMonths) tr.style.background = "rgba(245, 158, 11, 0.14)";
-                tr.innerHTML = `
-                    <td style="font-weight:800; color:${m === targetMonths ? "var(--alfa-gold-light)" : "#fff"};">${m} Meses (${wIdx}s)</td>
-                    <td style="color:var(--alfa-gold-light); font-weight:700;">$${s.rUnit.toFixed(0)}</td>
-                    <td>$${Math.round(s.cap).toLocaleString("es-ES")}</td>
-                    <td style="color:var(--purple); font-weight:700;">$${Math.round(s.ret).toLocaleString("es-ES")}</td>
-                    <td style="font-weight:800;">$${Math.round(s.wealth).toLocaleString("es-ES")}</td>
-                    <td style="color:var(--emerald); font-weight:800;">~${Math.round(s.netMoEur).toLocaleString("es-ES")} €/m</td>
-                    <td style="color:var(--crimson);">-${s.dd50.toFixed(1)}%</td>
-                `;
-                tbodyFut.appendChild(tr);
-            });
+            if (tbodyFut) {
+                tbodyFut.innerHTML = "";
+                hitos.forEach(m => {
+                    const wIdx = Math.min(serieFut.length - 1, Math.round(m * 4.333));
+                    const s = serieFut[wIdx];
+                    if (!s) return;
+                    const tr = document.createElement("tr");
+                    if (m === targetMonths) tr.style.background = "rgba(245, 158, 11, 0.14)";
+                    tr.innerHTML = `
+                        <td style="font-weight:800; color:${m === targetMonths ? "var(--alfa-gold-light)" : "#fff"};">${m} Meses (${wIdx}s)</td>
+                        <td style="color:var(--alfa-gold-light); font-weight:700;">$${s.rUnit.toFixed(0)}</td>
+                        <td>$${Math.round(s.cap).toLocaleString("es-ES")}</td>
+                        <td style="color:var(--purple); font-weight:700;">$${Math.round(s.ret).toLocaleString("es-ES")}</td>
+                        <td style="font-weight:800;">$${Math.round(s.wealth).toLocaleString("es-ES")}</td>
+                        <td style="color:var(--emerald); font-weight:800;">~${Math.round(s.netMoEur).toLocaleString("es-ES")} €/m</td>
+                        <td style="color:var(--crimson);">-${s.dd50.toFixed(1)}%</td>
+                    `;
+                    tbodyFut.appendChild(tr);
+                });
+            }
 
             dibujarCurvaFuturaInteractiva(serieFut);
         }
@@ -1869,15 +2100,14 @@
             const semPos = semanasEvaluadas.filter(s => s.netR >= 0).length;
             const semNeg = semanasEvaluadas.length - semPos;
             const pctSemPos = semanasEvaluadas.length ? ((semPos / semanasEvaluadas.length) * 100).toFixed(0) : 0;
-            document.getElementById("wk-pos-neg-badge").innerText =
-                `${semPos} sem positivas (${pctSemPos}%) · ${semNeg} negativas`;
+            setTxt("wk-pos-neg-badge", `${semPos} sem positivas (${pctSemPos}%) · ${semNeg} negativas`);
 
             const semanasConFecha = semanasEvaluadas.map(s => {
                 const infoF = extraerClaveYEtiquetaMes(s);
                 return { ...s, monthKey: infoF.key, monthLabel: infoF.label, shortDate: infoF.shortDate };
             });
 
-            // 1. Gráfica Full-Width de Rs por Semana
+            // Gráfica Full-Width de Rs por Semana
             dibujarGraficoBarrasInteractivo({
                 canvasId: "canvas-weekly-bars",
                 items: semanasConFecha,
@@ -1894,9 +2124,9 @@
                 }
             });
 
-            // 2. Gráfica Full-Width de Nº de Operaciones por Semana
+            // Gráfica Full-Width de Nº de Operaciones por Semana
             const mediaOps = semanasConFecha.reduce((a, b) => a + b.totalDisponibles, 0) / Math.max(1, semanasConFecha.length);
-            document.getElementById("lbl-avg-ops-chart").innerText = `Media estudiada: ${mediaOps.toFixed(1)} ops/sem`;
+            setTxt("lbl-avg-ops-chart", `Media estudiada: ${mediaOps.toFixed(1)} ops/sem`);
 
             dibujarGraficoBarrasInteractivo({
                 canvasId: "canvas-weekly-ops",
@@ -1913,7 +2143,7 @@
                     `Ejecutadas con tu cupo: <b>${it.trades} ops</b> (${it.wins}W / ${it.losses}L)`
             });
 
-            // 3. Agrupar el histórico en Meses
+            // Agrupar el histórico en Meses
             const mapaMeses = {};
             const mesesOrden = [];
             semanasConFecha.forEach(s => {
@@ -1945,10 +2175,8 @@
             const mesesNeg = mesesOrden.length - mesesPos;
             const pctMesPos = mesesOrden.length ? ((mesesPos / mesesOrden.length) * 100).toFixed(0) : 0;
 
-            document.getElementById("mo-pos-neg-badge").innerText =
-                `${mesesPos} meses positivos · ${mesesNeg} negativos`;
-            document.getElementById("mo-winrate-pill").innerText =
-                `${mesesPos}/${mesesOrden.length} Meses Positivos (${pctMesPos}%)`;
+            setTxt("mo-pos-neg-badge", `${mesesPos} meses positivos · ${mesesNeg} negativos`);
+            setTxt("mo-winrate-pill", `${mesesPos}/${mesesOrden.length} Meses Positivos (${pctMesPos}%)`);
 
             dibujarGraficoBarrasInteractivo({
                 canvasId: "canvas-monthly-bars",
@@ -1967,24 +2195,26 @@
                 }
             });
 
-            // 4. Tabla Mensual (de más reciente a más antiguo)
+            // Tabla Mensual (de más reciente a más antiguo)
             const tbodyMo = document.getElementById("tbody-monthly-real");
-            tbodyMo.innerHTML = "";
-            mesesOrden.slice().reverse().forEach(m => {
-                const wr = m.trades > 0 ? (m.wins / m.trades) * 100.0 : 0;
-                const colR = m.netR >= 0 ? "var(--emerald)" : "var(--crimson)";
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td style="font-weight:800; color:#fff;">${m.label}</td>
-                    <td>${m.trades}</td>
-                    <td style="color:${wr >= 50 ? "var(--emerald)" : "var(--crimson)"}; font-weight:700;">${m.wins}W / ${m.losses}L (${wr.toFixed(0)}%)</td>
-                    <td style="color:${colR}; font-weight:800;">${m.netR >= 0 ? "+" : ""}${m.netR.toFixed(2)}R</td>
-                    <td style="color:var(--alfa-gold-light);">$${m.rUnitClose.toFixed(0)}</td>
-                    <td style="color:var(--purple);">$${Math.round(m.retirosAcum).toLocaleString("es-ES")}</td>
-                    <td style="font-weight:800;">$${Math.round(m.wealthClose).toLocaleString("es-ES")}</td>
-                `;
-                tbodyMo.appendChild(tr);
-            });
+            if (tbodyMo) {
+                tbodyMo.innerHTML = "";
+                mesesOrden.slice().reverse().forEach(m => {
+                    const wr = m.trades > 0 ? (m.wins / m.trades) * 100.0 : 0;
+                    const colR = m.netR >= 0 ? "var(--emerald)" : "var(--crimson)";
+                    const tr = document.createElement("tr");
+                    tr.innerHTML = `
+                        <td style="font-weight:800; color:#fff;">${m.label}</td>
+                        <td>${m.trades}</td>
+                        <td style="color:${wr >= 50 ? "var(--emerald)" : "var(--crimson)"}; font-weight:700;">${m.wins}W / ${m.losses}L (${wr.toFixed(0)}%)</td>
+                        <td style="color:${colR}; font-weight:800;">${m.netR >= 0 ? "+" : ""}${m.netR.toFixed(2)}R</td>
+                        <td style="color:var(--alfa-gold-light);">$${m.rUnitClose.toFixed(0)}</td>
+                        <td style="color:var(--purple);">$${Math.round(m.retirosAcum).toLocaleString("es-ES")}</td>
+                        <td style="font-weight:800;">$${Math.round(m.wealthClose).toLocaleString("es-ES")}</td>
+                    `;
+                    tbodyMo.appendChild(tr);
+                });
+            }
         }
 
         // Motor universal de gráficas de barras con Eje X, Eje Y e inspección interactiva por cursor
@@ -2022,7 +2252,6 @@
                 const yOf = val => padT + ph - ((val - minV) / Math.max(1e-4, maxV - minV)) * ph;
                 const yZero = yOf(0);
 
-                // Rejilla y etiquetas del Eje Y
                 ctx.font = "10px JetBrains Mono";
                 ctx.strokeStyle = "rgba(255,255,255,0.06)";
                 ctx.fillStyle = "#94a3b8";
@@ -2034,12 +2263,10 @@
                     ctx.fillText(formatY(v), 6, y + 3);
                 }
 
-                // Línea base 0 remarcada
                 ctx.strokeStyle = "rgba(255,255,255,0.24)";
                 ctx.lineWidth = 1.1;
                 ctx.beginPath(); ctx.moveTo(padL, yZero); ctx.lineTo(w - padR, yZero); ctx.stroke();
 
-                // Línea de media opcional
                 if (avgLine !== undefined) {
                     const yAvg = yOf(avgLine);
                     ctx.strokeStyle = "rgba(245, 158, 11, 0.7)";
@@ -2051,7 +2278,6 @@
                 const stepW = pw / items.length;
                 const barW = Math.max(2, stepW - (items.length > 60 ? 2 : 4));
 
-                // Dibujar barras
                 items.forEach((it, idx) => {
                     const val = vals[idx];
                     const x = padL + idx * stepW + (stepW - barW) / 2;
@@ -2070,7 +2296,6 @@
                     ctx.fillRect(x, topY, barW, barH);
                 });
 
-                // Etiquetas del Eje X
                 ctx.fillStyle = "#94a3b8";
                 const maxTicks = Math.max(4, Math.floor(pw / 88));
                 const stride = Math.max(1, Math.ceil(items.length / maxTicks));
@@ -2112,7 +2337,7 @@
         function cargarPresetRiesgo(modo, ev) {
             document.querySelectorAll(".preset-row .btn-preset").forEach(b => b.classList.remove("active"));
             if (ev?.target) ev.target.classList.add("active");
-            const cap = parseFloat(document.getElementById("inp-cap-ini").value) || 2000;
+            const cap = parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000;
             if (modo === "sin_compuesto") {
                 document.getElementById("inp-r-ini").value = Math.round(cap * 0.015);
                 document.getElementById("inp-var-r").value = 0.0;
@@ -2133,22 +2358,27 @@
             }
             const d = new Date();
             d.setMonth(d.getMonth() + meses);
-            document.getElementById("inp-future-date").value = d.toISOString().slice(0, 10);
+            const elFut = document.getElementById("inp-future-date");
+            if (elFut) elFut.value = d.toISOString().slice(0, 10);
             ejecutarSimulacionCompleta();
         }
 
         function abrirModalCuenta() {
-            document.getElementById("sync-email").value = localStorage.getItem("alfa_pub_email") || "";
-            document.getElementById("sync-chat-id").value = localStorage.getItem("alfa_pub_chat_id") || "";
-            document.getElementById("modal-cuenta").style.display = "flex";
+            const elEm = document.getElementById("sync-email");
+            const elCh = document.getElementById("sync-chat-id");
+            const elMod = document.getElementById("modal-cuenta");
+            if (elEm) elEm.value = localStorage.getItem("alfa_pub_email") || "";
+            if (elCh) elCh.value = localStorage.getItem("alfa_pub_chat_id") || "";
+            if (elMod) elMod.style.display = "flex";
         }
 
         function cerrarModalCuenta() {
-            document.getElementById("modal-cuenta").style.display = "none";
+            const elMod = document.getElementById("modal-cuenta");
+            if (elMod) elMod.style.display = "none";
         }
 
         async function recuperarContrasenaSupabase() {
-            const email = document.getElementById("sync-email").value.trim().toLowerCase();
+            const email = document.getElementById("sync-email")?.value.trim().toLowerCase();
             const msg = document.getElementById("sync-msg");
             if (!email) {
                 msg.style.color = "var(--alfa-gold-light)";
@@ -2172,7 +2402,7 @@
         }
 
         async function guardarNuevaContrasenaRecuperada() {
-            const newPass = document.getElementById("sync-new-pass").value;
+            const newPass = document.getElementById("sync-new-pass")?.value;
             const msg = document.getElementById("sync-msg");
             if (!newPass || newPass.length < 6) {
                 msg.style.color = "var(--alfa-gold-light)";
@@ -2185,16 +2415,18 @@
                 msg.innerText = "Error actualizando contraseña: " + error.message;
                 return;
             }
-            document.getElementById("box-new-password").style.display = "none";
-            document.getElementById("sync-pass").value = newPass;
+            const boxNew = document.getElementById("box-new-password");
+            if (boxNew) boxNew.style.display = "none";
+            const elPass = document.getElementById("sync-pass");
+            if (elPass) elPass.value = newPass;
             msg.style.color = "var(--emerald)";
             msg.innerText = "✅ Tu contraseña se ha actualizado correctamente. Ya puedes iniciar sesión y guardar.";
         }
 
         async function autenticarYGuardarEnSupabase(modoAuth) {
-            const email = document.getElementById("sync-email").value.trim().toLowerCase();
-            const pass = document.getElementById("sync-pass").value;
-            const chatId = document.getElementById("sync-chat-id").value.trim();
+            const email = document.getElementById("sync-email")?.value.trim().toLowerCase();
+            const pass = document.getElementById("sync-pass")?.value;
+            const chatId = document.getElementById("sync-chat-id")?.value.trim();
             const msg = document.getElementById("sync-msg");
 
             if (!email || !pass) {
@@ -2257,14 +2489,15 @@
 
             localStorage.setItem("alfa_pub_email", email);
             localStorage.setItem("alfa_pub_chat_id", chatId);
-            document.getElementById("btn-nav-auth").innerHTML = `🟢 ${email}`;
+            const btnNav = document.getElementById("btn-nav-auth");
+            if (btnNav) btnNav.innerHTML = `🟢 ${email}`;
             msg.style.color = "var(--emerald)";
             msg.innerText = `✅ Cuenta y Bot sincronizados en Supabase (Capital $${cfg.capIni} | 1R = $${cfg.rIni}).`;
         }
 
         async function cargarMisDatosDesdeSupabase() {
-            const email = document.getElementById("sync-email").value.trim().toLowerCase();
-            const chatId = document.getElementById("sync-chat-id").value.trim();
+            const email = document.getElementById("sync-email")?.value.trim().toLowerCase();
+            const chatId = document.getElementById("sync-chat-id")?.value.trim();
             const msg = document.getElementById("sync-msg");
             if (!supabaseClient || (!email && !chatId)) {
                 msg.style.color = "var(--alfa-gold-light)";
@@ -2292,13 +2525,17 @@
         window.addEventListener("DOMContentLoaded", () => {
             inicializarFechasPorDefecto();
             const savedEmail = localStorage.getItem("alfa_pub_email");
-            if (savedEmail) document.getElementById("btn-nav-auth").innerHTML = `🟢 ${savedEmail}`;
+            const btnNav = document.getElementById("btn-nav-auth");
+            if (savedEmail && btnNav) btnNav.innerHTML = `🟢 ${savedEmail}`;
 
             document.querySelectorAll(".container input, .container select").forEach(el => {
                 el.addEventListener("input", () => ejecutarSimulacionCompleta());
                 el.addEventListener("change", () => ejecutarSimulacionCompleta());
             });
-            window.addEventListener("resize", () => ejecutarSimulacionCompleta());
+            window.addEventListener("resize", () => {
+                renderizarBacktestingBaseEstrategia();
+                ejecutarSimulacionCompleta();
+            });
             cargarDatasetAuditado();
         });
     </script>
