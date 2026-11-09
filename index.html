@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALFA Strategy | Backtesting, Gestión de Riesgo & Simulador Cuantitativo</title>
-    <!-- Favicon oficial extraído de alfamarkets.io con respaldo local -->
+    <!-- Favicon oficial de alfamarkets.io -->
     <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=alfamarkets.io&sz=128">
     <link rel="alternate icon" href="https://alfamarkets.io/favicon.ico">
     <link rel="apple-touch-icon" href="https://www.google.com/s2/favicons?domain=alfamarkets.io&sz=180">
@@ -57,13 +57,8 @@
             display: flex; align-items: center; justify-content: space-between;
             flex-wrap: wrap; gap: 14px;
         }
-        .brand-wrap {
-            display: flex; align-items: center; gap: 14px; text-decoration: none;
-        }
-        .brand-logo {
-            height: 40px; width: auto; max-width: 210px;
-            object-fit: contain; display: block;
-        }
+        .brand-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
+        .brand-logo { height: 40px; width: auto; max-width: 210px; object-fit: contain; display: block; }
         .brand-badge {
             width: 40px; height: 40px; border-radius: 10px;
             background: linear-gradient(135deg, var(--alfa-gold), var(--alfa-orange));
@@ -71,12 +66,8 @@
             font-weight: 900; font-size: 21px; color: #05070b;
             box-shadow: 0 0 22px rgba(245, 158, 11, 0.35);
         }
-        .brand-divider {
-            width: 1px; height: 24px; background: var(--border-subtle);
-        }
-        .brand-text h1 {
-            font-size: 16px; font-weight: 900; letter-spacing: 0.6px; color: #fff;
-        }
+        .brand-divider { width: 1px; height: 24px; background: var(--border-subtle); }
+        .brand-text h1 { font-size: 16px; font-weight: 900; letter-spacing: 0.6px; color: #fff; }
 
         .nav-actions { display: flex; align-items: center; gap: 10px; }
         .btn-gold {
@@ -102,7 +93,7 @@
             display: flex; flex-direction: column; gap: 26px;
         }
 
-        /* TARJETAS Y PANELES GENERALES */
+        /* BLOQUES DE SECCIÓN */
         .section-block {
             background: linear-gradient(160deg, rgba(16, 22, 34, 0.95), rgba(11, 15, 23, 0.97));
             border: 1px solid var(--border-subtle);
@@ -157,7 +148,7 @@
         .pillar-card h4 { font-size: 12px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
         .pillar-card p { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
 
-        /* BLOQUE 2: BACKTESTING DE LA ESTRATEGIA (9 KPIs) */
+        /* BLOQUE 2: BACKTESTING DE LA ESTRATEGIA */
         .backtest-grid-9 {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
         }
@@ -168,8 +159,7 @@
             background: var(--bg-card); border: 1px solid var(--border-subtle);
             border-radius: 12px; padding: 14px 16px;
             display: flex; flex-direction: column; gap: 4px;
-            position: relative; overflow: hidden; cursor: help;
-            transition: border-color 0.15s;
+            cursor: help; transition: border-color 0.15s;
         }
         .bt-stat-card:hover { border-color: var(--alfa-gold); }
         .bt-stat-card span {
@@ -195,9 +185,7 @@
             border-radius: 14px; padding: 18px 20px;
             display: flex; flex-direction: column; gap: 12px;
         }
-        .cap-compare-row {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-        }
+        .cap-compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         @media (max-width: 560px) { .cap-compare-row { grid-template-columns: 1fr; } }
         .cap-mode-box {
             background: rgba(255, 255, 255, 0.025);
@@ -211,8 +199,7 @@
 
         /* BLOQUE 4: CONFIGURADOR + MONTE CARLO */
         .lab-grid {
-            display: grid;
-            grid-template-columns: 420px minmax(0, 1fr);
+            display: grid; grid-template-columns: 420px minmax(0, 1fr);
             gap: 20px; align-items: start;
         }
         @media (max-width: 1140px) { .lab-grid { grid-template-columns: 1fr; } }
@@ -222,7 +209,7 @@
             border: 1px solid var(--border-subtle);
             border-radius: 14px; padding: 18px 20px;
             display: flex; flex-direction: column; gap: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
         }
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
@@ -294,10 +281,10 @@
 
         .canvas-wrap {
             width: 100%; height: 270px; position: relative;
-            background: #070a10; border: 1px solid var(--border-subtle);
+            background: #080c14; border: 1px solid var(--border-subtle);
             border-radius: 10px; overflow: hidden;
         }
-        canvas { width: 100%; height: 100%; display: block; }
+        canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
 
         .quant-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11.5px; }
         .quant-table th, .quant-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-subtle); text-align: right; }
@@ -305,11 +292,11 @@
         .quant-table th {
             font-family: var(--font-sans); font-size: 10px; font-weight: 700;
             text-transform: uppercase; color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.025); cursor: help;
-            position: sticky; top: 0; z-index: 2; backdrop-filter: blur(8px);
+            background: rgba(16, 22, 34, 0.96); cursor: help;
+            position: sticky; top: 0; z-index: 2;
         }
         .quant-table tr:hover { background: rgba(255, 255, 255, 0.035); }
-        .scroll-table-box { max-height: 330px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
+        .scroll-table-box { max-height: 310px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
 
         .story-card {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(16, 185, 129, 0.06));
@@ -324,10 +311,8 @@
         .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         @media (max-width: 980px) { .two-col-grid { grid-template-columns: 1fr; } }
 
-        /* BLOQUE 7: BOT DE TELEGRAM */
-        .bot-steps-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
-        }
+        /* BLOQUE BOT DE TELEGRAM */
+        .bot-steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
         @media (max-width: 1100px) { .bot-steps-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { .bot-steps-grid { grid-template-columns: 1fr; } }
 
@@ -377,7 +362,7 @@
     <div id="custom-tooltip"></div>
     <div id="chart-hover-tooltip"></div>
 
-    <!-- NAVBAR CON LOGO-MARCA.PNG Y BOTÓN DE CUENTA / TELEGRAM -->
+    <!-- NAVBAR CON LOGO-MARCA.PNG Y ACCESO A CUENTA / TELEGRAM -->
     <nav class="navbar">
         <a href="#" class="brand-wrap">
             <img src="logo-marca.png" alt="Alfa Markets" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brand-fallback-badge').style.display='flex';">
@@ -388,7 +373,7 @@
             </div>
         </a>
         <div class="nav-actions">
-            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta, recupera tu contraseña o inicia sesión en nuestra base de datos en la nube (Supabase) para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
+            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta, recupera tu contraseña o inicia sesión en Supabase para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
                 📲 Cuenta / Conectar Bot de Telegram
             </button>
         </div>
@@ -414,7 +399,7 @@
                         Esta estrategia cuantitativa se basa en captar rebotes institucionales del precio en zonas de ineficiencia conocidas como <b>Fair Value Gaps (FVG)</b> o vacíos de liquidez. El motor rastrea el mercado en busca de <b>FVG semanales válidos</b> —aquellos que acompañan la tendencia principal confirmada por la alineación de sus medias móviles de 20 semanas— y monitoriza su mitigación progresiva sin que el vacío sea invalidado.
                     </p>
                     <p>
-                        Una vez que el precio penetra en el FVG semanal, el algoritmo hace zoom al <b>gráfico horario (1H)</b> para localizar el <b>Order Block (OB)</b> o último nivel estructural clave previo al extremo de mitigación. Las entradas se evalúan exclusivamente a <b>cierre de vela horaria</b>: solo cuando una vela de 1H cierra superando dicho nivel se confirma el giro. Además, se descartan o adaptan operaciones cuya distancia al Stop Loss supere el umbral máximo calculado según la volatilidad histórica de cada activo, así como rupturas con velas erráticas o de agotamiento climático.
+                        Una vez que el precio penetra en el FVG semanal, el algoritmo hace zoom al <b>gráfico horario (1H)</b> para localizar el <b>Order Block (OB)</b> o último nivel estructural clave previo al extremo de mitigación. Las entradas se evalúan exclusivamente a <b>cierre de vela horaria</b>: solo cuando una vela de 1H cierra superando dicho nivel se confirma el giro. Además, se descartan operaciones cuya distancia al Stop Loss supere el umbral máximo calculado según la volatilidad histórica de cada activo, así como rupturas con velas erráticas o de agotamiento climático.
                     </p>
                     <p>
                         Por defecto se establece un objetivo simétrico con <b>Ratio 1:1</b>, pero cuando convergen métricas de alta tracción temprana el sistema amplía automáticamente el recorrido a <span class="hl-emerald">Ratio 1.5:1 (Runner)</span>. Asimismo, se priorizan las <span class="hl-gold">entradas A+</span> —setups con características estadísticas de mayor tasa de acierto— en las que se asigna un porcentaje adicional de riesgo (<b>1.25x R</b>). Para eliminar el <i>slippage</i>, todas las entradas y salidas se ejecutan mediante <b>órdenes límite</b> situadas a una ligera distancia favorable respecto al cierre horario (cancelándose automáticamente si no se ejecutan en las <b>4 horas</b> siguientes).
@@ -424,81 +409,153 @@
                 <div class="pillars-grid">
                     <div class="pillar-card">
                         <h4>🗓️ Ventana Lunes – Miércoles</h4>
-                        <p>Se priorizan las rupturas tempranas entre lunes y miércoles (&le; 65h efectivas de mercado desde la mitigación), evitando abrir riesgo tardío expuesto a la incertidumbre del fin de semana.</p>
+                        <p>Solo se abren operaciones entre lunes y miércoles (&le; 65h desde el arranque semanal), evitando entrar jueves o viernes y quedar expuestos al azar de los <i>gaps</i> de fin de semana.</p>
                     </div>
                     <div class="pillar-card">
                         <h4>🛡️ Protocolo de Viernes y Break Even</h4>
-                        <p>Antes del cierre del viernes, las operaciones abiertas con flotante débil (&lt; +0.35R) se cierran para evitar el azar de los <i>gaps</i> del lunes; las fuertes (&ge; +0.35R) se protegen moviendo el Stop a Break Even.</p>
+                        <p>Antes del cierre del viernes, las operaciones abiertas con flotante débil (&lt; +0.35R) se cierran para liberar liquidez; las fuertes (&ge; +0.35R) se mantienen al lunes moviendo el Stop a Break Even.</p>
                     </div>
                     <div class="pillar-card">
                         <h4>🎯 Órdenes Límite Anti-Slippage</h4>
-                        <p>La orden de entrada se sitúa ligeramente por debajo del cierre horario en largos (o por encima en cortos) según el ATR. Si el precio se escapa sin tocarla en 4 velas de 1H, la orden queda anulada.</p>
+                        <p>La entrada se sitúa ligeramente por debajo del cierre horario en largos (o por encima en cortos) según el ATR. Si el precio no toca la orden en 4 velas de 1H, queda anulada.</p>
                     </div>
                     <div class="pillar-card">
                         <h4>⭐ Jerarquía A+ y Runners Dinámicos</h4>
-                        <p>Los setups con penetración limpia en el FVG, volumen relativo alto y distancia óptima en ATR reciben calificación A+ (mayor ponderación de R) o extienden su Take Profit en busca de mayor beneficio.</p>
+                        <p>Los setups con penetración limpia en el FVG, volumen relativo alto y distancia óptima en ATR reciben calificación A+ (1.25x R) o extienden su Take Profit a 1.5R.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ======================================================================= -->
-        <!-- BLOQUE 2: BACKTESTING DE LA ESTRATEGIA                                  -->
+        <!-- BLOQUE 2: BACKTESTING DE LA ESTRATEGIA (KPIs + CURVA R + SEMANAS/MESES) -->
         <!-- ======================================================================= -->
         <section class="section-block emerald-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Muestra Histórica Real Auditada (Incluyendo Gaps y Protocolo de Viernes)</span>
+                    <span class="section-eyebrow">Desempeño Histórico Real Auditado · Pasa el cursor sobre cualquier gráfica para inspeccionar</span>
                     <h2 class="section-title">📊 BACKTESTING DE LA ESTRATEGIA</h2>
                 </div>
-                <span class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">Datos Reales de Mercado</span>
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <span id="wk-pos-neg-badge" class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">-- sem positivas / -- negativas</span>
+                    <span id="mo-pos-neg-badge" class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">-- meses positivos / -- negativos</span>
+                </div>
             </div>
 
+            <!-- 9 INDICADORES BASE DEL ESTUDIO HISTÓRICO -->
             <div class="backtest-grid-9">
-                <div class="bt-stat-card" data-tip="Número total de semanas completas auditadas de forma continua en el estudio histórico.">
+                <div class="bt-stat-card" data-tip="Número total de semanas auditadas de forma continua en el histórico.">
                     <span>Histórico Estudiado</span>
                     <b id="bt-weeks">105 semanas</b>
                     <small>2 años completos de mercado</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Universo total de acciones de EE. UU. (NYSE / NASDAQ / AMEX) y Europa filtradas por liquidez y calidad de cotización.">
+                <div class="bt-stat-card" data-tip="Universo total de acciones de EE. UU. (NYSE / NASDAQ / AMEX) y Europa filtradas por liquidez y calidad.">
                     <span>Activos Rastreados</span>
                     <b id="bt-assets" style="color:var(--cyan);">6.254</b>
                     <small>Acciones líquidas US & EU</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Total de operaciones reales ejecutadas tras aplicar todos los filtros de tendencia, volatilidad, horario y ejecución Limit.">
+                <div class="bt-stat-card" data-tip="Total de operaciones reales ejecutadas entre lunes y miércoles (<= 65h) tras aplicar todos los filtros.">
                     <span>Operaciones Estudiadas</span>
-                    <b id="bt-trades">1.833</b>
+                    <b id="bt-trades">1.205</b>
                     <small id="bt-trades-sub">Muestra cerrada auditada</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Porcentaje real de operaciones ganadoras contemplando el objetivo base 1:1, las operaciones con ampliación de ratio (Runners 1.5R) y la gestión de los viernes.">
+                <div class="bt-stat-card" data-tip="Porcentaje real de operaciones ganadoras contemplando el objetivo base 1:1, las operaciones con ampliación de ratio (Runners 1.5R) y cierres de viernes.">
                     <span>Winrate Real</span>
-                    <b id="bt-winrate" style="color:var(--emerald);">62.5%</b>
-                    <small id="bt-wl-detail">Base 1:1 + Runners ampliados</small>
+                    <b id="bt-winrate" style="color:var(--emerald);">60.8%</b>
+                    <small id="bt-wl-detail">Base 1:1 + Runners 1.5R</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Suma total neta de Unidades de Riesgo (R) generadas durante las 105 semanas estudiadas, descontando pérdidas y gaps adversos.">
+                <div class="bt-stat-card" data-tip="Suma total neta de Unidades de Riesgo (R) generadas en el histórico (mostrando ponderación A+ 1.25x y base 1.0x).">
                     <span>Ganancia Neta Acumulada</span>
-                    <b id="bt-net-r" style="color:var(--alfa-gold-light);">+0.0 R</b>
-                    <small id="bt-exp-trade">Esperanza matemática por trade</small>
+                    <b id="bt-net-r" style="color:var(--alfa-gold-light);">+463.1 R</b>
+                    <small id="bt-exp-trade">Base 1.0x: +404.8 R</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Rendimiento mediano semanal en Unidades de Riesgo (R) a lo largo de las 105 semanas estudiadas.">
+                <div class="bt-stat-card" data-tip="Rendimiento mediano semanal en Unidades de Riesgo (R) a lo largo de todas las semanas estudiadas.">
                     <span>Ganancia Mediana Semanal</span>
-                    <b id="bt-median-wk-r" style="color:var(--emerald);">+0.00 R</b>
-                    <small id="bt-mean-wk-r">Media semanal: +0.00 R</small>
+                    <b id="bt-median-wk-r" style="color:var(--emerald);">+3.88 R</b>
+                    <small id="bt-mean-wk-r">Media semanal: +4.45 R</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Frecuencia semanal real de oportunidades válidas generadas por la estrategia durante las 105 semanas.">
+                <div class="bt-stat-card" data-tip="Frecuencia semanal real de oportunidades válidas generadas por la estrategia de lunes a miércoles.">
                     <span>Operaciones por Semana</span>
-                    <b id="bt-ops-wk">17.5 / sem</b>
+                    <b id="bt-ops-wk">11.6 / sem</b>
                     <small id="bt-ops-wk-sub">Mediana y rango semanal</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Mayor caída acumulada desde un máximo histórico (pico a valle) medida en Unidades de Riesgo (R) dentro de las 105 semanas.">
-                    <span>Drawdown Máximo (105 Sem)</span>
-                    <b id="bt-max-dd-r" style="color:var(--crimson);">-0.00 R</b>
-                    <small>Bache máximo histórico en R</small>
+                <div class="bt-stat-card" data-tip="Mayor caída acumulada desde un pico histórico hasta un valle medida en Unidades de Riesgo (R).">
+                    <span>Drawdown Máximo Histórico</span>
+                    <b id="bt-max-dd-r" style="color:var(--crimson);">-16.41 R</b>
+                    <small id="bt-max-dd-sub">Cierre semanal auditado</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Relación rentabilidad / volatilidad semanal anualizada obtenida sobre los retornos reales de las 105 semanas.">
+                <div class="bt-stat-card" data-tip="Relación rentabilidad / volatilidad semanal anualizada obtenida sobre los retornos reales del histórico.">
                     <span>Ratio de Sharpe</span>
-                    <b id="bt-sharpe" style="color:var(--cyan);">0.00</b>
+                    <b id="bt-sharpe" style="color:var(--cyan);">5.81</b>
                     <small>Consistencia ajustada a riesgo</small>
+                </div>
+            </div>
+
+            <!-- GRÁFICA ESTRELLA 1 (ANCHO COMPLETO): CURVA ACUMULADA DE UNIDADES R -->
+            <div class="card-panel" style="padding:16px 18px;">
+                <div class="card-header">
+                    <h3>📈 1. Curva Histórica de Unidades R Acumuladas (Ponderación A+ 1.25x vs. Base 1.0x)</h3>
+                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);">Pasa el cursor para inspeccionar el crecimiento acumulado semana a semana</span>
+                </div>
+                <div class="canvas-wrap" style="height:295px;">
+                    <canvas id="canvas-bt-equity"></canvas>
+                </div>
+            </div>
+
+            <!-- GRÁFICA 2 (ANCHO COMPLETO): BARRAS SEMANALES EN R -->
+            <div class="card-panel" style="padding:16px 18px;">
+                <div class="card-header">
+                    <h3>📊 2. Resultado Neto Semanal (en R) a lo largo de las Semanas Estudiadas</h3>
+                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);">Verde = Semana Positiva · Rojo = Semana Negativa</span>
+                </div>
+                <div class="canvas-wrap" style="height:245px;">
+                    <canvas id="canvas-weekly-bars"></canvas>
+                </div>
+            </div>
+
+            <!-- GRÁFICA 3 (ANCHO COMPLETO): NÚMERO DE OPERACIONES POR SEMANA -->
+            <div class="card-panel" style="padding:16px 18px;">
+                <div class="card-header">
+                    <h3>🔢 3. Volumen de Operaciones Válidas en cada Semana del Histórico</h3>
+                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);" id="lbl-avg-ops-chart">Media semanal: -- ops</span>
+                </div>
+                <div class="canvas-wrap" style="height:210px;">
+                    <canvas id="canvas-weekly-ops"></canvas>
+                </div>
+            </div>
+
+            <!-- GRÁFICA 4 + TABLA MENSUAL DEL BACKTESTING -->
+            <div class="two-col-grid">
+                <div class="card-panel" style="padding:16px 18px;">
+                    <div class="card-header">
+                        <h3>🗓️ 4. Desempeño Histórico Agrupado por Meses (Rs Netas / Mes)</h3>
+                        <span id="mo-winrate-pill" class="tag-pill">--% Meses en Positivo</span>
+                    </div>
+                    <div class="canvas-wrap" style="height:305px;">
+                        <canvas id="canvas-monthly-bars"></canvas>
+                    </div>
+                </div>
+
+                <div class="card-panel" style="padding:16px 18px;">
+                    <div class="card-header">
+                        <h3>📋 5. Tabla Histórica Mensual del Backtesting</h3>
+                        <span style="font-size:11px; color:var(--text-secondary); font-family:var(--font-mono);">Cierres mensuales reales en R</span>
+                    </div>
+                    <div class="scroll-table-box" style="max-height:305px;">
+                        <table class="quant-table">
+                            <thead>
+                                <tr>
+                                    <th>Mes</th>
+                                    <th data-tip="Operaciones válidas cerradas en ese mes.">Ops</th>
+                                    <th>W / L (WR%)</th>
+                                    <th data-tip="Suma mensual sin ponderación extra en A+ (1.0x).">R Base (1x)</th>
+                                    <th data-tip="Suma mensual aplicando 1.25x en entradas A+.">R Neta (1.25x)</th>
+                                    <th data-tip="Unidades R acumuladas desde el inicio del backtest hasta el cierre de ese mes.">R Acumulada</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-monthly-real"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
@@ -512,25 +569,25 @@
                     <span class="section-eyebrow">Interés Compuesto Controlado, Exposición Nominal & Apalancamiento</span>
                     <h2 class="section-title">🛡️ GESTIÓN DE RIESGO</h2>
                 </div>
-                <span class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">Crecimiento Exponencial vs. Lineal</span>
+                <span class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">Curva Exponencial vs. Recta Lineal</span>
             </div>
 
             <div class="risk-edu-grid">
                 <div class="prose-text">
                     <p>
-                        No es lo mismo arriesgar una cantidad fija de dinero en cada operación que adaptar dinámicamente tu riesgo a la evolución de tu cuenta. Si arriesgas siempre un importe constante (<b>0% de variación</b>), tu curva de ganancias crece como una línea recta; en cambio, al establecer un <b>% de Variación de R</b>, tu unidad de riesgo (<b>1R</b>) se incrementa proporcionalmente tras las semanas ganadoras y se reduce automáticamente durante las rachas perdedoras. Esto protege el capital en los baches y convierte una ventaja estadística constante en una <span class="hl-gold">curva de crecimiento exponencial</span>.
+                        No es lo mismo arriesgar una cantidad fija de dinero en cada operación que adaptar dinámicamente tu riesgo a la evolución de tu cuenta. Si arriesgas siempre un importe constante (<b>0% de variación</b>), tu curva de ganancias crece como una recta; en cambio, al establecer un <b>% de Variación de R</b>, tu unidad de riesgo (<b>1R</b>) sube proporcionalmente a medida que encadenas operaciones ganadoras y se reduce para protegerte cuando atraviesas una racha perdedora, transformando una ventaja estadística sólida en una <span class="hl-gold">curva de crecimiento exponencial</span>.
                     </p>
                     <p>
-                        Para diseñar un plan realista debes conjugar cinco variables: <b>tu capital inicial</b>, <b>tu unidad de riesgo inicial (1R)</b>, <b>las comisiones de tu bróker</b>, <b>el % de retiros</b> y <b>el número máximo de operaciones semanales</b> que estás dispuesto a asumir.
+                        Además de la variación de R, una correcta gestión de riesgo debe contemplar <b>las comisiones de tu bróker</b>, <b>tu capital inicial</b>, <b>tu unidad de riesgo inicial (1R)</b> y <b>el número máximo de operaciones por semana</b> que estás dispuesto a ejecutar.
                     </p>
                     <p>
-                        <b>¿Cuánto capital necesitas disponible en tu cuenta?</b> Con una distancia media al Stop Loss en el histórico del <b id="txt-sl-medio">3.05%</b> y tu riesgo actual de <b id="txt-r-ejemplo">$40</b> por operación, abrir una posición implica mover un capital nominal medio de <b id="txt-nominal-ejemplo">$1,311</b> (<span style="font-family:var(--font-mono); font-size:12px;">Capital Posición = 1R / %StopLoss</span>). Si planteas un tope de <b id="txt-maxops-ejemplo">15 operaciones semanales</b> (lo que supone llevar unas <b id="txt-sim-ejemplo">10 posiciones simultáneas</b> abiertas a mitad de semana), necesitarás disponer de ese capital nominal completo si operas al contado, o bien utilizar una cuenta con margen/apalancamiento manteniendo siempre un colchón holgado frente al Drawdown.
+                        <b>Cálculo del capital disponible requerido:</b> Con una distancia media al Stop Loss del <b id="txt-sl-medio">3.05%</b> y una unidad de riesgo de <b id="txt-r-ejemplo">$40</b>, cada operación requiere emplear de media un capital nominal de <b id="txt-nominal-ejemplo">$1,311</b> (<span style="font-family:var(--font-mono); font-size:12px;">Nominal = 1R / %StopLoss</span>). Si fijas un máximo de <b id="txt-maxops-ejemplo">15 operaciones semanales</b> (unas <b id="txt-sim-ejemplo">10 posiciones simultáneas</b> abiertas a mitad de semana), deberás disponer de ese capital completo si operas al contado, o bien emplear una cuenta con margen/apalancamiento calculando exactamente el colateral necesario.
                     </p>
                 </div>
 
                 <div class="capital-calc-showcase">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
-                        <span style="font-size:12px; font-weight:800; color:#fff;">🧮 Capital Requerido según tus Parámetros</span>
+                        <span style="font-size:12px; font-weight:800; color:#fff;">🧮 Capital Necesario según tu Configuración</span>
                         <span style="font-family:var(--font-mono); font-size:11px; color:var(--alfa-gold-light);" id="cap-req-params-lbl">1R = $40 · Tope 15 ops/sem</span>
                     </div>
 
@@ -539,24 +596,24 @@
                         <b id="cap-req-sl">3.05%</b>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Capital empleado de media por cada operación:</span>
+                        <span style="color:var(--text-secondary);">Capital medio empleado por operación:</span>
                         <b style="color:var(--alfa-gold-light);" id="cap-req-per-trade">$1,311 / trade</b>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Pico estimado de operaciones abiertas a la vez:</span>
+                        <span style="color:var(--text-secondary);">Posiciones simultáneas estimadas en semana tope:</span>
                         <b id="cap-req-concurrent">~10 simultáneas</b>
                     </div>
 
                     <div class="cap-compare-row">
                         <div class="cap-mode-box">
-                            <span>💵 Cuenta Contado (1:1 Sin Apalancar)</span>
+                            <span>💵 Al Contado (1:1 Sin Apalancar)</span>
                             <b style="color:#f8fafc;" id="cap-req-cash">$13,115</b>
-                            <small>Capital necesario en cuenta para cubrir el 100% del nominal sin margen.</small>
+                            <small>Fondos requeridos para cubrir el 100% del capital nominal sin apalancamiento.</small>
                         </div>
                         <div class="cap-mode-box" style="border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.05);">
-                            <span>⚡ Con Margen / Apalancamientoprudente</span>
+                            <span>⚡ Con Margen / Apalancamiento</span>
                             <b style="color:var(--emerald);" id="cap-req-margin">$1,381</b>
-                            <small>Colateral mínimo operativo (poder de compra ~9.5x) manteniendo el mismo riesgo 1R.</small>
+                            <small>Colateral mínimo requerido en bróker con margen (~9.5x) manteniendo idéntico riesgo 1R.</small>
                         </div>
                     </div>
                 </div>
@@ -564,98 +621,97 @@
         </section>
 
         <!-- ======================================================================= -->
-        <!-- BLOQUE 4: CONFIGURADOR DEL USUARIO + VIABILIDAD + MONTE CARLO 10.000    -->
+        <!-- BLOQUE 4: CONFIGURACIÓN PERSONAL + VIABILIDAD + MONTE CARLO 10.000      -->
         <!-- ======================================================================= -->
         <section class="section-block gold-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Personalización Operativa & Prueba de Estrés Estadística</span>
-                    <h2 class="section-title">⚙️ CONFIGURACIÓN PERSONAL & MONTE CARLO (10.000 ESCENARIOS)</h2>
+                    <span class="section-eyebrow">Tus Parámetros Operativos & Prueba de Estrés sobre 10.000 Escenarios</span>
+                    <h2 class="section-title">⚙️ TUS DATOS, VIABILIDAD DE FONDOS & MONTE CARLO</h2>
                 </div>
-                <span class="tag-pill">Ejecución Limit Predefinida · Muestra Base 105 Semanas</span>
+                <span class="tag-pill">Órdenes Límite Predefinidas · Base 105 Semanas</span>
             </div>
 
             <div class="lab-grid">
 
-                <!-- COLUMNA IZQUIERDA: DATOS DEL USUARIO Y ALERTA DE VIABILIDAD -->
+                <!-- COLUMNA IZQUIERDA: INPUTS DEL USUARIO + CUADRO DE VIABILIDAD -->
                 <div class="card-panel">
                     <div class="card-header">
-                        <h3 data-tip="Introduce tus cifras reales. El motor comprueba si tus fondos permiten abrir el máximo de operaciones semanales y simula 10.000 rutas en el rango de fechas elegido.">
-                            🎛️ Tus Datos y Reglas de Riesgo
+                        <h3 data-tip="Configura tus datos personales y el rango de fechas a evaluar. El motor verifica si tus fondos permiten abrir tu tope semanal de operaciones.">
+                            🎛️ Introduce tus Datos Operativos
                         </h3>
                     </div>
 
                     <div class="preset-row">
-                        <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Fijo (0% Variación R): Arriesgas siempre la misma cantidad fija por operación (curva lineal).">📏 Lineal (0%)</button>
-                        <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Compuesto Prudente: Riesgo inicial del 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
-                        <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Exponencial Dinámico: Riesgo inicial del 2% y variación del 2.5% semanal con techo de seguridad.">⚖️ Dinámico (2.5%)</button>
+                        <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Constante (0% Variación R): Misma cantidad fija por trade (curva lineal).">📏 Lineal (0%)</button>
+                        <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Prudente: Riesgo inicial 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
+                        <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Exponencial Dinámico: Riesgo inicial 2% y variación del 2.5% semanal.">⚖️ Dinámico (2.5%)</button>
                     </div>
 
                     <div class="inputs-grid">
                         <div class="field-box">
-                            <label data-tip="Capital real depositado en tu cuenta operativa en el Día 1.">Capital Inicial ($/€)</label>
+                            <label data-tip="Capital depositado en tu cuenta el Día 1.">Capital Inicial ($/€)</label>
                             <input type="number" id="inp-cap-ini" value="2000" step="250" min="200">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Dinero que arriesgas en tu primera operación (1R) si salta el Stop Loss.">Tu 1R Inicial ($/€)</label>
+                            <label data-tip="Dinero arriesgado en tu primera operación (1R).">Tu 1R Inicial ($/€)</label>
                             <input type="number" id="inp-r-ini" value="40" step="5" min="5">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Porcentaje en que sube o baja tu unidad 1R cada semana por cada +1R ganado o -1R perdido. Pon 0% para riesgo constante.">% Variación de R</label>
+                            <label data-tip="Porcentaje en que varía tu 1R por cada +1R ganado o -1R perdido. Pon 0% para riesgo fijo.">% Variación de R</label>
                             <input type="number" id="inp-var-r" value="1.5" step="0.5" min="0" max="6">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Capital tope hasta el que quieres hacer crecer tu cuenta antes de retirar el 100% de los beneficios excedentes.">Techo Cuenta ($/€)</label>
+                            <label data-tip="Saldo tope de cuenta a partir del cual retiras el 100% de los beneficios.">Techo Cuenta ($/€)</label>
                             <input type="number" id="inp-cap-top" value="25000" step="1000" min="1000">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta alcanza gran tamaño.">Tope 1R Máximo ($/€)</label>
+                            <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta crece.">Tope 1R Máximo ($/€)</label>
                             <input type="number" id="inp-r-max" value="500" step="50" min="50">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Número máximo de operaciones a la semana que estás dispuesto a ejecutar.">Máx Operaciones / Sem</label>
+                            <label data-tip="Tope máximo de operaciones semanales que deseas ejecutar.">Máx Operaciones / Sem</label>
                             <input type="number" id="inp-max-trades" value="15" step="1" min="1" max="30">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Porcentaje de las ganancias semanales que retiras a tu bolsillo mientras la cuenta aún está creciendo hacia su techo.">% Retiro en Crecimiento</label>
+                            <label data-tip="Porcentaje de ganancias semanales retirado antes de llegar al Techo de Cuenta.">% Retiro en Crecimiento</label>
                             <input type="number" id="inp-withdraw-growth" value="20" step="5" min="0" max="80">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Sueldo mensual neto en Euros (descontando IRPF) que te marcas como meta.">🎯 Sueldo Objetivo (€/mes)</label>
+                            <label data-tip="Meta personal de sueldo mensual neto en Euros (tras IRPF).">🎯 Sueldo Objetivo (€/mes)</label>
                             <input type="number" id="inp-target-salary" value="2500" step="250" min="500">
                         </div>
                         <div class="field-box" style="grid-column: span 2;">
-                            <label data-tip="Comisión de compra/venta por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
+                            <label data-tip="Comisión total por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
                             <input type="number" id="inp-comm-usd" value="0.00" step="0.25" min="0" max="15">
                         </div>
 
-                        <!-- RANGO DE FECHAS EDITABLE PARA EL MONTE CARLO -->
                         <div class="field-box">
-                            <label data-tip="Fecha de inicio del horizonte temporal para evaluar los 10.000 escenarios de Monte Carlo.">📅 Fecha Inicio Monte Carlo</label>
+                            <label data-tip="Fecha inicial del horizonte a evaluar en el Monte Carlo.">📅 Fecha Inicio Rango</label>
                             <input type="date" id="inp-mc-start">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Fecha final del horizonte temporal para evaluar el riesgo de ruina, llegada al techo de cuenta y percentiles.">📅 Fecha Fin Monte Carlo</label>
+                            <label data-tip="Fecha final del horizonte a evaluar en el Monte Carlo.">📅 Fecha Fin Rango</label>
                             <input type="date" id="inp-mc-end">
                         </div>
                     </div>
 
-                    <!-- CUADRO RESUMEN DE VIABILIDAD DE FONDOS -->
+                    <!-- AVISO RESUMEN DE VIABILIDAD DE FONDOS -->
                     <div class="viability-alert-box" id="viability-box">
                         <div style="font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:6px;">
-                            <span style="color:var(--cyan);">🏦 Diagnóstico de Fondos Disponibles</span>
+                            <span style="color:var(--cyan);">🏦 ¿Puedo abrir mi tope de operaciones?</span>
                             <span id="collat-status-badge" style="color:var(--emerald);">✔ VIABLE CON MARGEN</span>
                         </div>
                         <div class="collateral-row">
-                            <span style="color:var(--text-secondary);">Tope deseado vs. Ejecutable Día 1:</span>
+                            <span style="color:var(--text-secondary);">Operaciones ejecutables Día 1:</span>
                             <b id="collat-qf-min" style="color:var(--alfa-gold-light);">15 de 15 ops / sem</b>
                         </div>
                         <div class="collateral-row">
-                            <span style="color:var(--text-secondary);">Posiciones abiertas a la vez soportadas:</span>
-                            <b id="collat-sim-trades">14 simultáneas</b>
+                            <span style="color:var(--text-secondary);">Posiciones simultáneas soportadas:</span>
+                            <b id="collat-sim-trades">14 abiertas a la vez</b>
                         </div>
                         <div class="collateral-row">
-                            <span style="color:var(--text-secondary);">Capital medio por posición (SL 3.05%):</span>
+                            <span style="color:var(--text-secondary);">Nominal medio por operación:</span>
                             <b id="collat-bp-ini">$1,311 / op</b>
                         </div>
                         <div id="collat-warning-text" style="font-size:11px; color:#e2e8f0; border-top:1px solid rgba(255,255,255,0.08); padding-top:6px; line-height:1.48;"></div>
@@ -665,43 +721,41 @@
                 <!-- COLUMNA DERECHA: RESUMEN MONTE CARLO + PERCENTILES DD + TABLA -->
                 <div class="card-panel">
                     <div class="card-header">
-                        <h3 data-tip="Simulación de 10.000 caminos aleatorios muestreando las 105 semanas reales en el rango de fechas indicado y respetando el margen disponible de tu cuenta.">
+                        <h3 data-tip="Resultados estadísticos tras simular 10.000 trayectorias aleatorias en el rango de fechas seleccionado.">
                             🎲 Cuadro Resumen Monte Carlo (10.000 Escenarios)
                         </h3>
                         <span id="mc-header-sub" style="font-family:var(--font-mono); font-size:11.5px; color:var(--alfa-gold-light);">Horizonte: 105 semanas</span>
                     </div>
 
-                    <!-- 5 MÉTRICAS CLAVE SOLICITADAS EN EL CUADRO RESUMEN -->
                     <div class="kpi-row-5">
-                        <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Porcentaje de los 10.000 escenarios en los que la cuenta perdió el 70% o más de su capital inicial.">
+                        <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Probabilidad de perder el 70% o más del capital inicial en los 10.000 escenarios.">
                             <span>💀 Riesgo Quemar Cuenta</span>
                             <b id="mc-ruin-prob" style="color:var(--emerald);">0.00%</b>
                             <small id="mc-ruin-sub">0 de 10.000 rutas</small>
                         </div>
-                        <div class="kpi-card" data-tip="Número mediano de semanas necesarias para alcanzar el Techo de Cuenta configurado.">
+                        <div class="kpi-card" data-tip="Número mediano de semanas necesarias para alcanzar el Techo de Cuenta.">
                             <span>🏔️ Semanas a Techo Cuenta</span>
                             <b id="mc-time-cap" style="color:var(--alfa-gold-light);">-- sem</b>
                             <small id="mc-time-salary-sub">Sueldo obj.: -- sem</small>
                         </div>
-                        <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros acumulados) al concluir el rango de fechas.">
+                        <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros) al cierre del rango de fechas.">
                             <span>🏆 Patrimonio Mediano (P50)</span>
                             <b id="mc-wealth-p50" style="color:var(--cyan);">$0</b>
                             <small id="mc-ret-p50">Retirado: $0</small>
                         </div>
-                        <div class="kpi-card" data-tip="Caída máxima porcentual desde el pico de patrimonio en el escenario mediano (P50) y en estrés severo (P90).">
+                        <div class="kpi-card" data-tip="Drawdown máximo porcentual en el escenario mediano (P50) y en percentil 90.">
                             <span>📉 Drawdown Máx (P50)</span>
                             <b id="mc-dd-p50" style="color:var(--crimson);">-0.0%</b>
                             <small id="mc-dd-p90">Estrés P90: -0.0%</small>
                         </div>
-                        <div class="kpi-card" data-tip="Patrimonio total final en el 5% peor de las 10.000 simulaciones (Percentil 5%).">
+                        <div class="kpi-card" data-tip="Patrimonio final en el 5% peor de los 10.000 escenarios simulados.">
                             <span>🛡️ Peor Escenario (P5%)</span>
                             <b id="mc-wealth-p05" style="color:#facc15;">$0</b>
                             <small id="mc-prob-profit">Rentables: 100%</small>
                         </div>
                     </div>
 
-                    <!-- BANDA DE DRAWDOWN MÁXIMO EN LOS DIFERENTES PERCENTILES -->
-                    <div class="dd-percentiles-strip" data-tip="Distribución completa del Drawdown Máximo porcentual sufrido a lo largo de los 10.000 escenarios, desde el 10% más suave (P10) hasta el 5% más adverso (P95).">
+                    <div class="dd-percentiles-strip" data-tip="Drawdown máximo sufrido en tu cuenta a través de todos los percentiles de los 10.000 escenarios de Monte Carlo.">
                         <div style="font-size:11px; font-weight:800; color:#f8fafc; text-transform:uppercase;">
                             📐 Drawdown Máx. por Percentiles:
                         </div>
@@ -715,28 +769,26 @@
                         </div>
                     </div>
 
-                    <!-- ABANICO DE CURVAS MONTE CARLO -->
-                    <div class="canvas-wrap" data-tip="Curvas de Patrimonio Total (Saldo en Cuenta + Dinero Retirado) sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo punteado = Techo de Cuenta.">
+                    <div class="canvas-wrap" data-tip="Abanico de Patrimonio Total sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo punteado = Techo de Cuenta.">
                         <canvas id="canvas-mc"></canvas>
                     </div>
 
-                    <!-- TABLA DE PERCENTILES MONTE CARLO -->
                     <div>
                         <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">
-                            📊 Tabla Desglosada de Escenarios Monte Carlo (<span id="lbl-weeks-table">105</span> semanas simuladas entre las fechas elegidas)
+                            📊 Tabla de Escenarios Monte Carlo (<span id="lbl-weeks-table">105</span> semanas simuladas)
                         </div>
                         <div style="overflow-x:auto;">
                             <table class="quant-table">
                                 <thead>
                                     <tr>
-                                        <th data-tip="Percentil estadístico sobre los 10.000 escenarios.">Escenario Monte Carlo</th>
-                                        <th data-tip="Saldo líquido que permanece en la cuenta operativa.">Saldo Cuenta</th>
-                                        <th data-tip="Dinero total retirado a tu bolsillo.">Retirado</th>
-                                        <th data-tip="Suma de Saldo en Cuenta + Dinero Retirado.">Patrimonio Total</th>
-                                        <th data-tip="Multiplicador sobre tu capital inicial.">Múltiplo</th>
-                                        <th data-tip="Tamaño alcanzado por tu unidad de riesgo 1R.">1R Final</th>
-                                        <th data-tip="Flujo mensual neto estimado en Euros (descontando 21% IRPF) con ese 1R.">Sueldo Neto (€/mes)</th>
-                                        <th data-tip="Drawdown máximo asociado al percentil.">Max DD</th>
+                                        <th>Escenario Monte Carlo</th>
+                                        <th>Saldo Cuenta</th>
+                                        <th>Retirado</th>
+                                        <th>Patrimonio Total</th>
+                                        <th>Múltiplo</th>
+                                        <th>1R Final</th>
+                                        <th>Sueldo Neto (€/mes)</th>
+                                        <th>Max DD</th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbody-mc-percentiles"></tbody>
@@ -753,7 +805,7 @@
         <section class="section-block emerald-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Proyección Temporal Personalizada desde Hoy</span>
+                    <span class="section-eyebrow">Proyección Temporal Personalizada desde la Fecha de Hoy</span>
                     <h2 class="section-title">🚀 SIMULADOR DE DESEMPEÑO A FUTURO</h2>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -773,7 +825,7 @@
             <div class="two-col-grid">
                 <div>
                     <div style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">
-                        📈 Curva Proyectada de Patrimonio Total (Pasa el cursor sobre la curva para ver fecha e importe)
+                        📈 Curva Proyectada de Patrimonio Total (Pasa el cursor para ver fecha e importe)
                     </div>
                     <div class="canvas-wrap" style="height:265px;">
                         <canvas id="canvas-future-curve"></canvas>
@@ -781,7 +833,7 @@
                 </div>
                 <div>
                     <div style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">
-                        🗓️ Hoja de Ruta por Hitos (Escenario Mediano P50)
+                        🗓️ Hoja de Ruta por Plazos (Escenario Mediano P50)
                     </div>
                     <div class="scroll-table-box" style="max-height:265px;">
                         <table class="quant-table">
@@ -804,86 +856,12 @@
         </section>
 
         <!-- ======================================================================= -->
-        <!-- BLOQUE 6: HISTÓRICO DE LAS 105 SEMANAS Y DESGLOSE MENSUAL               -->
-        <!-- ======================================================================= -->
-        <section class="section-block gold-top">
-            <div class="section-header">
-                <div class="section-title-group">
-                    <span class="section-eyebrow">Auditoría Temporal Interactiva · Pasa el cursor por cada barra para inspeccionar</span>
-                    <h2 class="section-title">📅 HISTÓRICO DE LAS 105 SEMANAS Y CIERRES MENSUALES</h2>
-                </div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <span id="wk-pos-neg-badge" class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">-- sem positivas / -- negativas</span>
-                    <span id="mo-pos-neg-badge" class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">-- meses positivos / -- negativos</span>
-                </div>
-            </div>
-
-            <!-- GRÁFICA 1 ANCHO COMPLETO: RESULTADO EN R DE LAS 105 SEMANAS -->
-            <div class="card-panel" style="padding:16px 18px;">
-                <div class="card-header">
-                    <h3>📊 1. Resultado Neto (en R) de cada una de las 105 Semanas Estudiadas</h3>
-                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);">Pasa el ratón sobre cualquier barra para ver Fecha, Semana y Rs</span>
-                </div>
-                <div class="canvas-wrap" style="height:260px;">
-                    <canvas id="canvas-weekly-bars"></canvas>
-                </div>
-            </div>
-
-            <!-- GRÁFICA 2 ANCHO COMPLETO: NÚMERO DE OPERACIONES POR SEMANA -->
-            <div class="card-panel" style="padding:16px 18px;">
-                <div class="card-header">
-                    <h3>📈 2. Volumen de Operaciones en cada una de las 105 Semanas Estudiadas</h3>
-                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);" id="lbl-avg-ops-chart">Media semanal: -- ops</span>
-                </div>
-                <div class="canvas-wrap" style="height:220px;">
-                    <canvas id="canvas-weekly-ops"></canvas>
-                </div>
-            </div>
-
-            <!-- GRÁFICA 3 + TABLA MENSUAL: RENDIMIENTO AGRUPADO MES A MES -->
-            <div class="two-col-grid">
-                <div class="card-panel" style="padding:16px 18px;">
-                    <div class="card-header">
-                        <h3>🗓️ 3. Balance Neto Mensual (Rs por Mes)</h3>
-                        <span id="mo-winrate-pill" class="tag-pill">--% Meses en Positivo</span>
-                    </div>
-                    <div class="canvas-wrap" style="height:310px;">
-                        <canvas id="canvas-monthly-bars"></canvas>
-                    </div>
-                </div>
-
-                <div class="card-panel" style="padding:16px 18px;">
-                    <div class="card-header">
-                        <h3>📋 4. Tabla Histórica Mensual con tu Configuración</h3>
-                        <span style="font-size:11px; color:var(--text-secondary); font-family:var(--font-mono);">Simulación real mes a mes</span>
-                    </div>
-                    <div class="scroll-table-box" style="max-height:310px;">
-                        <table class="quant-table">
-                            <thead>
-                                <tr>
-                                    <th>Mes</th>
-                                    <th data-tip="Operaciones ejecutadas en el mes según tu límite y margen.">Ops</th>
-                                    <th>W / L (WR%)</th>
-                                    <th>R Neto Mes</th>
-                                    <th>Tu 1R ($)</th>
-                                    <th>Retirado Acum.</th>
-                                    <th>Patrimonio ($)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tbody-monthly-real"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ======================================================================= -->
-        <!-- BLOQUE 7: FUNCIONAMIENTO DEL BOT DE TELEGRAM                            -->
+        <!-- BLOQUE 6: FUNCIONAMIENTO OPERATIVO DEL BOT DE TELEGRAM                  -->
         <!-- ======================================================================= -->
         <section class="section-block cyan-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Ejecución Guiada en Tiempo Real & Auditoría Interactiva</span>
+                    <span class="section-eyebrow">Alertas Horarias, Gestión de Viernes & Seguimiento de Cartera</span>
                     <h2 class="section-title">🤖 FUNCIONAMIENTO OPERATIVO DEL BOT DE TELEGRAM</h2>
                 </div>
                 <button class="btn-gold" onclick="abrirModalCuenta()">🔗 Vincular mi Telegram ahora</button>
@@ -891,7 +869,7 @@
 
             <div class="prose-text">
                 <p>
-                    Para que puedas seguir la estrategia sin tener que vigilar miles de gráficos frente a la pantalla, nuestro motor en la nube se conecta directamente con el <b>Bot de Telegram de ALFA Strategy</b> y adapta cada cálculo en tiempo real a tu capital, tu unidad <b>1R</b> y tu límite semanal guardados en tu cuenta:
+                    El motor cuantitativo está conectado en tiempo real con el <b>Bot de Telegram de ALFA Strategy</b> para guiarte paso a paso durante la sesión sin necesidad de vigilar gráficos, personalizando automáticamente los cálculos según tu unidad <b>1R</b> y tus parámetros guardados:
                 </p>
             </div>
 
@@ -899,22 +877,22 @@
                 <div class="bot-step-card">
                     <span class="bot-step-num">01</span>
                     <h4>⏳ Pre-Alerta antes del Cierre 1H</h4>
-                    <p>Entre 5 y 10 minutos antes de que cierre cada vela horaria (minutos <code>:20</code> y <code>:50</code>), el bot te avisa de las operaciones que están a punto de activarse. Así puedes ir abriendo tu bróker con calma y localizando el activo sin prisas.</p>
+                    <p>Minutos antes de que cierre cada vela horaria (<code>:20</code> y <code>:50</code>), recibes un aviso previo con las acciones que están a punto de confirmar entrada para que puedas ir localizando el ticker con calma en tu bróker.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">02</span>
-                    <h4>🚨 Señal Exacta + Gráfico Doble</h4>
-                    <p>Al cerrar la vela horaria confirmando la ruptura (<code>:01</code> y <code>:31</code>), recibes la orden activada con lámina HD (<code>1WK + 1H</code>), distintivo <b>Setup A+</b> o <b>Runner</b>, precio exacto de Entrada Limit, Take Profit, Stop Loss y el <b>número exacto de acciones</b> para tu 1R.</p>
+                    <h4>🚨 Señal Activada + Tamaño Exacto</h4>
+                    <p>Al cerrar la vela horaria confirmando ruptura (<code>:01</code> y <code>:31</code>), el bot te envía la lámina doble HD (<code>1WK + 1H</code>), precio exacto de Entrada Limit, Take Profit, Stop Loss y el <b>número exacto de acciones</b> acorde a tu 1R actual.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">03</span>
-                    <h4>🔔 Notificación de los Viernes</h4>
-                    <p>Cada viernes antes del cierre de Wall Street, el bot audita las operaciones abiertas de la semana y te envía la lista exacta de cuáles debes <b>cerrar a mercado</b> (&lt; +0.35R) y cuáles mantener al lunes moviendo el Stop Loss a <b>Break Even</b>.</p>
+                    <h4>🔔 Protocolo de Cierre de Viernes</h4>
+                    <p>Los viernes antes del cierre de mercado recibes una notificación indicando exactamente qué posiciones abiertas debes <b>cerrar a mercado</b> (&lt; +0.35R) y cuáles mantener al lunes moviendo el Stop Loss a <b>Break Even</b>.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">04</span>
-                    <h4>📈 Seguimiento de Cuenta e Histórico</h4>
-                    <p>Selecciona directamente desde el propio bot en qué operaciones has entrado para llevar el seguimiento real de tu cuenta. Además, puedes consultar el balance de la semana anterior, simular <b>X semanas hacia atrás</b> o inspeccionar con gráficos cualquier semana concreta de las 105 estudiadas.</p>
+                    <h4>📈 Tu R Dinámica y Auditoría Pasada</h4>
+                    <p>Marca desde el propio bot las operaciones en las que has entrado para que actualice tu unidad <b>1R</b> y tus futuros tamaños de posición conforme cierren los trades. Además, consulta el balance de la semana anterior, de <b>X semanas atrás</b> o de cualquier semana concreta de las 105 estudiadas.</p>
                 </div>
             </div>
         </section>
@@ -922,7 +900,7 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!-- MODAL DE ALTA / LOGIN / RECUPERAR CONTRASEÑA EN SUPABASE + TELEGRAM     -->
+    <!-- MODAL DE CUENTA SUPABASE + RECUPERAR CONTRASEÑA + TELEGRAM              -->
     <!-- ======================================================================= -->
     <div id="modal-cuenta" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; padding:16px;">
         <div class="card-panel" style="width:100%; max-width:445px; border-color:var(--alfa-gold);">
@@ -931,26 +909,25 @@
                 <span style="cursor:pointer; font-size:16px; color:var(--text-secondary);" onclick="cerrarModalCuenta()">✕</span>
             </div>
             <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.5;">
-                Crea tu cuenta o inicia sesión para guardar tu configuración de riesgo en <b>Supabase</b> y vincular tu <b>Telegram Chat ID</b> (envía <code>/id</code> al bot de Telegram para obtener tu código).
+                Crea tu cuenta o inicia sesión para guardar tu configuración en <b>Supabase</b> y vincular tu <b>Telegram Chat ID</b> (escribe <code>/id</code> al bot en Telegram para obtenerlo).
             </div>
 
             <div class="field-box">
                 <label>Correo Electrónico</label>
                 <input type="email" id="sync-email" placeholder="tu@email.com">
             </div>
-            <div class="field-box" id="box-sync-pass">
+            <div class="field-box">
                 <label>Contraseña</label>
                 <input type="password" id="sync-pass" placeholder="Mínimo 6 caracteres">
             </div>
             <div style="display:flex; justify-content:flex-end; margin-top:-6px;">
                 <button type="button" class="link-subtle-btn" onclick="recuperarContrasenaSupabase()">
-                    🔑 ¿Olvidaste tu contraseña? Enviar enlace de recuperación
+                    🔑 ¿Olvidaste tu contraseña? Recuperar contraseña por email
                 </button>
             </div>
 
-            <!-- CAJA OCULTA QUE SE ACTIVA AUTOMÁTICAMENTE SI EL USUARIO VIENE DEL EMAIL DE RECUPERACIÓN -->
             <div id="box-new-password" style="display:none; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.4); border-radius:9px; padding:12px; flex-direction:column; gap:8px;">
-                <div style="font-size:11.5px; font-weight:700; color:var(--emerald);">🔐 Enlace de recuperación verificado: Escribe tu nueva contraseña</div>
+                <div style="font-size:11.5px; font-weight:700; color:var(--emerald);">🔐 Enlace verificado: Introduce tu nueva contraseña</div>
                 <input type="password" id="sync-new-pass" placeholder="Nueva contraseña (mín. 6 caracteres)" style="background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); border-radius:7px; padding:8px 10px; font-family:var(--font-mono); font-size:12px;">
                 <button class="btn-gold" style="justify-content:center;" onclick="guardarNuevaContrasenaRecuperada()">💾 Guardar Nueva Contraseña</button>
             </div>
@@ -1003,7 +980,7 @@
         let datasetYaVieneConLimit015 = false;
         let semanasOrdenadas = [];
 
-        // TOOLTIPS DE AYUDA CON RETARDO DE 1 SEGUNDO
+        // TOOLTIPS DE AYUDA CON RETARDO
         let tipTimer = null;
         const tipEl = document.getElementById("custom-tooltip");
         const chartTipEl = document.getElementById("chart-hover-tooltip");
@@ -1126,19 +1103,19 @@
                 const d = new Date(ts * 1000);
                 const wKey = `${d.getUTCFullYear()}-W${String((w % 52) + 1).padStart(2, "0")}`;
                 const lbl = `${String(d.getUTCDate()).padStart(2, "0")}/${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(d.getUTCFullYear()).slice(-2)} (W${String((w % 52) + 1).padStart(2, "0")})`;
-                const nTr = 15 + (w % 6);
+                const nTr = 10 + (w % 6);
                 for (let k = 1; k <= nTr; k++) {
                     const seed = Math.sin(w * 31 + k * 17) * 10000;
                     const rnd = seed - Math.floor(seed);
-                    const isWin = rnd < 0.625 ? 1 : 0;
-                    const isRun = rnd > 0.78 ? 1 : 0;
+                    const isWin = rnd < 0.61 ? 1 : 0;
+                    const isRun = rnd > 0.88 ? 1 : 0;
                     const gapTp = isWin && rnd < 0.08 ? 1 : 0;
                     const gapSl = !isWin && rnd > 0.94 ? 1 : 0;
                     trades.push({
                         w: wKey, lbl, ts, ord: k,
                         reg: k % 6 === 0 ? "EU" : "US",
                         dir: k % 3 === 0 ? "S" : "L",
-                        ap: rnd > 0.65 ? 1 : 0,
+                        ap: rnd > 0.48 ? 1 : 0,
                         run: isRun,
                         sl_pct: 3.05,
                         mae: isWin ? 24.0 : 100.0,
@@ -1154,7 +1131,7 @@
         }
 
         // =========================================================================
-        // BLOQUE 2: CÁLCULO PURO DE LAS BASES DEL BACKTESTING (105 SEMANAS REALES)
+        // BLOQUE 2: CÁLCULO PURO DE LAS BASES DEL BACKTESTING (HISTÓRICO REAL)
         // =========================================================================
         function renderizarBacktestingBaseEstrategia() {
             if (!semanasOrdenadas.length) return;
@@ -1283,7 +1260,7 @@
         function ejecutarSimulacionCompleta() {
             if (!semanasOrdenadas.length) return;
             const cfg = leerConfigUsuario();
-            const semanasSlice = semanasOrdenadas; // Estudio histórico completo de las 105 semanas
+            const semanasSlice = semanasOrdenadas;
             const commR = cfg.commUsd / Math.max(cfg.rIni, 10.0);
 
             document.getElementById("lbl-weeks-table").innerText = cfg.mcWeeks;
@@ -1860,7 +1837,7 @@
         }
 
         // =========================================================================
-        // BLOQUE 6: GRÁFICAS FULL-WIDTH 105 SEMANAS + AGRUPACIÓN Y TABLA MENSUAL
+        // BLOQUE 6: GRÁFICAS FULL-WIDTH HISTÓRICO + AGRUPACIÓN Y TABLA MENSUAL
         // =========================================================================
         function extraerClaveYEtiquetaMes(sem) {
             if (sem.ts && sem.ts > 100000000) {
@@ -1895,13 +1872,12 @@
             document.getElementById("wk-pos-neg-badge").innerText =
                 `${semPos} sem positivas (${pctSemPos}%) · ${semNeg} negativas`;
 
-            // Enriquecer con fecha corta para ejes
             const semanasConFecha = semanasEvaluadas.map(s => {
                 const infoF = extraerClaveYEtiquetaMes(s);
                 return { ...s, monthKey: infoF.key, monthLabel: infoF.label, shortDate: infoF.shortDate };
             });
 
-            // 1. Dibujar Gráfica Full-Width de Rs por Semana (105 semanas)
+            // 1. Gráfica Full-Width de Rs por Semana
             dibujarGraficoBarrasInteractivo({
                 canvasId: "canvas-weekly-bars",
                 items: semanasConFecha,
@@ -1918,7 +1894,7 @@
                 }
             });
 
-            // 2. Dibujar Gráfica Full-Width de Nº de Operaciones por Semana
+            // 2. Gráfica Full-Width de Nº de Operaciones por Semana
             const mediaOps = semanasConFecha.reduce((a, b) => a + b.totalDisponibles, 0) / Math.max(1, semanasConFecha.length);
             document.getElementById("lbl-avg-ops-chart").innerText = `Media estudiada: ${mediaOps.toFixed(1)} ops/sem`;
 
@@ -1937,7 +1913,7 @@
                     `Ejecutadas con tu cupo: <b>${it.trades} ops</b> (${it.wins}W / ${it.losses}L)`
             });
 
-            // 3. Agrupar las 105 semanas en Meses
+            // 3. Agrupar el histórico en Meses
             const mapaMeses = {};
             const mesesOrden = [];
             semanasConFecha.forEach(s => {
@@ -1991,7 +1967,7 @@
                 }
             });
 
-            // 4. Rellenar Tabla Mensual (de más reciente a más antiguo)
+            // 4. Tabla Mensual (de más reciente a más antiguo)
             const tbodyMo = document.getElementById("tbody-monthly-real");
             tbodyMo.innerHTML = "";
             mesesOrden.slice().reverse().forEach(m => {
@@ -2094,7 +2070,7 @@
                     ctx.fillRect(x, topY, barW, barH);
                 });
 
-                // Etiquetas del Eje X (fechas espaciadas limpiamente)
+                // Etiquetas del Eje X
                 ctx.fillStyle = "#94a3b8";
                 const maxTicks = Math.max(4, Math.floor(pw / 88));
                 const stride = Math.max(1, Math.ceil(items.length / maxTicks));
@@ -2166,6 +2142,7 @@
             document.getElementById("sync-chat-id").value = localStorage.getItem("alfa_pub_chat_id") || "";
             document.getElementById("modal-cuenta").style.display = "flex";
         }
+
         function cerrarModalCuenta() {
             document.getElementById("modal-cuenta").style.display = "none";
         }
@@ -2260,7 +2237,7 @@
                 entry_offset_pct: -6.0,
                 sl_buffer_pct: 0.20,
                 max_limit_atr: 3.5,
-                max_hours: 96,
+                max_hours: 65,
                 aplus_mult: 1.25,
                 current_risk_r: cfg.rIni,
                 var_r_pct: cfg.varRPct * 100,
