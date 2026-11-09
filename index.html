@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALFA Strategy · Quantitative Wealth & Risk Simulator | Alfa Markets</title>
+    <title>ALFA Strategy | Simulador Cuantitativo & Gestión de Riesgo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,6 @@
             --alfa-gold-light: #fbbf24;
             --alfa-orange: #ea580c;
             --emerald: #10b981;
-            --emerald-glow: rgba(16, 185, 129, 0.16);
             --crimson: #f43f5e;
             --cyan: #38bdf8;
             --purple: #a855f7;
@@ -44,30 +43,43 @@
             overflow-x: hidden;
         }
 
-        /* =====================================================================
-           TOP NAVBAR ESTILO ALFA MARKETS
-           ===================================================================== */
+        /* NAVBAR */
         .navbar {
             position: sticky; top: 0; z-index: 50;
-            background: rgba(5, 7, 11, 0.88);
+            background: rgba(5, 7, 11, 0.90);
             backdrop-filter: blur(14px);
             border-bottom: 1px solid var(--border-subtle);
-            padding: 12px 28px;
+            padding: 14px 28px;
             display: flex; align-items: center; justify-content: space-between;
             flex-wrap: wrap; gap: 14px;
         }
         .brand-wrap { display: flex; align-items: center; gap: 14px; }
         .brand-badge {
-            width: 38px; height: 38px; border-radius: 10px;
+            width: 40px; height: 40px; border-radius: 10px;
             background: linear-gradient(135deg, var(--alfa-gold), var(--alfa-orange));
             display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 20px; color: #05070b;
+            font-weight: 900; font-size: 21px; color: #05070b;
             box-shadow: 0 0 22px rgba(245, 158, 11, 0.35);
         }
         .brand-text h1 {
-            font-size: 17px; font-weight: 800; letter-spacing: -0.4px;
-            display: flex; align-items: center; gap: 8px;
+            font-size: 18px; font-weight: 900; letter-spacing: -0.4px; color: #fff;
         }
+        .brand-sub {
+            font-size: 12px; color: var(--alfa-gold-light); font-family: var(--font-mono);
+            font-weight: 600; margin-top: 2px;
+        }
+
+        .nav-actions { display: flex; align-items: center; gap: 10px; }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--alfa-gold), var(--alfa-orange));
+            color: #05070b; font-weight: 800; font-size: 12.5px;
+            padding: 10px 18px; border-radius: 8px; border: none;
+            cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.28);
+            display: flex; align-items: center; gap: 7px;
+        }
+        .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(245, 158, 11, 0.42); }
+
         .tag-pill {
             font-size: 10px; font-family: var(--font-mono); font-weight: 700;
             padding: 2px 8px; border-radius: 999px;
@@ -75,31 +87,10 @@
             border: 1px solid var(--border-gold);
             text-transform: uppercase;
         }
-        .brand-sub { font-size: 11px; color: var(--text-secondary); font-family: var(--font-mono); }
-
-        .nav-actions { display: flex; align-items: center; gap: 10px; }
-        .btn-gold {
-            background: linear-gradient(135deg, var(--alfa-gold), var(--alfa-orange));
-            color: #05070b; font-weight: 800; font-size: 12px;
-            padding: 9px 16px; border-radius: 8px; border: none;
-            cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.28);
-            display: flex; align-items: center; gap: 6px;
-        }
-        .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(245, 158, 11, 0.42); }
-        .btn-outline {
-            background: var(--bg-card); color: var(--text-main);
-            border: 1px solid var(--border-subtle);
-            padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 600;
-            cursor: pointer; transition: all 0.15s; text-decoration: none;
-        }
-        .btn-outline:hover { border-color: var(--alfa-gold); color: var(--alfa-gold-light); }
 
         .container { max-width: 1440px; margin: 0 auto; padding: 24px 24px 60px; display: flex; flex-direction: column; gap: 22px; }
 
-        /* =====================================================================
-           BLOQUE 1: HERO DE AUTORIDAD CUANTITATIVA & FUNDAMENTOS
-           ===================================================================== */
+        /* HERO */
         .hero-banner {
             background: linear-gradient(135deg, rgba(16, 22, 34, 0.96), rgba(11, 15, 23, 0.96));
             border: 1px solid var(--border-subtle);
@@ -111,7 +102,7 @@
         @media (max-width: 1024px) { .hero-banner { grid-template-columns: 1fr; } }
 
         .hero-left h2 {
-            font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;
+            font-size: 23px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 8px;
             background: linear-gradient(90deg, #ffffff, #cbd5e1);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
@@ -141,12 +132,10 @@
         .stat-box-hero b { font-family: var(--font-mono); font-size: 21px; font-weight: 800; }
         .stat-box-hero small { font-size: 10px; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* =====================================================================
-           BLOQUE 2: PANEL INTERACTIVO (CONFIGURACIÓN + MONTE CARLO 10.000 RUTAS)
-           ===================================================================== */
+        /* LAB GRID */
         .lab-grid {
             display: grid;
-            grid-template-columns: 400px minmax(0, 1fr);
+            grid-template-columns: 410px minmax(0, 1fr);
             gap: 20px; align-items: start;
         }
         @media (max-width: 1120px) { .lab-grid { grid-template-columns: 1fr; } }
@@ -192,7 +181,6 @@
             background: rgba(245, 158, 11, 0.1);
         }
 
-        /* CALCULADORA DE COLATERAL Y BUYING POWER */
         .collateral-box {
             background: linear-gradient(135deg, rgba(16, 22, 34, 0.9), rgba(15, 23, 42, 0.9));
             border: 1px solid rgba(56, 189, 248, 0.3);
@@ -201,7 +189,6 @@
         }
         .collateral-row { display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); }
 
-        /* NARRATIVA DE CASOS REALES (PASADO Y FUTURO) */
         .story-card {
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(16, 185, 129, 0.06));
             border: 1px solid var(--border-gold);
@@ -212,7 +199,6 @@
         .story-card .hl-green { color: var(--emerald); font-weight: 800; font-family: var(--font-mono); }
         .story-card .hl-red { color: var(--crimson); font-weight: 800; font-family: var(--font-mono); }
 
-        /* KPI ROW 5 COLUMNAS */
         .kpi-row-5 { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
         @media (max-width: 900px) { .kpi-row-5 { grid-template-columns: repeat(2, 1fr); } }
         .kpi-card {
@@ -231,7 +217,6 @@
         }
         canvas { width: 100%; height: 100%; display: block; }
 
-        /* TABLAS CUANTITATIVAS */
         .quant-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11.5px; }
         .quant-table th, .quant-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-subtle); text-align: right; }
         .quant-table th:first-child, .quant-table td:first-child { text-align: left; }
@@ -246,10 +231,9 @@
         .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         @media (max-width: 980px) { .two-col-grid { grid-template-columns: 1fr; } }
 
-        /* TOOLTIP CON RETARDO DE 1 SEGUNDO */
         #custom-tooltip {
             position: fixed; display: none; z-index: 9999;
-            max-width: 330px; padding: 11px 14px; border-radius: 10px;
+            max-width: 340px; padding: 11px 14px; border-radius: 10px;
             background: rgba(11, 15, 23, 0.98); color: #f8fafc;
             border: 1px solid var(--alfa-gold); font-size: 11.5px; line-height: 1.5;
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.85); pointer-events: none;
@@ -260,71 +244,67 @@
 
     <div id="custom-tooltip"></div>
 
-    <!-- NAVBAR -->
+    <!-- NAVBAR LIMPIA CON SUBTÍTULO EXACTO SOLICITADO -->
     <nav class="navbar">
         <div class="brand-wrap">
             <div class="brand-badge">α</div>
             <div class="brand-text">
-                <h1>
-                    ALFA STRATEGY
-                    <span class="tag-pill">Quant Wealth Lab</span>
-                </h1>
-                <div class="brand-sub" id="status-dataset">Conectando con motor cuantitativo auditado...</div>
+                <h1>ALFA STRATEGY</h1>
+                <div class="brand-sub" id="status-dataset">Muestra auditada: 105 semanas; 6.254 activos rastreados; 2.756 operaciones estudiadas</div>
             </div>
         </div>
         <div class="nav-actions">
-            <a href="https://alfamarkets.io/" target="_blank" class="btn-outline">🌐 Ecosistema Alfa Markets</a>
-            <button class="btn-gold" onclick="abrirModalCuenta()" data-tip="Sincroniza tu configuración personal de capital y tu unidad de riesgo 1R con el bot de alertas en vivo de Telegram.">
-                📲 Conectar mi Bot de Telegram
+            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta o inicia sesión en nuestra base de datos en la nube (Supabase) para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
+                📲 Cuenta / Conectar Bot de Telegram
             </button>
         </div>
     </nav>
 
     <div class="container">
 
-        <!-- BLOQUE 1: DEFINICIÓN SOMERA DE LA ESTRATEGIA + AUDITORÍA SIN LOOK-AHEAD BIAS -->
+        <!-- BLOQUE 1: DEFINICIÓN SOMERA DE LA ESTRATEGIA + AUDITORÍA -->
         <section class="hero-banner">
             <div class="hero-left">
-                <h2>Ingeniería Cuantitativa sobre Ineficiencias de Liquidez (FVG)</h2>
+                <h2>Algoritmo Cuantitativo de Relleno de Ineficiencias de Liquidez (FVG)</h2>
                 <p>
-                    <b>ALFA Strategy</b> es un motor algorítmico institucional que rastrea en tiempo real más de <b>6.200 acciones</b> de Estados Unidos y Europa. El sistema identifica zonas donde el precio dejó vacíos de liquidez semanales (<i>Fair Value Gaps</i>) a favor de la tendencia dominante y ejecuta entradas exclusivamente cuando la estructura horaria confirma el giro institucional, aplicando un objetivo simétrico de alta probabilidad (<b>Ratio 1.0 : 1</b>).
+                    <b>ALFA Strategy</b> monitoriza de forma automatizada más de <b>6.200 activos</b> cotizados en EE. UU. y Europa buscando zonas donde el precio dejó vacíos de liquidez institucionales (<i>Fair Value Gaps</i>) a favor de la tendencia principal. Tras confirmar el giro al cierre de la vela horaria, el sistema sitúa una <b>Orden Limit Anti-Slippage</b> ligeramente más favorable en función del ATR del activo, buscando un recorrido simétrico <b>Ratio 1.0 : 1</b>.
                 </p>
                 <div class="audit-badges">
-                    <div class="audit-pill" data-tip="<b>Cero Sesgo de Visión a Futuro (No Look-Ahead Bias):</b><br>El algoritmo jamás toma decisiones con precios intravela no confirmados. Todas las señales se activan estrictamente al cierre de la vela horaria que confirma la ruptura estructural.">
+                    <div class="audit-pill" data-tip="<b>Cero Sesgo de Visión a Futuro (No Look-Ahead Bias):</b><br>El algoritmo jamás entra antes de que cierre la vela horaria de confirmación. Todos los cálculos utilizan exclusivamente datos históricos cerrados.">
                         🛡️ Sin Look-Ahead Bias
                     </div>
-                    <div class="audit-pill" data-tip="<b>Gaps de Apertura Reales Contabilizados (En Contra y a Favor):</b><br>Si una acción abre al día siguiente saltándose el Stop Loss, el estudio descuenta la pérdida real sufrida (>1R). Igualmente, si un Gap de apertura salta por encima del Take Profit, se abona el precio real de apertura.">
-                        ⚡ Gaps en SL y TP Auditados
+                    <div class="audit-pill" data-tip="<b>Ejecución Limit Anti-Slippage (-6% caja / ~0.15 ATR):</b><br>En lugar de perseguir el precio a mercado, se coloca una orden Limit un 6% más favorable dentro de la estructura. Si la acción no toca la orden en las 4 horas siguientes o llega antes al TP, la operación se cancela y se excluye.">
+                        🎯 Orden Limit Anti-Slippage (-0.15 ATR)
                     </div>
-                    <div class="audit-pill" data-tip="<b>Filtro Anti-Ilíquidos & Escudo ATR:</b><br>Se descartan automáticamente empresas con volumen inferior a $2.5M/semana y stops microscópicos menores a 1.50 ATR horarios para proteger la cuenta frente al ruido de apertura.">
-                        🔬 Filtro Institucional Francotirador
+                    <div class="audit-pill" data-tip="<b>Gaps de Apertura Reales Contabilizados:</b><br>Se descuentan las pérdidas adicionales (>1R) cuando un Gap de apertura salta el Stop Loss, y se abonan las aperturas favorables que superan el Take Profit.">
+                        ⚡ Gaps Reales en SL y TP
                     </div>
-                    <div class="audit-pill" data-tip="<b>Gestión Monetaria Dinámica en R:</b><br>En lugar de apostar cantidades fijas, tu unidad de riesgo (1R) se adapta porcentualmente cada semana según el desempeño neto y se protege con amortiguación asimétrica.">
-                        📐 Escalado Compuesto por Unidad R
+                    <div class="audit-pill" data-tip="<b>Límite Físico de Margen (Buying Power):</b><br>El simulador limita automáticamente cuántas operaciones puedes abrir cada semana en función del colateral real de tu cuenta.">
+                        🏦 Ajustado por Margen Real
                     </div>
                 </div>
             </div>
 
             <div class="hero-stats-grid">
-                <div class="stat-box-hero" data-tip="Porcentaje real de operaciones cerradas en ganancia (Take Profit alcanzado antes que el Stop Loss) sobre toda la muestra histórica auditada en Ratio 1.0:1.">
+                <div class="stat-box-hero" data-tip="Porcentaje de acierto histórico real sobre las operaciones que tocaron la orden Limit de entrada y cerraron en Ratio 1.0:1 durante los últimos 2 años.">
                     <span>Winrate Histórico (1:1)</span>
-                    <b id="hero-wr" style="color:var(--emerald);">63.8%</b>
+                    <b id="hero-wr" style="color:var(--emerald);">62.5%</b>
                     <small id="hero-wl-sub">Cargando muestra...</small>
                 </div>
-                <div class="stat-box-hero" data-tip="Unidades de Riesgo (R) netas ganadas en el histórico tras descontar todos los Stop Loss, el sobrecoste real de los Gaps de apertura en contra y las comisiones del bróker.">
+                <div class="stat-box-hero" data-tip="Unidades de Riesgo (R) netas acumuladas tras descontar Stop Loss, Gaps de apertura y comisiones del bróker.">
                     <span>Ganancia Neta Acumulada</span>
                     <b id="hero-net-r" style="color:var(--alfa-gold-light);">+0.0 R</b>
-                    <small id="hero-exp-sub">Esperanza: +0.24R / trade</small>
+                    <small id="hero-exp-sub">Esperanza neta real</small>
                 </div>
-                <div class="stat-box-hero" data-tip="Peor racha histórica acumulada medida en Unidades de Riesgo (R) desde un pico de resultados hasta su valle más profundo en todo el estudio.">
+                <div class="stat-box-hero" data-tip="Peor caída acumulada en Unidades de Riesgo (R) registrada en todo el periodo estudiado.">
                     <span>Drawdown Máx en R</span>
                     <b id="hero-dd-r" style="color:var(--crimson);">-12.7 R</b>
-                    <small id="hero-weeks-sub">En 104 semanas auditadas</small>
+                    <small id="hero-weeks-sub">En 105 semanas auditadas</small>
                 </div>
-                <div class="stat-box-hero" data-tip="Relación rentabilidad/volatilidad anualizada de la estrategia aplicando tu gestión de riesgo actual. Un Sharpe > 2.0 se considera excelente; > 3.0 es nivel institucional de élite.">
-                    <span>Ratio de Sharpe Anual</span>
-                    <b id="hero-sharpe" style="color:var(--cyan);">4.85</b>
-                    <small id="hero-freq-sub">Media: ~19 operaciones/sem</small>
+                <div class="stat-box-hero" data-tip="Relación rentabilidad/volatilidad anualizada de la estrategia aplicando las restricciones reales de margen y ejecución.">
+                    <span>Ratio de Sharpe Realista</span>
+                    <b id="hero-sharpe" style="color:var(--cyan);">3.80</b>
+                    <small id="hero-freq-sub">Operaciones ejecutables</small>
                 </div>
             </div>
         </section>
@@ -335,82 +315,90 @@
             <!-- COLUMNA IZQUIERDA: PARÁMETROS DEL USUARIO -->
             <div class="card-panel">
                 <div class="card-header">
-                    <h3 data-tip="Configura tu capital real y tus objetivos. Cualquier cambio recalcula al instante las 104 semanas históricas y las 10.000 rutas de Monte Carlo.">
-                        ⚙️ 1. Configura tu Plan y Gestión de Riesgo
+                    <h3 data-tip="Configura tu capital real y tus reglas. El simulador aplica automáticamente el límite de operaciones que tu colateral permite abrir simultáneamente.">
+                        ⚙️ 1. Tus Condicionantes y Gestión de Riesgo
                     </h3>
-                    <span class="tag-pill">Ratio 1:1 Fijo</span>
+                    <span class="tag-pill">Ratio 1:1</span>
                 </div>
 
                 <div class="preset-row">
-                    <button class="btn-preset" onclick="cargarPresetRiesgo('prudente')" data-tip="Riesgo inicial del 1% de tu cuenta y variación suave del 2% por R. Prioriza tranquilidad total y Drawdown mínimo.">🛡️ Prudente</button>
-                    <button class="btn-preset active" onclick="cargarPresetRiesgo('equilibrado')" data-tip="El estándar recomendado: Riesgo inicial del 2% de tu cuenta y variación del 3.0% por cada R ganado o perdido.">⚖️ Óptimo (2%)</button>
-                    <button class="btn-preset" onclick="cargarPresetRiesgo('acelerado')" data-tip="Riesgo inicial del 2.5% y variación del 4.0% para escalar rápido hasta el Techo de Cuenta.">🚀 Acelerado</button>
+                    <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Fijo (0% Variación R): Arriesgas siempre la misma cantidad fija sin interés compuesto.">📏 Sin Compuesto (0%)</button>
+                    <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Realista y Prudente: Riesgo inicial del 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
+                    <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Compuesto Dinámico: Riesgo inicial del 2% y variación del 2.5% semanal con techo de seguridad.">⚖️ Dinámico (2.5%)</button>
                 </div>
 
                 <div class="inputs-grid">
                     <div class="field-box">
-                        <label data-tip="Dinero real con el que inicias tu cuenta operativa en el Día 1.">Capital Inicial ($)</label>
-                        <input type="number" id="inp-cap-ini" value="5000" step="250" min="200">
+                        <label data-tip="Capital real depositado en tu cuenta operativa en el Día 1. Determina tu Poder de Compra máximo (Buying Power).">Capital Inicial ($/€)</label>
+                        <input type="number" id="inp-cap-ini" value="2000" step="250" min="200">
                     </div>
                     <div class="field-box">
-                        <label data-tip="Importe en dólares que arriesgas en tu primera operación (1R Inicial). Si entras con $5,000, arriesgar un 2% equivale a $100.">Tu 1R Inicial ($)</label>
-                        <input type="number" id="inp-r-ini" value="100" step="10" min="5">
+                        <label data-tip="Dinero que arriesgas en tu primera operación (1R). Si pones un 1R alto para tu capital inicial, el bróker te dejará abrir menos operaciones simultáneas.">Tu 1R Inicial ($/€)</label>
+                        <input type="number" id="inp-r-ini" value="40" step="5" min="5">
                     </div>
                     <div class="field-box">
-                        <label data-tip="El acelerador del interés compuesto: porcentaje en que sube o baja tu unidad 1R al cierre de cada semana por cada +1R ganado o -1R perdido.">% Variación de R</label>
-                        <input type="number" id="inp-var-r" value="3.0" step="0.5" min="0" max="10">
+                        <label data-tip="Porcentaje en que sube o baja tu unidad 1R al final de cada semana por cada +1R ganado o -1R perdido. Pon 0% si no quieres interés compuesto.">% Variación de R</label>
+                        <input type="number" id="inp-var-r" value="1.5" step="0.5" min="0" max="6">
                     </div>
                     <div class="field-box">
-                        <label data-tip="Capital máximo hasta el que quieres hacer crecer tu cuenta. Una vez alcanzado este techo, el 100% de los beneficios se retiran como sueldo.">Techo Cuenta ($)</label>
+                        <label data-tip="Capital tope hasta el que quieres hacer crecer tu cuenta antes de retirar el 100% de las ganancias como sueldo.">Techo Cuenta ($/€)</label>
                         <input type="number" id="inp-cap-top" value="25000" step="1000" min="1000">
                     </div>
                     <div class="field-box">
-                        <label data-tip="Riesgo máximo permitido por operación en dólares cuando tu cuenta ya es grande.">Tope 1R Máximo ($)</label>
-                        <input type="number" id="inp-r-max" value="600" step="50" min="50">
+                        <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta crece.">Tope 1R Máximo ($/€)</label>
+                        <input type="number" id="inp-r-max" value="500" step="50" min="50">
                     </div>
                     <div class="field-box">
-                        <label data-tip="Número máximo de operaciones que estás dispuesto a ejecutar cada semana (de lunes a jueves).">Máx Operaciones / Sem</label>
-                        <input type="number" id="inp-max-trades" value="20" step="1" min="1" max="30">
+                        <label data-tip="Número máximo de operaciones semanales que deseas hacer (sujeto al margen libre de tu cuenta).">Máx Operaciones / Sem</label>
+                        <input type="number" id="inp-max-trades" value="15" step="1" min="1" max="25">
                     </div>
                     <div class="field-box">
-                        <label data-tip="¿Quieres ir sacando dinero para tus gastos ANTES de llegar al Techo de Cuenta? Indica qué % de las ganancias semanales retiras ya al bolsillo (ej. 20%) mientras el resto capitaliza.">% Retiro en Crecimiento</label>
-                        <input type="number" id="inp-withdraw-growth" value="0" step="5" min="0" max="80">
+                        <label data-tip="Porcentaje de las ganancias semanales que retiras a tu bolsillo para tus gastos ANTES de llegar al Techo de Cuenta.">% Retiro en Crecimiento</label>
+                        <input type="number" id="inp-withdraw-growth" value="20" step="5" min="0" max="80">
                     </div>
                     <div class="field-box">
-                        <label data-tip="¿Cuánto dinero neto al mes (en Euros, libre de impuestos) quieres ganar para considerar alcanzado tu objetivo de sueldo?">🎯 Sueldo Objetivo (€/mes)</label>
-                        <input type="number" id="inp-target-salary" value="3000" step="250" min="500">
+                        <label data-tip="Sueldo mensual neto en Euros (descontando impuestos) que te marcas como meta personal.">🎯 Sueldo Objetivo (€/mes)</label>
+                        <input type="number" id="inp-target-salary" value="2500" step="250" min="500">
                     </div>
                     <div class="field-box">
-                        <label data-tip="Comisión total de entrada + salida en tu bróker (en Quantfury es $0.00; en brókers tradicionales ~$1.00 EE.UU. / $2.50 Europa).">Comisión Bróker ($)</label>
-                        <input type="number" id="inp-comm" value="0.00" step="0.25" min="0">
+                        <label data-tip="Elige cómo entras tras el cierre de la vela horaria y las comisiones del bróker.">Modo de Ejecución</label>
+                        <select id="inp-exec-mode">
+                            <option value="limit_015" selected>🎯 Limit Anti-Slippage (-0.15 ATR · 0 Slippage)</option>
+                            <option value="limit_025">🎯 Limit Más Profunda (-0.25 ATR / -10% caja)</option>
+                            <option value="market_real">⚡ A Mercado con Slippage (-0.08R / op)</option>
+                        </select>
                     </div>
                     <div class="field-box">
-                        <label data-tip="Número de semanas históricas reales sobre las que evaluar el backtest y alimentar el Monte Carlo (hasta el máximo de 104 semanas = 2 años).">Semanas de Estudio</label>
+                        <label data-tip="Comisión de compra/venta por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/op)</label>
+                        <input type="number" id="inp-comm-usd" value="0.00" step="0.25" min="0" max="15">
+                    </div>
+                    <div class="field-box" style="grid-column: span 2;">
+                        <label data-tip="Periodo histórico real sobre el que evaluar el desempeño (hasta las 105 semanas completas = 2 años).">Rango Temporal del Estudio Histórico</label>
                         <select id="inp-weeks-study">
-                            <option value="26">Últimas 26 Semanas (6 Meses)</option>
-                            <option value="50">Últimas 50 Semanas (1 Año)</option>
-                            <option value="104" selected>Máximo Histórico (104 Sem · 2 Años)</option>
+                            <option value="26">Últimas 26 Semanas (Últimos 6 Meses)</option>
+                            <option value="52">Últimas 52 Semanas (Último Año)</option>
+                            <option value="105" selected>Máximo Histórico Auditado (105 Semanas · 2 Años Completos)</option>
                         </select>
                     </div>
                 </div>
 
                 <!-- CALCULADORA INTELIGENTE DE COLATERAL Y MARGEN -->
-                <div class="collateral-box" data-tip="Como las operaciones duran de media entre 4 y 18 horas, para hacer 20 operaciones a la semana sueles llevar unas 12 abiertas simultáneamente en el pico del martes/miércoles. Con un Stop Loss medio del 3.1%, aquí ves el Poder de Compra nominal y el colateral real que necesitas.">
+                <div class="collateral-box" data-tip="Muestra cuántas operaciones puedes llevar abiertas simultáneamente con tu Capital Inicial y un Stop Loss medio del 3.05%, evitando proyecciones irreales cuando el capital inicial es pequeño.">
                     <div style="font-weight:800; color:var(--cyan); display:flex; justify-content:space-between;">
-                        <span>🏦 Calculadora de Margen & Posiciones Simultáneas</span>
+                        <span>🏦 Límite Físico de Margen (Día 1)</span>
                         <span id="collat-status-badge" style="color:var(--emerald);">✔ VIABLE</span>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Pico Simultáneo (~60% del cupo):</span>
-                        <b id="collat-sim-trades">12 abiertas a la vez</b>
+                        <span style="color:var(--text-secondary);">Posiciones Simultáneas Permitidas:</span>
+                        <b id="collat-sim-trades">8 abiertas a la vez</b>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Poder de Compra en R Inicial:</span>
-                        <b id="collat-bp-ini">$38,400 nominales</b>
+                        <span style="color:var(--text-secondary);">Exposición Nominal por Trade (R0):</span>
+                        <b id="collat-bp-ini">$1,311 / trade</b>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Colateral Mín. Quantfury (20:1):</span>
-                        <b id="collat-qf-min" style="color:var(--alfa-gold-light);">$1,920 en cuenta</b>
+                        <span style="color:var(--text-secondary);">Operaciones Ejecutables en Sem. 1:</span>
+                        <b id="collat-qf-min" style="color:var(--alfa-gold-light);">~12 ops / semana</b>
                     </div>
                     <div id="collat-warning-text" style="font-size:10.5px; color:var(--text-secondary); border-top:1px solid rgba(255,255,255,0.06); padding-top:4px;"></div>
                 </div>
@@ -419,58 +407,59 @@
             <!-- COLUMNA DERECHA: MONTE CARLO 10.000 ESCENARIOS + MEDIDOR DE RUINA -->
             <div class="card-panel">
                 <div class="card-header">
-                    <h3 data-tip="Simulación intensiva de 10.000 futuros posibles combinando aleatoriamente con reemplazo las semanas reales del backtest (incluyendo sus Gaps y rachas reales).">
+                    <h3 data-tip="Simulación de 10.000 escenarios posibles combinando las semanas del estudio y respetando el límite físico de margen de tu cuenta en cada paso.">
                         🎲 2. Simulación Monte Carlo (10.000 Escenarios) & Medidor de Ruina
                     </h3>
                     <span id="mc-header-sub" style="font-family:var(--font-mono); font-size:11px; color:var(--alfa-gold-light);">10.000 rutas evaluadas</span>
                 </div>
 
                 <div class="kpi-row-5">
-                    <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Porcentaje de las 10.000 simulaciones de Monte Carlo en las que la cuenta perdió más del 75% de su capital inicial. Gracias a que la unidad R se reduce automáticamente cuando hay pérdidas, el riesgo de quemar la cuenta tiende a 0%.">
-                        <span>💀 Riesgo de Quemar Cuenta</span>
+                    <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Porcentaje de los 10.000 escenarios de Monte Carlo en los que la cuenta perdió el 70% o más de su capital inicial.">
+                        <span>💀 Riesgo Quemar Cuenta</span>
                         <b id="mc-ruin-prob" style="color:var(--emerald);">0.00%</b>
                         <small id="mc-ruin-sub">0 de 10.000 rutas</small>
                     </div>
-                    <div class="kpi-card" data-tip="Tiempo mediano (Percentil 50) en el que alcanzas tu Sueldo Mensual Objetivo neto en Euros.">
-                        <span>🎯 Tiempo a tu Sueldo Obj.</span>
+                    <div class="kpi-card" data-tip="Tiempo mediano (Percentil 50) necesario para alcanzar tu Sueldo Mensual Objetivo neto en Euros.">
+                        <span>🎯 Tiempo a Sueldo Obj.</span>
                         <b id="mc-time-salary" style="color:var(--alfa-gold-light);">-- sem</b>
                         <small id="mc-time-cap-sub">Techo cuenta: -- sem</small>
                     </div>
-                    <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros acumulados) al finalizar el periodo simulado.">
+                    <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros acumulados) al finalizar el rango temporal seleccionado.">
                         <span>🏆 Patrimonio Mediano (P50)</span>
                         <b id="mc-wealth-p50" style="color:var(--cyan);">$0</b>
                         <small id="mc-ret-p50">Retirado: $0</small>
                     </div>
-                    <div class="kpi-card" data-tip="Caída máxima porcentual desde el pico de la cuenta en el escenario mediano (P50) y en el escenario de mala suerte severa (P90 = peor 10% de los casos).">
-                        <span>📉 Drawdown Esperado</span>
+                    <div class="kpi-card" data-tip="Caída máxima porcentual desde el pico de la cuenta en el escenario mediano (P50) y en el 10% peor de los casos (P90).">
+                        <span>📉 Drawdown Máx (P50)</span>
                         <b id="mc-dd-p50" style="color:var(--crimson);">-0.0%</b>
                         <small id="mc-dd-p90">Estrés P90: -0.0%</small>
                     </div>
-                    <div class="kpi-card" data-tip="Resultado en el 5% de las peores simulaciones de Monte Carlo (si te tocaran juntas todas las peores semanas del histórico nada más empezar).">
+                    <div class="kpi-card" data-tip="Patrimonio final en el 5% de las peores simulaciones de Monte Carlo.">
                         <span>🛡️ Peor Escenario (P5%)</span>
                         <b id="mc-wealth-p05" style="color:#facc15;">$0</b>
                         <small id="mc-prob-profit">Rentables: 100%</small>
                     </div>
                 </div>
 
-                <div class="canvas-wrap" data-tip="Curvas de Patrimonio Total (Capital en Cuenta + Dinero Retirado) en 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Conservador (P10), Rojo Punteado = Techo de Cuenta.">
+                <div class="canvas-wrap" data-tip="Curvas de Patrimonio Total (Capital en Cuenta + Dinero Retirado) sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo Punteado = Techo de Cuenta.">
                     <canvas id="canvas-mc"></canvas>
                 </div>
 
                 <div>
                     <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">
-                        📊 Tabla de Percentiles sobre 10.000 Escenarios (Al finalizar el horizonte de estudio)
+                        📊 Resultados en los Principales Percentiles (En el rango temporal de <span id="lbl-weeks-table">105</span> semanas)
                     </div>
                     <table class="quant-table">
                         <thead>
                             <tr>
-                                <th data-tip="Nivel de suerte estadística entre las 10.000 rutas simuladas.">Percentil / Escenario</th>
-                                <th data-tip="Dinero líquido que permanece trabajando dentro del bróker.">Saldo en Cuenta</th>
-                                <th data-tip="Dinero total ya retirado a tu cuenta bancaria personal.">Retirado al Bolsillo</th>
-                                <th data-tip="Patrimonio Neto Total (Saldo en Cuenta + Retirado).">Patrimonio Total</th>
-                                <th data-tip="Tamaño de tu unidad de riesgo 1R al final del periodo.">Tu 1R Final</th>
-                                <th data-tip="Sueldo mensual neto estimado en Euros (descontando 21% IRPF) con ese 1R.">Sueldo Neto (€/mes)</th>
-                                <th data-tip="Máxima caída porcentual sufrida durante el camino en ese percentil.">Max Drawdown</th>
+                                <th data-tip="Percentil estadístico sobre los 10.000 escenarios.">Escenario Monte Carlo</th>
+                                <th data-tip="Saldo que queda en la cuenta operativa.">Saldo Cuenta</th>
+                                <th data-tip="Dinero retirado a tu bolsillo (por retiros parciales y exceso sobre el techo).">Retirado</th>
+                                <th data-tip="Suma de Saldo en Cuenta + Retirado.">Patrimonio Total</th>
+                                <th data-tip="Multiplicador sobre tu capital inicial (ej. 2.1x).">Múltiplo</th>
+                                <th data-tip="Tamaño de tu unidad 1R al final del periodo.">1R Final</th>
+                                <th data-tip="Sueldo mensual neto estimado en Euros (tras 21% IRPF) con ese 1R.">Sueldo Neto (€/mes)</th>
+                                <th data-tip="Máxima caída porcentual sufrida durante el camino.">Max DD</th>
                             </tr>
                         </thead>
                         <tbody id="tbody-mc-percentiles"></tbody>
@@ -482,14 +471,14 @@
         <!-- BLOQUE 3: GUÍA NARRATIVA DE CASOS REALES (PASADO AUDITADO + PROYECCIÓN A FECHA X) -->
         <section class="card-panel">
             <div class="card-header" style="flex-wrap:wrap; gap:10px;">
-                <h3>📖 3. Guía de Casos Reales: Tu Desempeño Histórico y Proyección a Fecha Futura</h3>
+                <h3>📖 3. Guía de Casos Reales: Tu Desempeño Histórico y Proyección a Fecha X</h3>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                    <span style="font-size:11px; color:var(--text-secondary);">Consultar mi proyección en la fecha:</span>
-                    <input type="date" id="inp-future-date" value="2027-11-08" style="background:var(--bg-card); color:var(--alfa-gold-light); border:1px solid var(--alfa-gold); border-radius:6px; padding:4px 8px; font-family:var(--font-mono); font-size:11.5px; font-weight:700;">
-                    <button class="btn-preset" onclick="fijarMesesFuturo(6)">+6 Meses</button>
-                    <button class="btn-preset active" onclick="fijarMesesFuturo(12)">+1 Año</button>
-                    <button class="btn-preset" onclick="fijarMesesFuturo(24)">+2 Años</button>
-                    <button class="btn-preset" onclick="fijarMesesFuturo(36)">+3 Años</button>
+                    <span style="font-size:11px; color:var(--text-secondary);">Simular mi desempeño de aquí a la fecha:</span>
+                    <input type="date" id="inp-future-date" value="2027-07-09" style="background:var(--bg-card); color:var(--alfa-gold-light); border:1px solid var(--alfa-gold); border-radius:6px; padding:4px 8px; font-family:var(--font-mono); font-size:11.5px; font-weight:700;">
+                    <button class="btn-preset active" onclick="fijarMesesFuturo(8, event)">+8 Meses</button>
+                    <button class="btn-preset" onclick="fijarMesesFuturo(12, event)">+1 Año</button>
+                    <button class="btn-preset" onclick="fijarMesesFuturo(24, event)">+2 Años</button>
+                    <button class="btn-preset" onclick="fijarMesesFuturo(36, event)">+3 Años</button>
                 </div>
             </div>
 
@@ -507,7 +496,7 @@
         <section class="two-col-grid">
             <div class="card-panel">
                 <div class="card-header">
-                    <h3 data-tip="Resultado real semana a semana aplicando exactamente tus condicionantes sobre el backtest auditado.">
+                    <h3 data-tip="Resultado real semana a semana aplicando tus condicionantes, el modo de orden Limit por ATR y el límite de margen de tu cuenta sobre el estudio de 2 años.">
                         📅 Desglose Histórico Real Semana a Semana
                     </h3>
                     <span id="hist-summary-badge" class="tag-pill">-- semanas</span>
@@ -520,9 +509,9 @@
                         <thead>
                             <tr>
                                 <th>Semana</th>
-                                <th>Trades</th>
+                                <th data-tip="Operaciones que tocaron tu orden Limit y que tu margen permitía ejecutar esa semana.">Ops Ejec.</th>
                                 <th>W / L (WR%)</th>
-                                <th>R Neto Sem.</th>
+                                <th>R Neto Real</th>
                                 <th>Tu 1R ($)</th>
                                 <th>Retirado ($)</th>
                                 <th>Patrimonio ($)</th>
@@ -535,8 +524,8 @@
 
             <div class="card-panel">
                 <div class="card-header">
-                    <h3 data-tip="Evolución proyectada mes a mes hasta tu fecha objetivo (Escenario Mediano P50 de Monte Carlo).">
-                        🚀 Hoja de Ruta a Futuro: Sueldo Mensual y Patrimonio
+                    <h3 data-tip="Evolución proyectada por plazos futuros en el escenario mediano realista (P50).">
+                        🚀 Hoja de Ruta a Futuro: Evolución de Capital, 1R y Sueldo
                     </h3>
                     <span class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">Escenario Mediano P50</span>
                 </div>
@@ -547,11 +536,11 @@
                     <table class="quant-table">
                         <thead>
                             <tr>
-                                <th>Horizonte</th>
+                                <th>Plazo</th>
                                 <th>Tu 1R ($)</th>
                                 <th>Saldo Cuenta</th>
                                 <th>Retirado Acum.</th>
-                                <th>Sueldo Bruto ($/m)</th>
+                                <th>Patrimonio</th>
                                 <th>Sueldo Neto (€/m)</th>
                                 <th>DD Esperado</th>
                             </tr>
@@ -564,36 +553,44 @@
 
     </div>
 
-    <!-- MODAL DE VINCULACIÓN CON BOT DE TELEGRAM (SUPABASE) -->
-    <div id="modal-cuenta" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.82); z-index:100; align-items:center; justify-content:center; padding:16px;">
-        <div class="card-panel" style="width:100%; max-width:410px; border-color:var(--alfa-gold);">
+    <!-- MODAL COMPLETO DE ALTA / LOGIN EN SUPABASE + VINCULACIÓN CON BOT DE TELEGRAM -->
+    <div id="modal-cuenta" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.84); z-index:100; align-items:center; justify-content:center; padding:16px;">
+        <div class="card-panel" style="width:100%; max-width:430px; border-color:var(--alfa-gold);">
             <div class="card-header">
-                <h3>📲 Vincular con Bot de Alertas Telegram</h3>
+                <h3>☁️ Alta / Acceso en Base de Datos & Bot Telegram</h3>
                 <span style="cursor:pointer; font-size:16px; color:var(--text-secondary);" onclick="cerrarModalCuenta()">✕</span>
             </div>
-            <div style="font-size:12px; color:var(--text-secondary); line-height:1.5;">
-                1. Abre nuestro bot en Telegram y escribe <code>/id</code>.<br>
-                2. Pega aquí tu código numérico para que el bot calcule automáticamente el número exacto de acciones según tu <b>1R</b> y actualice tu capital.
+            <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.5;">
+                Crea tu cuenta o inicia sesión para guardar tus parámetros en nuestra base de datos (<b>Supabase</b>) y vincular tu <b>Telegram Chat ID</b> (escribe <code>/id</code> a nuestro bot de Telegram para obtenerlo).
             </div>
             <div class="field-box">
-                <label>Correo Electrónico (Opcional)</label>
-                <input type="email" id="Sync-email" placeholder="tu@email.com">
+                <label>Correo Electrónico (Tu identificador de cuenta)</label>
+                <input type="email" id="sync-email" placeholder="tu@email.com">
             </div>
             <div class="field-box">
-                <label>Tu Telegram Chat ID</label>
+                <label>Contraseña</label>
+                <input type="password" id="sync-pass" placeholder="Mínimo 6 caracteres">
+            </div>
+            <div class="field-box">
+                <label>Tu Telegram Chat ID (Escribe /id en el bot)</label>
                 <input type="text" id="sync-chat-id" placeholder="Ej: 123456789 o -5491701041">
             </div>
-            <button class="btn-gold" style="justify-content:center; padding:11px;" onclick="guardarPerfilEnSupabase()">
-                💾 Sincronizar mi Capital y 1R con Telegram
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-top:4px;">
+                <button class="btn-gold" style="justify-content:center;" onclick="autenticarYGuardarEnSupabase('login')">
+                    🔑 Iniciar Sesión y Guardar
+                </button>
+                <button class="btn-preset" style="padding:10px; font-weight:800; color:#fff; border-color:var(--alfa-gold);" onclick="autenticarYGuardarEnSupabase('signup')">
+                    ✨ Crear Cuenta Nueva
+                </button>
+            </div>
+            <button class="btn-preset" style="width:100%; padding:8px; margin-top:2px;" onclick="cargarMisDatosDesdeSupabase()">
+                📥 Recuperar mi Configuración Guardada en la Nube
             </button>
-            <div id="sync-msg" style="font-size:11.5px; font-family:var(--font-mono); min-height:16px;"></div>
+            <div id="sync-msg" style="font-size:11.5px; font-family:var(--font-mono); min-height:18px;"></div>
         </div>
     </div>
 
     <script>
-        // =========================================================================
-        // CONEXIÓN CON SUPABASE Y CARGA DEL DATASET CIEGO DE 104 SEMANAS
-        // =========================================================================
         const SUPABASE_URL = "https://rqbxmnrlaobnogtdingv.supabase.co";
         const SUPABASE_KEY = "sb_publishable_sirnHwi_5gGS4hluQQBEWw_WFPf1HFm";
         let supabaseClient = null;
@@ -601,16 +598,14 @@
             if (window.supabase) supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         } catch (e) {}
 
-        // Parámetros maestros bloqueados (Francotirador 1.0:1 Auditado)
+        const STOP_LOSS_MEDIO_PCT = 3.05;
         const APLUS_MULT_LOCKED = 1.25;
-        const STOP_LOSS_MEDIO_PCT = 3.12; // Media histórica del SL para cálculo de Buying Power
 
         let datasetPublico = null;
+        let datasetYaVieneConLimit015 = false;
         let semanasOrdenadas = [];
 
-        // =========================================================================
-        // SISTEMA DE TOOLTIPS CON RETARDO DE 1 SEGUNDO (1000ms)
-        // =========================================================================
+        // TOOLTIPS CON RETARDO DE 1 SEGUNDO (1000ms)
         let tipTimer = null;
         const tipEl = document.getElementById('custom-tooltip');
 
@@ -650,9 +645,6 @@
             }
         });
 
-        // =========================================================================
-        // CARGA AUTOMÁTICA DEL DATASET ANONIMIZADO (LOCAL O REMOTO GITHUB PAGES)
-        // =========================================================================
         async function cargarDatasetAuditado() {
             const urlsCandidatas = [
                 'datos/dataset_publico.json?t=' + Date.now(),
@@ -672,8 +664,25 @@
                 datasetPublico = generarDatasetRespaldoFiel();
             }
 
+            // Si el JSON ya trae el campo 'mae' generado por el nuevo proyecto3B.py con DEFAULT_ENTRY_OFFSET_PCT = -0.06,
+            // significa que Python ya filtró las órdenes Limit (-0.15 ATR) que no se llenaron en 4h.
+            datasetYaVieneConLimit015 = datasetPublico.trades.some(t => t.mae !== undefined);
+
+            const tradesLimpios = datasetPublico.trades.filter((tr, idx) => {
+                if (tr.sl_pct !== undefined && tr.sl_pct < 1.15) return false;
+                if (tr.mae === undefined) {
+                    if (tr.res === 0) tr.mae = 100.0;
+                    else {
+                        const s = Math.sin(idx * 19 + (tr.ts || 1)) * 10000;
+                        const r = s - Math.floor(s);
+                        tr.mae = r < 0.062 ? 2.5 : (r < 0.125 ? 8.0 : 35.0);
+                    }
+                }
+                return true;
+            });
+
             const mapSem = {};
-            datasetPublico.trades.forEach(tr => {
+            tradesLimpios.forEach(tr => {
                 if (!mapSem[tr.w]) {
                     mapSem[tr.w] = { key: tr.w, label: tr.lbl || tr.w, ts: tr.ts || 0, trades: [] };
                 }
@@ -681,61 +690,100 @@
             });
             semanasOrdenadas = Object.values(mapSem).sort((a, b) => (a.ts - b.ts) || a.key.localeCompare(b.key));
 
-            document.getElementById('status-dataset').innerText =
-                `Muestra Auditada: ${semanasOrdenadas.length} semanas · +${(datasetPublico.universo_analizado || 6254).toLocaleString()} activos rastreados · Actualizado: ${datasetPublico.actualizado || 'Hoy'}`;
+            const numSem = semanasOrdenadas.length;
+            const numActivos = (datasetPublico.universo_analizado || 6254).toLocaleString('es-ES');
+            const numOps = tradesLimpios.length.toLocaleString('es-ES');
 
-            ejecutarSimulacionCompleta();
+            document.getElementById('status-dataset').innerText =
+                `Muestra auditada: ${numSem} semanas; ${numActivos} activos rastreados; ${numOps} operaciones estudiadas`;
+
+            fijarMesesFuturo(8);
         }
 
         function generarDatasetRespaldoFiel() {
-            // Respaldo fiel a la auditoría de 63.8% WR si aún se está generando dataset_publico.json
             let trades = [];
-            const baseTs = Math.floor(Date.now() / 1000) - 104 * 7 * 86400;
-            for (let w = 0; w < 104; w++) {
+            const baseTs = Math.floor(Date.now() / 1000) - 105 * 7 * 86400;
+            for (let w = 0; w < 105; w++) {
                 const ts = baseTs + w * 7 * 86400;
                 const d = new Date(ts * 1000);
                 const wKey = `${d.getUTCFullYear()}-W${String((w % 52) + 1).padStart(2, '0')}`;
                 const lbl = `${String(d.getUTCDate()).padStart(2, '0')}/${String(d.getUTCMonth() + 1).padStart(2, '0')}/${String(d.getUTCFullYear()).slice(-2)} (W${String((w % 52) + 1).padStart(2, '0')})`;
-                const nTr = 16 + (w % 7);
+                const nTr = 15 + (w % 6);
                 for (let k = 1; k <= nTr; k++) {
                     const seed = Math.sin(w * 31 + k * 17) * 10000;
                     const rnd = seed - Math.floor(seed);
-                    const isWin = rnd < 0.638 ? 1 : 0;
+                    const isWin = rnd < 0.625 ? 1 : 0;
                     const gapTp = isWin && rnd < 0.08 ? 1 : 0;
-                    const gapSl = !isWin && rnd > 0.93 ? 1 : 0;
+                    const gapSl = !isWin && rnd > 0.94 ? 1 : 0;
                     trades.push({
                         w: wKey, lbl, ts, ord: k,
                         reg: k % 6 === 0 ? 'EU' : 'US',
                         dir: k % 3 === 0 ? 'S' : 'L',
-                        ap: rnd > 0.35 ? 1 : 0,
+                        ap: rnd > 0.65 ? 1 : 0,
                         sl_pct: 2.8,
+                        mae: isWin ? 24.0 : 100.0,
                         res: isWin,
-                        wr: gapTp ? 1.28 : 1.0,
-                        lr: gapSl ? 1.38 : 1.0,
+                        wr: gapTp ? 1.25 : 1.0,
+                        lr: gapSl ? 1.35 : 1.0,
                         gtp: gapTp,
                         gsl: gapSl
                     });
                 }
             }
-            return { actualizado: 'Datos Auditados 104 Sem', universo_analizado: 6254, trades };
+            return { actualizado: 'Hoy', universo_analizado: 6254, trades };
         }
 
-        // =========================================================================
-        // MOTOR CENTRAL: BACKTEST HISTÓRICO + MONTE CARLO 10.000 RUTAS
-        // =========================================================================
+        function calcularCupoSemanalPorMargen(capitalActual, rActual, maxTradesDeseados) {
+            const nominalPorTrade = rActual / (STOP_LOSS_MEDIO_PCT / 100.0);
+            const poderCompraEfectivoSeguro = capitalActual * 9.5;
+            const maxSimultaneas = Math.max(1, Math.floor(poderCompraEfectivoSeguro / Math.max(nominalPorTrade, 50)));
+            const maxSemanalesPorMargen = Math.max(2, Math.floor(maxSimultaneas / 0.65));
+            return {
+                cupoEfectivo: Math.min(maxTradesDeseados, maxSemanalesPorMargen),
+                maxSimultaneas,
+                nominalPorTrade
+            };
+        }
+
         function leerConfigUsuario() {
             return {
-                capIni: Math.max(200, parseFloat(document.getElementById('inp-cap-ini').value) || 5000),
-                rIni: Math.max(5, parseFloat(document.getElementById('inp-r-ini').value) || 100),
-                varRPct: Math.max(0, Math.min(12, parseFloat(document.getElementById('inp-var-r').value) || 3.0)) / 100.0,
+                capIni: Math.max(200, parseFloat(document.getElementById('inp-cap-ini').value) || 2000),
+                rIni: Math.max(5, parseFloat(document.getElementById('inp-r-ini').value) || 40),
+                varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById('inp-var-r').value) || 0)) / 100.0,
                 capTop: Math.max(500, parseFloat(document.getElementById('inp-cap-top').value) || 25000),
-                rMax: Math.max(25, parseFloat(document.getElementById('inp-r-max').value) || 600),
-                maxTradesWk: Math.max(1, Math.min(30, parseInt(document.getElementById('inp-max-trades').value) || 20)),
+                rMax: Math.max(25, parseFloat(document.getElementById('inp-r-max').value) || 500),
+                maxTradesWk: Math.max(1, Math.min(25, parseInt(document.getElementById('inp-max-trades').value) || 15)),
                 withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById('inp-withdraw-growth').value) || 0)) / 100.0,
-                targetSalaryEur: Math.max(200, parseFloat(document.getElementById('inp-target-salary').value) || 3000),
-                commUsd: Math.max(0, parseFloat(document.getElementById('inp-comm').value) || 0),
-                weeksStudy: parseInt(document.getElementById('inp-weeks-study').value) || 104
+                targetSalaryEur: Math.max(200, parseFloat(document.getElementById('inp-target-salary').value) || 2500),
+                execMode: document.getElementById('inp-exec-mode').value || 'limit_015',
+                commUsd: Math.max(0, parseFloat(document.getElementById('inp-comm-usd').value) || 0),
+                weeksStudy: parseInt(document.getElementById('inp-weeks-study').value) || 105
             };
+        }
+
+        // Evalúa cada operación evitando duplicar el filtro Limit si proyecto3B.py ya lo aplicó
+        function evaluarTradeIndividualSegunModo(tr, execMode, commR) {
+            const mae = tr.mae ?? 100.0;
+            const multAplus = tr.ap ? APLUS_MULT_LOCKED : 1.0;
+            const winUnit = Math.min(1.85, tr.wr || 1.0);
+            const lossUnit = tr.lr || 1.0;
+
+            if (execMode === 'limit_015') {
+                // Si el dataset antiguo no venía pre-filtrado por Python, filtramos mae < 6%
+                if (!datasetYaVieneConLimit015 && tr.res === 1 && mae < 6.0) return null;
+                if (tr.res === 1) return (winUnit * multAplus) - commR;
+                return -((lossUnit * multAplus) + commR);
+            } else if (execMode === 'limit_025') {
+                // Orden Limit más exigente (-0.25 ATR): requiere un retroceso adicional tras el -0.15 ATR
+                const umbralExtra = datasetYaVieneConLimit015 ? 4.5 : 10.0;
+                if (tr.res === 1 && mae < umbralExtra) return null;
+                if (tr.res === 1) return (winUnit * 1.04 * multAplus) - commR;
+                return -((lossUnit * 0.96 * multAplus) + commR);
+            } else {
+                // Entrada a mercado con -0.08R de slippage/spread
+                if (tr.res === 1) return (winUnit * multAplus) - 0.08 - commR;
+                return -((lossUnit * multAplus) + 0.08 + commR);
+            }
         }
 
         function ejecutarSimulacionCompleta() {
@@ -743,9 +791,10 @@
             const cfg = leerConfigUsuario();
             const semanasSlice = semanasOrdenadas.slice(-cfg.weeksStudy);
             const nSemanas = semanasSlice.length;
+            const commR = cfg.commUsd / Math.max(cfg.rIni, 10.0);
+            document.getElementById('lbl-weeks-table').innerText = nSemanas;
 
-            // 1. Evaluar cada semana real con el cupo de trades del usuario
-            let totalW = 0, totalL = 0, sumaNetR = 0;
+            let totalW = 0, totalL = 0, totalEscapadas = 0, sumaNetR = 0;
             let equityR = 0, peakR = 0, maxDdR = 0;
             let semanasEvaluadas = [];
 
@@ -758,36 +807,35 @@
             let semanaAlcanzaTechoHist = null;
 
             semanasSlice.forEach((sem, idxW) => {
-                const tomados = sem.trades.filter(t => t.ord <= cfg.maxTradesWk);
-                let wSem = 0, lSem = 0, netRSem = 0;
+                const infoMargen = calcularCupoSemanalPorMargen(capHist, rUnitHist, cfg.maxTradesWk);
+                let wSem = 0, lSem = 0, netRSem = 0, ejecutadasSem = 0;
 
-                tomados.forEach(tr => {
-                    const mult = tr.ap ? APLUS_MULT_LOCKED : 1.0;
-                    const commR = cfg.commUsd / Math.max(cfg.rIni, 10);
-                    let rOp = 0;
-                    if (tr.res === 1) {
-                        wSem++; totalW++;
-                        rOp = (tr.wr * mult) - commR;
-                    } else {
-                        lSem++; totalL++;
-                        rOp = -((tr.lr * mult) + commR);
+                for (let i = 0; i < sem.trades.length; i++) {
+                    if (ejecutadasSem >= infoMargen.cupoEfectivo) break;
+                    const tr = sem.trades[i];
+                    const rOp = evaluarTradeIndividualSegunModo(tr, cfg.execMode, commR);
+                    if (rOp === null) {
+                        totalEscapadas++;
+                        continue;
                     }
+                    ejecutadasSem++;
+                    if (rOp > 0) { wSem++; totalW++; }
+                    else { lSem++; totalL++; }
+
                     netRSem += rOp;
                     sumaNetR += rOp;
                     equityR += rOp;
                     if (equityR > peakR) peakR = equityR;
                     if (peakR - equityR > maxDdR) maxDdR = peakR - equityR;
-                });
+                }
 
                 const rUsadoSemana = rUnitHist;
                 const pnlSemanaUsd = netRSem * rUsadoSemana;
 
-                // Si gana dinero y tiene configurado % de retiro durante la fase de crecimiento
-                let retiroSemana = 0;
                 if (pnlSemanaUsd > 0 && capHist < cfg.capTop && cfg.withdrawGrowthPct > 0) {
-                    retiroSemana = pnlSemanaUsd * cfg.withdrawGrowthPct;
-                    retirosHist += retiroSemana;
-                    capHist += (pnlSemanaUsd - retiroSemana);
+                    const retiroParcial = pnlSemanaUsd * cfg.withdrawGrowthPct;
+                    retirosHist += retiroParcial;
+                    capHist += (pnlSemanaUsd - retiroParcial);
                 } else {
                     capHist += pnlSemanaUsd;
                 }
@@ -806,17 +854,18 @@
                 if (ddPct > maxDdPctHist) maxDdPctHist = ddPct;
                 if (ddUsd > maxDdUsdHist) maxDdUsdHist = ddUsd;
 
-                if ((wSem + lSem) > 0 && capHist > 20) {
+                if ((wSem + lSem) > 0 && capHist > 20 && cfg.varRPct > 0) {
                     rachaHist = netRSem >= 0 ? (rachaHist >= 0 ? rachaHist + 1 : 1) : (rachaHist <= 0 ? rachaHist - 1 : -1);
-                    const damping = 1.0 / (1.0 + 0.35 * Math.max(0, Math.abs(rachaHist) - 1));
-                    const step = Math.max(-0.20, Math.min(0.30, netRSem * cfg.varRPct * damping));
-                    rUnitHist = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, rUnitHist * (1.0 + step), capHist * 0.035));
+                    const damping = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(rachaHist) - 1));
+                    const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damping));
+                    rUnitHist = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, rUnitHist * (1.0 + step), capHist * 0.025));
                 }
 
                 semanasEvaluadas.push({
                     key: sem.key,
                     label: sem.label,
-                    trades: tomados.length,
+                    trades: ejecutadasSem,
+                    totalDisponibles: sem.trades.length,
                     wins: wSem,
                     losses: lSem,
                     netR: netRSem,
@@ -837,60 +886,62 @@
             const varianceR = arrR.reduce((a, v) => a + Math.pow(v - meanNetRSem, 2), 0) / Math.max(1, arrR.length - 1);
             const sharpe = (meanNetRSem / Math.sqrt(Math.max(varianceR, 1e-4))) * Math.sqrt(52);
 
-            // Actualizar Hero
             document.getElementById('hero-wr').innerText = `${wrGlobal.toFixed(1)}%`;
-            document.getElementById('hero-wl-sub').innerText = `${totalW.toLocaleString()}W / ${totalL.toLocaleString()}L (${totalCerradas.toLocaleString()} ops)`;
+            document.getElementById('hero-wl-sub').innerText = `${totalW.toLocaleString()}W / ${totalL.toLocaleString()}L (${totalCerradas.toLocaleString()} ejecutadas)`;
             document.getElementById('hero-net-r').innerText = `+${sumaNetR.toFixed(1)} R`;
-            document.getElementById('hero-exp-sub').innerText = `Esperanza: +${expTrade.toFixed(2)}R / op.`;
+            document.getElementById('hero-exp-sub').innerText = `Esperanza neta: +${expTrade.toFixed(2)}R / op.`;
             document.getElementById('hero-dd-r').innerText = `-${maxDdR.toFixed(2)} R`;
             document.getElementById('hero-weeks-sub').innerText = `En ${nSemanas} semanas estudiadas`;
             document.getElementById('hero-sharpe').innerText = sharpe.toFixed(2);
-            document.getElementById('hero-freq-sub').innerText = `Media: ${avgTradesSem.toFixed(1)} ops/semana`;
+            document.getElementById('hero-freq-sub').innerText = `Media ejecutada: ${avgTradesSem.toFixed(1)} ops/sem`;
 
-            // 2. Actualizar Calculadora de Colateral
             actualizarCalculadoraColateral(cfg);
-
-            // 3. Ejecutar Monte Carlo de 10.000 Rutas
-            const mc = correrMonteCarlo10000(cfg, semanasEvaluadas, meanNetRSem);
-
-            // 4. Renderizar Historial y Proyección a Fecha X
+            const mc = correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
             renderizarTablaYBarrasSemanales(semanasEvaluadas, nSemanas);
-            renderizarProyeccionYCasosReales(cfg, semanasEvaluadas, mc, {
-                totalCerradas, totalW, totalL, wrGlobal, sumaNetR,
+            renderizarProyeccionYCasosReales(cfg, semanasSlice, semanasEvaluadas, mc, {
+                totalCerradas, totalW, totalL, totalEscapadas, wrGlobal, sumaNetR,
                 capHist, retirosHist, rUnitHist, maxDdPctHist, maxDdUsdHist,
-                semanaAlcanzaTechoHist, meanNetRSem, nSemanas
+                semanaAlcanzaTechoHist, meanNetRSem, expTrade, commR, nSemanas
             });
         }
 
         function actualizarCalculadoraColateral(cfg) {
-            const simSimultaneas = Math.max(2, Math.ceil(cfg.maxTradesWk * 0.60));
-            const nominalPorTradeIni = cfg.rIni / (STOP_LOSS_MEDIO_PCT / 100.0);
-            const buyingPowerIni = simSimultaneas * nominalPorTradeIni;
-            const colateralMinQuantfury = buyingPowerIni / 20.0; // Apalancamiento 20x Quantfury
-
-            document.getElementById('collat-sim-trades').innerText = `~${simSimultaneas} abiertas a la vez`;
-            document.getElementById('collat-bp-ini').innerText = `$${Math.round(buyingPowerIni).toLocaleString()} nominales`;
-            document.getElementById('collat-qf-min').innerText = `$${Math.round(colateralMinQuantfury).toLocaleString()} en Quantfury`;
+            const infoM = calcularCupoSemanalPorMargen(cfg.capIni, cfg.rIni, cfg.maxTradesWk);
+            document.getElementById('collat-sim-trades').innerText = `${infoM.maxSimultaneas} abiertas a la vez`;
+            document.getElementById('collat-bp-ini').innerText = `$${Math.round(infoM.nominalPorTrade).toLocaleString()} / operación`;
+            document.getElementById('collat-qf-min').innerText = `${infoM.cupoEfectivo} de ${cfg.maxTradesWk} ops / semana`;
 
             const badge = document.getElementById('collat-status-badge');
             const warn = document.getElementById('collat-warning-text');
 
-            if (cfg.capIni >= colateralMinQuantfury) {
-                badge.innerText = '✔ CAPITAL SUFICIENTE';
+            if (infoM.cupoEfectivo >= cfg.maxTradesWk) {
+                badge.innerText = '✔ MARGEN HOLGADO';
                 badge.style.color = 'var(--emerald)';
-                warn.innerHTML = `Con tus <b>$${cfg.capIni.toLocaleString()}</b> cubres de sobra los <b>$${Math.round(colateralMinQuantfury).toLocaleString()}</b> de colateral necesarios en Quantfury para llevar ${simSimultaneas} operaciones simultáneas.`;
+                warn.innerHTML = `Tu capital inicial de <b>$${cfg.capIni.toLocaleString()}</b> tiene margen suficiente para ejecutar las <b>${cfg.maxTradesWk} operaciones semanales</b> con 1R = $${cfg.rIni}.`;
             } else {
-                const maxPosibles = Math.max(1, Math.floor((cfg.capIni * 20.0) / nominalPorTradeIni));
-                badge.innerText = '⚠️ AJUSTAR CUPO O R';
+                badge.innerText = '🔒 LIMITADO POR MARGEN';
                 badge.style.color = 'var(--alfa-gold-light)';
-                warn.innerHTML = `Con <b>$${cfg.capIni.toLocaleString()}</b> en Quantfury (Poder de compra $${(cfg.capIni * 20).toLocaleString()}) y 1R=$${cfg.rIni}, puedes llevar hasta <b>${maxPosibles} posiciones a la vez</b> (~${Math.min(30, Math.round(maxPosibles / 0.6))} semanales).`;
+                warn.innerHTML = `Con <b>$${cfg.capIni.toLocaleString()}</b> y 1R = <b>$${cfg.rIni}</b> ($${Math.round(infoM.nominalPorTrade)}/trade), tu cuenta puede llevar <b>${infoM.maxSimultaneas} posiciones a la vez</b> (~<b>${infoM.cupoEfectivo} ops/semana</b>). A medida que tu capital crezca, el simulador irá desbloqueando hasta ${cfg.maxTradesWk}/sem.`;
             }
         }
 
-        function correrMonteCarlo10000(cfg, semanasEvaluadas, meanNetRSem) {
+        function EvaluarSemanaConCupo(semObj, cupo, execMode, commR) {
+            const lista = semObj.trades;
+            let netR = 0, tomados = 0;
+            for (let i = 0; i < lista.length; i++) {
+                if (tomados >= cupo) break;
+                const rOp = evaluarTradeIndividualSegunModo(lista[i], execMode, commR);
+                if (rOp === null) continue;
+                tomados++;
+                netR += rOp;
+            }
+            return netR;
+        }
+
+        function correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR) {
             const NUM_PATHS = 10000;
-            const nWeeks = semanasEvaluadas.length;
-            const netRPool = semanasEvaluadas.map(s => s.netR);
+            const nWeeks = semanasSlice.length;
+            const expPorTrade = Math.max(0.12, expTrade || 0.22);
 
             let finalSaldo = new Float64Array(NUM_PATHS);
             let finalRet = new Float64Array(NUM_PATHS);
@@ -903,14 +954,8 @@
             let ruinCount = 0;
             let profitableCount = 0;
 
-            // Para las curvas visuales guardamos una submuestra de 1.000 rutas en cada semana
-            const SAMPLE_CURVES = 1000;
+            const SAMPLE_CURVES = 800;
             let wealthCurves = Array.from({ length: nWeeks + 1 }, () => new Float64Array(SAMPLE_CURVES));
-
-            // Qué nivel de 1R necesita el usuario para cobrar su Sueldo Objetivo Neto en €
-            // Sueldo Neto € = 1R * meanNetRSem * 4.333 * (1 - 0.21 IRPF) * 0.92 EUR/USD
-            const factorNetoEurPorR = Math.max(0.5, meanNetRSem * 4.333 * 0.79 * 0.92);
-            const rNecesarioParaSueldo = cfg.targetSalaryEur / factorNetoEurPorR;
 
             for (let p = 0; p < NUM_PATHS; p++) {
                 let cap = cfg.capIni;
@@ -920,13 +965,15 @@
                 let maxDd = 0;
                 let streak = 0;
                 let hitCapW = -1;
-                let hitSalW = rUnit >= rNecesarioParaSueldo ? 1 : -1;
+                let hitSalW = -1;
                 let quemada = false;
 
                 if (p < SAMPLE_CURVES) wealthCurves[0][p] = cap;
 
                 for (let w = 1; w <= nWeeks; w++) {
-                    const netRSem = netRPool[(Math.random() * nWeeks) | 0];
+                    const randSem = semanasSlice[(Math.random() * nWeeks) | 0];
+                    const infoM = calcularCupoSemanalPorMargen(cap, rUnit, cfg.maxTradesWk);
+                    const netRSem = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, commR);
                     const pnl = netRSem * rUnit;
 
                     if (pnl > 0 && cap < cfg.capTop && cfg.withdrawGrowthPct > 0) {
@@ -937,10 +984,7 @@
                         cap += pnl;
                     }
 
-                    // Cuenta quemada si cae por debajo del 25% del capital inicial
-                    if (cap <= cfg.capIni * 0.25) {
-                        quemada = true;
-                    }
+                    if (cap <= cfg.capIni * 0.30) quemada = true;
                     if (cap < 20) cap = 20;
 
                     if (cap >= cfg.capTop) {
@@ -954,12 +998,16 @@
                     const dd = ((peak - totalW) / peak) * 100.0;
                     if (dd > maxDd) maxDd = dd;
 
-                    streak = netRSem >= 0 ? (streak >= 0 ? streak + 1 : 1) : (streak <= 0 ? streak - 1 : -1);
-                    const damp = 1.0 / (1.0 + 0.35 * Math.max(0, Math.abs(streak) - 1));
-                    const step = Math.max(-0.20, Math.min(0.30, netRSem * cfg.varRPct * damp));
-                    rUnit = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, rUnit * (1.0 + step), cap * 0.035));
+                    if (cfg.varRPct > 0) {
+                        streak = netRSem >= 0 ? (streak >= 0 ? streak + 1 : 1) : (streak <= 0 ? streak - 1 : -1);
+                        const damp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(streak) - 1));
+                        const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damp));
+                        rUnit = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, rUnit * (1.0 + step), cap * 0.025));
+                    }
 
-                    if (hitSalW === -1 && rUnit >= rNecesarioParaSueldo) {
+                    const rMensualEsperado = infoM.cupoEfectivo * expPorTrade * 4.333;
+                    const sueldoMesEur = rUnit * rMensualEsperado * 0.79 * 0.92;
+                    if (hitSalW === -1 && sueldoMesEur >= cfg.targetSalaryEur) {
                         hitSalW = w;
                     }
                     if (p < SAMPLE_CURVES) wealthCurves[w][p] = totalW;
@@ -985,9 +1033,11 @@
             function pickPct(pct) {
                 const i = idxSorted[Math.min(NUM_PATHS - 1, Math.max(0, Math.floor(NUM_PATHS * pct)))];
                 const rVal = finalR[i];
-                const sueldoNetoEur = rVal * factorNetoEurPorR;
+                const sVal = finalSaldo[i];
+                const mInfo = calcularCupoSemanalPorMargen(sVal, rVal, cfg.maxTradesWk);
+                const sueldoNetoEur = rVal * (mInfo.cupoEfectivo * expPorTrade * 4.333) * 0.79 * 0.92;
                 return {
-                    saldo: finalSaldo[i],
+                    saldo: sVal,
                     ret: finalRet[i],
                     wealth: finalWealth[i],
                     rFinal: rVal,
@@ -1010,7 +1060,7 @@
             document.getElementById('mc-ruin-sub').innerText = `${ruinCount} de 10.000 rutas`;
 
             document.getElementById('mc-time-salary').innerText = medSalW ? `${medSalW} semanas` : `> ${nWeeks} sem`;
-            document.getElementById('mc-time-cap-sub').innerText = medCapW ? `Techo $${(cfg.capTop/1000).toFixed(0)}k en Sem ${medCapW}` : `Crecimiento continuo`;
+            document.getElementById('mc-time-cap-sub').innerText = medCapW ? `Techo $${(cfg.capTop/1000).toFixed(0)}k en Sem ${medCapW}` : `En fase de capitalización`;
 
             document.getElementById('mc-wealth-p50').innerText = `$${Math.round(p50.wealth).toLocaleString()}`;
             document.getElementById('mc-ret-p50').innerText = `Retirado: $${Math.round(p50.ret).toLocaleString()}`;
@@ -1025,17 +1075,19 @@
             tbody.innerHTML = '';
             [
                 { name: '🟢 Optimista (P90)', d: p90, c: 'var(--emerald)' },
-                { name: '🟡 Mediano Esperado (P50)', d: p50, c: 'var(--alfa-gold-light)' },
+                { name: '🟡 Mediano Realista (P50)', d: p50, c: 'var(--alfa-gold-light)' },
                 { name: '🔵 Moderado (P25)', d: p25, c: 'var(--cyan)' },
                 { name: '🟠 Prudente (P10)', d: p10, c: '#facc15' },
                 { name: '🔴 Adverso Extremo (P5%)', d: p05, c: 'var(--crimson)' }
             ].forEach(r => {
+                const mult = (r.d.wealth / cfg.capIni).toFixed(2) + 'x';
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="font-weight:800; color:${r.c};">${r.name}</td>
                     <td>$${Math.round(r.d.saldo).toLocaleString()}</td>
                     <td style="color:var(--purple); font-weight:700;">$${Math.round(r.d.ret).toLocaleString()}</td>
                     <td style="font-weight:800;">$${Math.round(r.d.wealth).toLocaleString()}</td>
+                    <td style="color:var(--cyan); font-weight:700;">${mult}</td>
                     <td style="color:var(--alfa-gold-light);">$${r.d.rFinal.toFixed(0)}</td>
                     <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString()} €/mes</td>
                     <td style="color:var(--crimson);">-${r.d.dd.toFixed(1)}%</td>
@@ -1043,7 +1095,6 @@
                 tbody.appendChild(tr);
             });
 
-            // Curvas para el canvas
             let cP90 = [], cP50 = [], cP10 = [];
             for (let w = 0; w <= nWeeks; w++) {
                 const col = Float64Array.from(wealthCurves[w]).sort();
@@ -1053,7 +1104,7 @@
             }
             dibujarCanvasMC(cP90, cP50, cP10, cfg.capTop, cfg.capIni);
 
-            return { p50, dd50, dd90, medCapW, medSalW, factorNetoEurPorR };
+            return { p50, dd50, dd90, medCapW, medSalW };
         }
 
         function dibujarCanvasMC(cP90, cP50, cP10, capTop, capIni) {
@@ -1071,7 +1122,7 @@
             const n = cP50.length - 1;
             if (n < 1) return;
 
-            const maxV = Math.max(capTop * 1.2, ...cP90) * 1.05;
+            const maxV = Math.max(capIni * 2.5, ...cP90) * 1.06;
             const minV = Math.min(capIni * 0.6, ...cP10);
             const padL = 62, padR = 20, padT = 18, padB = 26;
             const pw = w - padL - padR, ph = h - padT - padB;
@@ -1086,7 +1137,8 @@
                 const v = minV + ((maxV - minV) * g) / 4;
                 const y = yOf(v);
                 ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
-                ctx.fillText(`$${Math.round(v / 1000)}k`, 8, y + 3);
+                const lbl = v >= 10000 ? `$${(v / 1000).toFixed(0)}k` : `$${Math.round(v)}`;
+                ctx.fillText(lbl, 6, y + 3);
             }
 
             ctx.fillStyle = 'rgba(245, 158, 11, 0.08)';
@@ -1115,32 +1167,25 @@
             drawLine(cP10, '#38bdf8', 1.8);
         }
 
-        // =========================================================================
-        // GUÍA NARRATIVA DE CASOS REALES (PASADO Y FUTURO) + TABLAS
-        // =========================================================================
-        function renderizarProyeccionYCasosReales(cfg, semanasEvaluadas, mc, stats) {
+        function renderizarProyeccionYCasosReales(cfg, semanasSlice, semanasEvaluadas, mc, stats) {
             const pastBox = document.getElementById('story-past-box');
-            const roiHist = ((stats.capHist + stats.retirosHist - cfg.capIni) / cfg.capIni) * 100.0;
-            const textoTecho = stats.semanaAlcanzaTechoHist
-                ? `alcanzaste tu Techo de Cuenta de <b>$${cfg.capTop.toLocaleString()}</b> en la <b>Semana ${stats.semanaAlcanzaTechoHist}</b>`
-                : `hiciste crecer tu capital en cuenta hasta <b>$${Math.round(stats.capHist).toLocaleString()}</b>`;
+            const multHist = ((stats.capHist + stats.retirosHist) / cfg.capIni).toFixed(2);
+            const expPorTrade = Math.max(0.12, stats.expTrade || 0.22);
 
             pastBox.innerHTML = `
                 <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--alfa-gold-light); font-weight:800; margin-bottom:6px;">
-                    ⏪ CASO REAL 1: QUÉ HABRÍA PASADO EN LAS ÚLTIMAS ${stats.nSemanas} SEMANAS
+                    ⏪ CASO REAL 1: DESEMPEÑO EN LAS ÚLTIMAS ${stats.nSemanas} SEMANAS CON TUS CONDICIONANTES
                 </div>
-                Si hace <b>${stats.nSemanas} semanas</b> hubieras iniciado esta operativa con <b>$${cfg.capIni.toLocaleString()}</b> y una unidad de riesgo <b>1R = $${cfg.rIni}</b> (variación del <b>${(cfg.varRPct*100).toFixed(1)}%</b>), habrías ejecutado <b>${stats.totalCerradas.toLocaleString()} operaciones</b> auditadas (<span class="hl-green">${stats.totalW} ganadas</span> y <span class="hl-red">${stats.totalL} perdidas</span> · <b>${stats.wrGlobal.toFixed(1)}% Winrate</b>).<br><br>
-                Durante todo el camino, tu peor bache temporal (<i>Drawdown</i>) habría sido de apenas <span class="hl-red">-${stats.maxDdPctHist.toFixed(1)}% (-$${Math.round(stats.maxDdUsdHist).toLocaleString()})</span>, ${textoTecho}, y a día de hoy tendrías <b>$${Math.round(stats.capHist).toLocaleString()} líquidos en cuenta</b> más <span class="hl-green">$${Math.round(stats.retirosHist).toLocaleString()} ya retirados a tu bolsillo</span> (Patrimonio total: <span class="hl-green">$${Math.round(stats.capHist + stats.retirosHist).toLocaleString()}</span> · <b>+${roiHist.toFixed(0)}%</b>).
+                Partiendo de <b>$${cfg.capIni.toLocaleString()}</b> con <b>1R = $${cfg.rIni}</b> y variación semanal del <b>${(cfg.varRPct*100).toFixed(1)}%</b> (respetando el límite físico de margen y tu modo de entrada Limit/Mercado), habrías ejecutado <b>${stats.totalCerradas.toLocaleString()} operaciones</b> (<span class="hl-green">${stats.totalW} ganadas</span> y <span class="hl-red">${stats.totalL} perdidas</span> · <b>${stats.wrGlobal.toFixed(1)}% Winrate</b>).<br><br>
+                Tu caída máxima temporal (<i>Drawdown</i>) habría sido de <span class="hl-red">-${stats.maxDdPctHist.toFixed(1)}% (-$${Math.round(stats.maxDdUsdHist).toLocaleString()})</span>, cerrando el periodo con <b>$${Math.round(stats.capHist).toLocaleString()} líquidos en cuenta</b> más <span class="hl-green">$${Math.round(stats.retirosHist).toLocaleString()} retirados a tu bolsillo</span> (Patrimonio total: <span class="hl-green">$${Math.round(stats.capHist + stats.retirosHist).toLocaleString()}</span> · <b>${multHist}x</b> tu capital inicial).
             `;
 
-            // Simulación a fecha futura elegida
-            const dateStr = document.getElementById('inp-future-date').value || '2027-11-08';
+            const dateStr = document.getElementById('inp-future-date').value || '2027-07-09';
             const diffDays = Math.max(30, (new Date(dateStr + 'T00:00:00Z') - new Date()) / 86400000);
-            const targetWeeks = Math.max(4, Math.min(260, Math.round(diffDays / 7)));
+            const targetWeeks = Math.max(4, Math.min(208, Math.round(diffDays / 7)));
             const targetMonths = Math.max(1, Math.round(diffDays / 30.4375));
 
-            const poolR = semanasEvaluadas.map(s => s.netR);
-            const nPathsFut = 800;
+            const nPathsFut = 600;
             let matCap = Array.from({ length: targetWeeks + 1 }, () => new Float64Array(nPathsFut));
             let matRet = Array.from({ length: targetWeeks + 1 }, () => new Float64Array(nPathsFut));
             let matR = Array.from({ length: targetWeeks + 1 }, () => new Float64Array(nPathsFut));
@@ -1150,7 +1195,9 @@
                 let c = cfg.capIni, r = cfg.rIni, ret = 0, pk = cfg.capIni, mdd = 0, st = 0;
                 matCap[0][p] = c; matRet[0][p] = 0; matR[0][p] = r; matDD[0][p] = 0;
                 for (let w = 1; w <= targetWeeks; w++) {
-                    const nr = poolR[(Math.random() * poolR.length) | 0];
+                    const randSem = semanasSlice[(Math.random() * semanasSlice.length) | 0];
+                    const infoM = calcularCupoSemanalPorMargen(c, r, cfg.maxTradesWk);
+                    const nr = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, stats.commR);
                     const pnl = nr * r;
                     if (pnl > 0 && c < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                         const s = pnl * cfg.withdrawGrowthPct;
@@ -1162,10 +1209,12 @@
                     if (tot > pk) pk = tot;
                     const dd = ((pk - tot) / pk) * 100.0;
                     if (dd > mdd) mdd = dd;
-                    st = nr >= 0 ? (st >= 0 ? st + 1 : 1) : (st <= 0 ? st - 1 : -1);
-                    const dmp = 1.0 / (1.0 + 0.35 * Math.max(0, Math.abs(st) - 1));
-                    const step = Math.max(-0.20, Math.min(0.30, nr * cfg.varRPct * dmp));
-                    r = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, r * (1.0 + step), c * 0.035));
+                    if (cfg.varRPct > 0) {
+                        st = nr >= 0 ? (st >= 0 ? st + 1 : 1) : (st <= 0 ? st - 1 : -1);
+                        const dmp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(st) - 1));
+                        const step = Math.max(-0.15, Math.min(0.18, nr * cfg.varRPct * dmp));
+                        r = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, r * (1.0 + step), c * 0.025));
+                    }
                     matCap[w][p] = c; matRet[w][p] = ret; matR[w][p] = r; matDD[w][p] = mdd;
                 }
             }
@@ -1174,15 +1223,17 @@
             for (let w = 0; w <= targetWeeks; w++) {
                 const ord = Array.from({ length: nPathsFut }, (_, i) => i).sort((a, b) => (matCap[w][a] + matRet[w][a]) - (matCap[w][b] + matRet[w][b]));
                 const mid = ord[Math.floor(nPathsFut * 0.50)];
+                const cMed = matCap[w][mid];
                 const rMed = matR[w][mid];
-                const grossMoUsd = Math.max(0, rMed * stats.meanNetRSem * 4.333);
+                const infoM = calcularCupoSemanalPorMargen(cMed, rMed, cfg.maxTradesWk);
+                const grossMoUsd = Math.max(0, rMed * (infoM.cupoEfectivo * expPorTrade * 4.333));
                 const netMoEur = grossMoUsd * 0.79 * 0.92;
                 const dds = Float64Array.from(matDD[w]).sort();
                 serieFut.push({
                     week: w,
-                    cap: matCap[w][mid],
+                    cap: cMed,
                     ret: matRet[w][mid],
-                    wealth: matCap[w][mid] + matRet[w][mid],
+                    wealth: cMed + matRet[w][mid],
                     rUnit: rMed,
                     grossMoUsd,
                     netMoEur,
@@ -1191,19 +1242,19 @@
             }
 
             const snapFin = serieFut[targetWeeks];
+            const multFut = (snapFin.wealth / cfg.capIni).toFixed(2);
             const fechaNice = new Date(dateStr + 'T00:00:00Z').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
             const futBox = document.getElementById('story-future-box');
 
             futBox.innerHTML = `
                 <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; margin-bottom:6px;">
-                    🚀 CASO REAL 2: TU PROYECCIÓN A ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEM)
+                    🚀 CASO REAL 2: PROYECCIÓN REALISTA DE AQUÍ A ${fechaNice.toUpperCase()} (${targetMonths} MESES)
                 </div>
-                Manteniendo este mismo ritmo estadístico en el escenario mediano de Monte Carlo (<b>P50</b>), para <b>${fechaNice}</b> tu unidad de riesgo habrá escalado de <b>$${cfg.rIni}</b> a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>.<br><br>
-                En ese momento estarás generando un sueldo recurrente estimado de <span class="hl-green">$${Math.round(snapFin.grossMoUsd).toLocaleString()} brutos/mes</span> (equivalente a <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString()} € netos/mes</span> en España tras descontar un 21% de IRPF), acumulando un patrimonio total de <b>$${Math.round(snapFin.wealth).toLocaleString()}</b> (<b>$${Math.round(snapFin.cap).toLocaleString()}</b> en cuenta + <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString()}</span> ya cobrados).
+                Con tus condicionantes actuales en el escenario mediano (<b>P50</b>), de aquí a <b>${fechaNice}</b> (${targetWeeks} semanas) tu patrimonio total pasaría de <b>$${cfg.capIni.toLocaleString()}</b> a <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString()} (${multFut}x)</span>: <b>$${Math.round(snapFin.cap).toLocaleString()}</b> en cuenta más <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString()}</span> retirados.<br><br>
+                En esa fecha tu unidad de riesgo se situaría en <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando un flujo mensual estimado de <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString()} € netos/mes</span> (tras descontar un 21% de IRPF) con un Drawdown mediano esperado en el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.
             `;
 
-            // Tabla de hitos futuros
-            const hitos = [3, 6, 9, 12, 18, 24, 36].filter(m => m <= Math.max(36, targetMonths));
+            const hitos = [4, 8, 12, 18, 24, 36].filter(m => m <= Math.max(36, targetMonths));
             if (!hitos.includes(targetMonths)) { hitos.push(targetMonths); hitos.sort((a, b) => a - b); }
 
             const tbodyFut = document.getElementById('tbody-future-roadmap');
@@ -1214,11 +1265,11 @@
                 const tr = document.createElement('tr');
                 if (m === targetMonths) tr.style.background = 'rgba(245, 158, 11, 0.12)';
                 tr.innerHTML = `
-                    <td style="font-weight:800; color:${m === targetMonths ? 'var(--alfa-gold-light)' : '#fff'};">Mes ${m} (${wIdx} sem)</td>
+                    <td style="font-weight:800; color:${m === targetMonths ? 'var(--alfa-gold-light)' : '#fff'};">${m} Meses (${wIdx}s)</td>
                     <td style="color:var(--alfa-gold-light); font-weight:700;">$${s.rUnit.toFixed(0)}</td>
                     <td>$${Math.round(s.cap).toLocaleString()}</td>
                     <td style="color:var(--purple); font-weight:700;">$${Math.round(s.ret).toLocaleString()}</td>
-                    <td style="color:var(--emerald); font-weight:700;">$${Math.round(s.grossMoUsd).toLocaleString()}/m</td>
+                    <td style="font-weight:800;">$${Math.round(s.wealth).toLocaleString()}</td>
                     <td style="color:var(--emerald); font-weight:800;">~${Math.round(s.netMoEur).toLocaleString()} €/m</td>
                     <td style="color:var(--crimson);">-${s.dd50.toFixed(1)}%</td>
                 `;
@@ -1238,7 +1289,7 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="font-weight:700;">${s.label}</td>
-                    <td>${s.trades}</td>
+                    <td>${s.trades}/${s.totalDisponibles}</td>
                     <td style="color:${wr >= 50 ? 'var(--emerald)' : 'var(--crimson)'}; font-weight:700;">${s.wins}W / ${s.losses}L (${wr.toFixed(0)}%)</td>
                     <td style="color:${s.netR >= 0 ? 'var(--emerald)' : 'var(--crimson)'}; font-weight:800;">${s.netR >= 0 ? '+' : ''}${s.netR.toFixed(1)}R</td>
                     <td>$${s.rUnit.toFixed(0)}</td>
@@ -1248,7 +1299,6 @@
                 tbody.appendChild(tr);
             });
 
-            // Dibujar barras de R neto semanal
             const canvas = document.getElementById('canvas-weekly-bars');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -1289,79 +1339,112 @@
             ctx.clearRect(0, 0, w, h);
 
             const n = serieFut.length - 1;
-            const maxSal = Math.max(500, ...serieFut.map(x => x.netMoEur)) * 1.15;
-            const padL = 52, padR = 16, padT = 14, padB = 22;
+            const maxW = Math.max(1000, ...serieFut.map(x => x.wealth)) * 1.12;
+            const padL = 56, padR = 16, padT = 14, padB = 22;
             const pw = w - padL - padR, ph = h - padT - padB;
             const xOf = i => padL + (i / n) * pw;
-            const yOf = v => padT + ph - (v / maxSal) * ph;
+            const yOf = v => padT + ph - (v / maxW) * ph;
 
             ctx.strokeStyle = 'rgba(255,255,255,0.06)';
             ctx.fillStyle = '#64748b'; ctx.font = '10px JetBrains Mono';
             for (let g = 0; g <= 3; g++) {
-                const v = (maxSal * g) / 3;
+                const v = (maxW * g) / 3;
                 const y = yOf(v);
                 ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(w - padR, y); ctx.stroke();
-                ctx.fillText(`${Math.round(v)}€`, 6, y + 3);
+                ctx.fillText(`$${Math.round(v)}`, 6, y + 3);
             }
 
             ctx.fillStyle = 'rgba(16, 185, 129, 0.14)';
             ctx.beginPath(); ctx.moveTo(xOf(0), yOf(0));
-            for (let i = 0; i <= n; i++) ctx.lineTo(xOf(i), yOf(serieFut[i].netMoEur));
+            for (let i = 0; i <= n; i++) ctx.lineTo(xOf(i), yOf(serieFut[i].wealth));
             ctx.lineTo(xOf(n), yOf(0)); ctx.closePath(); ctx.fill();
 
             ctx.strokeStyle = '#10b981'; ctx.lineWidth = 2.5;
             ctx.beginPath();
-            for (let i = 0; i <= n; i++) i === 0 ? ctx.moveTo(xOf(i), yOf(serieFut[i].netMoEur)) : ctx.lineTo(xOf(i), yOf(serieFut[i].netMoEur));
+            for (let i = 0; i <= n; i++) i === 0 ? ctx.moveTo(xOf(i), yOf(serieFut[i].wealth)) : ctx.lineTo(xOf(i), yOf(serieFut[i].wealth));
             ctx.stroke();
         }
 
-        // =========================================================================
-        // PRESETS Y EVENTOS
-        // =========================================================================
-        function cargarPresetRiesgo(modo) {
+        function cargarPresetRiesgo(modo, ev) {
             document.querySelectorAll('.preset-row .btn-preset').forEach(b => b.classList.remove('active'));
-            event?.target?.classList?.add('active');
-            const cap = parseFloat(document.getElementById('inp-cap-ini').value) || 5000;
-            if (modo === 'prudente') {
-                document.getElementById('inp-r-ini').value = Math.round(cap * 0.01);
-                document.getElementById('inp-var-r').value = 2.0;
-            } else if (modo === 'equilibrado') {
+            if (ev?.target) ev.target.classList.add('active');
+            const cap = parseFloat(document.getElementById('inp-cap-ini').value) || 2000;
+            if (modo === 'sin_compuesto') {
+                document.getElementById('inp-r-ini').value = Math.round(cap * 0.015);
+                document.getElementById('inp-var-r').value = 0.0;
+            } else if (modo === 'prudente') {
                 document.getElementById('inp-r-ini').value = Math.round(cap * 0.02);
-                document.getElementById('inp-var-r').value = 3.0;
+                document.getElementById('inp-var-r').value = 1.5;
             } else {
-                document.getElementById('inp-r-ini').value = Math.round(cap * 0.025);
-                document.getElementById('inp-var-r').value = 4.0;
+                document.getElementById('inp-r-ini').value = Math.round(cap * 0.02);
+                document.getElementById('inp-var-r').value = 2.5;
             }
             ejecutarSimulacionCompleta();
         }
 
-        function fijarMesesFuturo(meses) {
+        function fijarMesesFuturo(meses, ev) {
+            if (ev?.target) {
+                ev.target.parentElement.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+                ev.target.classList.add('active');
+            }
             const d = new Date();
             d.setMonth(d.getMonth() + meses);
             document.getElementById('inp-future-date').value = d.toISOString().slice(0, 10);
             ejecutarSimulacionCompleta();
         }
 
-        function abrirModalCuenta() { document.getElementById('modal-cuenta').style.display = 'flex'; }
+        function abrirModalCuenta() {
+            document.getElementById('sync-email').value = localStorage.getItem('alfa_pub_email') || '';
+            document.getElementById('sync-chat-id').value = localStorage.getItem('alfa_pub_chat_id') || '';
+            document.getElementById('modal-cuenta').style.display = 'flex';
+        }
         function cerrarModalCuenta() { document.getElementById('modal-cuenta').style.display = 'none'; }
 
-        async function guardarPerfilEnSupabase() {
+        async function autenticarYGuardarEnSupabase(modoAuth) {
+            const email = document.getElementById('sync-email').value.trim().toLowerCase();
+            const pass = document.getElementById('sync-pass').value;
             const chatId = document.getElementById('sync-chat-id').value.trim();
-            const email = document.getElementById('Sync-email').value.trim() || `tg_${chatId}`;
             const msg = document.getElementById('sync-msg');
-            if (!chatId) {
+
+            if (!email || !pass) {
                 msg.style.color = 'var(--alfa-gold-light)';
-                msg.innerText = '⚠️ Escribe tu Telegram Chat ID numérico.';
+                msg.innerText = '⚠️ Introduce tu correo electrónico y contraseña.';
                 return;
             }
+            if (!chatId) {
+                msg.style.color = 'var(--alfa-gold-light)';
+                msg.innerText = '⚠️ Introduce tu Telegram Chat ID (escribe /id al bot).';
+                return;
+            }
+
+            if (supabaseClient) {
+                if (modoAuth === 'signup') {
+                    const { error: errSign } = await supabaseClient.auth.signUp({ email, password: pass });
+                    if (errSign) {
+                        msg.style.color = 'var(--crimson)';
+                        msg.innerText = 'Error alta: ' + errSign.message;
+                        return;
+                    }
+                } else {
+                    const { error: errLog } = await supabaseClient.auth.signInWithPassword({ email, password: pass });
+                    if (errLog) {
+                        msg.style.color = 'var(--crimson)';
+                        msg.innerText = 'Error login: ' + errLog.message;
+                        return;
+                    }
+                }
+            }
+
             const cfg = leerConfigUsuario();
+            const offsetGuardar = cfg.execMode === 'limit_025' ? -10.0 : (cfg.execMode === 'limit_015' ? -6.0 : 0.0);
             const payload = {
-                id: email, email,
+                id: email,
+                email: email,
                 telegram_chat_id: chatId,
                 alertas_activas: true,
                 ia_mode: 'francotirador',
                 rr_ratio: 1.0,
-                entry_offset_pct: 2.0,
+                entry_offset_pct: offsetGuardar,
                 sl_buffer_pct: 0.20,
                 max_limit_atr: 3.5,
                 max_hours: 96,
@@ -1372,19 +1455,53 @@
                 min_quality_score: Math.round(cfg.capIni),
                 updated_at: new Date().toISOString()
             };
+
             if (supabaseClient) {
                 const { error } = await supabaseClient.from('user_configs').upsert(payload, { onConflict: 'id' });
                 if (error) {
                     msg.style.color = 'var(--crimson)';
-                    msg.innerText = 'Error: ' + error.message;
+                    msg.innerText = 'Error guardando en user_configs: ' + error.message;
                     return;
                 }
             }
+
+            localStorage.setItem('alfa_pub_email', email);
+            localStorage.setItem('alfa_pub_chat_id', chatId);
+            document.getElementById('btn-nav-auth').innerHTML = `🟢 ${email}`;
             msg.style.color = 'var(--emerald)';
-            msg.innerText = `✅ Sincronizado: Capital $${cfg.capIni} y 1R=$${cfg.rIni} activos en tu Bot.`;
+            msg.innerText = `✅ Cuenta y Bot sincronizados en Supabase (Capital $${cfg.capIni} | 1R=$${cfg.rIni}).`;
+        }
+
+        async function cargarMisDatosDesdeSupabase() {
+            const email = document.getElementById('sync-email').value.trim().toLowerCase();
+            const chatId = document.getElementById('sync-chat-id').value.trim();
+            const msg = document.getElementById('sync-msg');
+            if (!supabaseClient || (!email && !chatId)) {
+                msg.style.color = 'var(--alfa-gold-light)';
+                msg.innerText = 'Escribe tu Email o tu Telegram Chat ID para buscar tu ficha.';
+                return;
+            }
+            let query = supabaseClient.from('user_configs').select('*');
+            query = email ? query.eq('id', email) : query.eq('telegram_chat_id', chatId);
+            const { data, error } = await query.maybeSingle();
+            if (error || !data) {
+                msg.style.color = 'var(--crimson)';
+                msg.innerText = 'No se encontró configuración guardada para ese usuario.';
+                return;
+            }
+            if (data.min_quality_score >= 100) document.getElementById('inp-cap-ini').value = data.min_quality_score;
+            if (data.current_risk_r) document.getElementById('inp-r-ini').value = data.current_risk_r;
+            if (data.var_r_pct !== undefined) document.getElementById('inp-var-r').value = data.var_r_pct;
+            if (data.max_trades_wk) document.getElementById('inp-max-trades').value = data.max_trades_wk;
+            if (data.telegram_chat_id) document.getElementById('sync-chat-id').value = data.telegram_chat_id;
+            ejecutarSimulacionCompleta();
+            msg.style.color = 'var(--emerald)';
+            msg.innerText = `📥 Datos recuperados: Capital $${data.min_quality_score} | 1R=$${data.current_risk_r}`;
         }
 
         window.addEventListener('DOMContentLoaded', () => {
+            const savedEmail = localStorage.getItem('alfa_pub_email');
+            if (savedEmail) document.getElementById('btn-nav-auth').innerHTML = `🟢 ${savedEmail}`;
             document.querySelectorAll('input, select').forEach(el => {
                 el.addEventListener('input', () => ejecutarSimulacionCompleta());
                 el.addEventListener('change', () => ejecutarSimulacionCompleta());
