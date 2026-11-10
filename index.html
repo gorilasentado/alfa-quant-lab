@@ -1097,6 +1097,7 @@
         const STOP_LOSS_MEDIO_PCT = 3.05;
         const APLUS_MULT_LOCKED = 1.25;
         const EXEC_MODE_PREDEFINIDO = "limit_015";
+        const MAX_BROKER_LEVERAGE = 20.0; // Techo físico de apalancamiento retail (5% margen de mantenimiento)
 
         let datasetPublico = null;
         let datasetYaVieneConLimit015 = false;
@@ -1250,7 +1251,7 @@
                         ap: rnd > 0.48 ? 1 : 0,
                         run: isRun,
                         sl_pct: 3.05,
-                        mae: isWin ? 24.0 : 100.0,
+                        mae: isWin ? 35.0 : 100.0,
                         res: isWin,
                         wr: isRun ? 1.5 : (gapTp ? 1.25 : 1.0),
                         lr: gapSl ? 1.35 : 1.0,
@@ -1484,6 +1485,7 @@
             const totEstudiadas = wTot + lTot;
             const wrReal = totEstudiadas > 0 ? (wTot / totEstudiadas) * 100.0 : 0;
             const expPorOp = totEstudiadas > 0 ? rAcum / totEstudiadas : 0;
+            window._alfaMaxDdRBase = maxDdR;
 
             const retOrd = [...retornosSem].sort((a, b) => a - b);
             const medianaRSem = retOrd.length % 2 === 1
@@ -1518,13 +1520,17 @@
         }
 
         // =========================================================================
-        // MOTOR DE SIMULACIÓN PERSONAL Y MONTE CARLO (CON LIQUIDACIÓN REAL EN $0)
+        // MOTOR DE RIESGO, MARGEN FÍSICO Y STOP-OUT REALISTA (SIN FRENOS OCULTOS)
         // =========================================================================
         function calcularCupoSemanalPorMargen(capitalActual, rActual, maxTradesDeseados) {
-            if (capitalActual <= 0) {
-                return { cupoEfectivo: 0, maxSimultaneas: 0, maxSemanalesPorMargen: 0, nominalPorTrade: rActual / (STOP_LOSS_MEDIO_PCT / 100.0) };
-            }
             const nominalPorTrade = rActual / (STOP_LOSS_MEDIO_PCT / 100.0);
+            if (capitalActual <= 0 || rActual > capitalActual) {
+                return { cupoEfectivo: 0, maxSimultaneas: 0, maxSemanalesPorMargen: 0, nominalPorTrade, bloqueadoPorMargen: true };
+            }
+            const poderCompraMaxBroker = capitalActual * MAX_BROKER_LEVERAGE;
+            if (nominalPorTrade > poderCompraMaxBroker) {
+                return { cupoEfectivo: 0, maxSimultaneas: 0, maxSemanalesPorMargen: 0, nominalPorTrade, bloqueadoPorMargen: true };
+            }
             const poderCompraEfectivoSeguro = capitalActual * 9.5;
             const maxSimultaneas = Math.max(1, Math.floor(poderCompraEfectivoSeguro / Math.max(nominalPorTrade, 50)));
             const maxSemanalesPorMargen = Math.max(2, Math.floor(maxSimultaneas / 0.65));
@@ -1532,7 +1538,8 @@
                 cupoEfectivo: Math.min(maxTradesDeseados, maxSemanalesPorMargen),
                 maxSimultaneas,
                 maxSemanalesPorMargen,
-                nominalPorTrade
+                nominalPorTrade,
+                bloqueadoPorMargen: false
             };
         }
 
@@ -1545,12 +1552,19 @@
                 mcWeeks = Math.max(4, Math.min(260, Math.round(ms / (7 * 86400000))));
             }
 
+            const capIni = Math.max(50, parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000);
+            const rIni = Math.max(5, parseFloat(document.getElementById("inp-r-ini")?.value) || 40);
+            const rMaxInput = Math.max(25, parseFloat(document.getElementById("inp-r-max")?.value) || 500);
+
             return {
-                capIni: Math.max(50, parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000),
-                rIni: Math.max(5, parseFloat(document.getElementById("inp-r-ini")?.value) || 40),
+                capIni,
+                rIni,
                 varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById("inp-var-r")?.value) || 0)) / 100.0,
                 capTop: Math.max(500, parseFloat(document.getElementById("inp-cap-top")?.value) || 25000),
-                rMax: Math.max(25, parseFloat(document.getElementById("inp-r-max")?.value) || 500),
+                // Si el usuario escribe un 1R inicial mayor que el tope 1R máx, respetamos su 1R inicial sin recortárselo en secreto
+                rMax: Math.max(rMaxInput, rIni),
+                // Ratio máximo de riesgo permitido respecto a la cuenta: respeta la proporción inicial elegida por el usuario
+                userRiskRatioCap: Math.max(0.025, rIni / Math.max(capIni, 1.0)),
                 maxTradesWk: Math.max(1, Math.min(30, parseInt(document.getElementById("inp-max-trades")?.value) || 15)),
                 withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById("inp-withdraw-growth")?.value) || 0)) / 100.0,
                 targetSalaryEur: Math.max(200, parseFloat(document.getElementById("inp-target-salary")?.value) || 2500),
@@ -1582,28 +1596,97 @@
             }
         }
 
-        function simularOperacionesDeSemanaEnCuenta(listaTrades, cupo, execMode, commR, capDisponible, rUnitActual) {
-            let netR = 0, tomados = 0, wSem = 0, lSem = 0, dispValidas = 0;
-            let saldoVivo = capDisponible;
-            let liquidada = (saldoVivo <= 0);
-
+        /**
+         * Simula una semana operación por operación verificando:
+         * 1. Margen mínimo de mantenimiento del bróker (Stop-Out si capital - pérdida flotante MAE <= garantía mínima retenida).
+         * 2. Drawdown real sobre el saldo de la cuenta incluyendo excursión adversa intratrade (MAE).
+         * 3. Aleatorización opcional del orden de llegada dentro de la semana (para Monte Carlo, evitando el sesgo de elegir solo lunes 1ª hora).
+         */
+        function simularSemanaRealistaEnCuenta(listaTrades, cupo, execMode, commR, capInicialSem, rUnitSem, peakCuentaPrev, barajarOrden = false) {
+            let validos = [];
             for (let i = 0; i < listaTrades.length; i++) {
                 const rOp = evaluarTradeIndividualSegunModo(listaTrades[i], execMode, commR);
-                if (rOp === null) continue;
-                dispValidas++;
-                if (liquidada || tomados >= cupo) continue;
+                if (rOp !== null) validos.push({ tr: listaTrades[i], rOp });
+            }
+            const dispValidas = validos.length;
+
+            if (capInicialSem <= 0 || cupo <= 0) {
+                return { netR: 0, tomados: 0, wSem: 0, lSem: 0, dispValidas, liquidada: true, peakCuenta: peakCuentaPrev, maxDdSemPct: 100.0 };
+            }
+
+            if (barajarOrden && validos.length > 1) {
+                for (let i = validos.length - 1; i > 0; i--) {
+                    const j = (Math.random() * (i + 1)) | 0;
+                    const tmp = validos[i]; validos[i] = validos[j]; validos[j] = tmp;
+                }
+            }
+
+            let saldoVivo = capInicialSem;
+            let peakCuenta = Math.max(peakCuentaPrev, saldoVivo);
+            let maxDdSemPct = 0;
+            let netR = 0, tomados = 0, wSem = 0, lSem = 0;
+            let liquidada = false;
+
+            const nEjecutar = Math.min(cupo, validos.length);
+            for (let i = 0; i < nEjecutar; i++) {
+                const { tr, rOp } = validos[i];
+                const multAp = tr.ap ? APLUS_MULT_LOCKED : 1.0;
+                const riesgoUsd = rUnitSem * multAp;
+                const slFrac = Math.max(0.0115, (tr.sl_pct || STOP_LOSS_MEDIO_PCT) / 100.0);
+                const nominalPos = riesgoUsd / slFrac;
+                const margenMantenimiento = (nominalPos / MAX_BROKER_LEVERAGE) * 0.50;
+                const maeFrac = Math.min(1.0, Math.max(0.0, (tr.mae ?? (rOp > 0 ? 30.0 : 100.0)) / 100.0));
+                const flotanteAdversoUsd = riesgoUsd * maeFrac;
+
+                // Stop-Out real del bróker durante la vida del trade (o incapacidad física de abrir posición)
+                if ((saldoVivo - flotanteAdversoUsd) <= margenMantenimiento || riesgoUsd > saldoVivo * 1.05) {
+                    liquidada = true;
+                    saldoVivo = 0;
+                    maxDdSemPct = 100.0;
+                    break;
+                }
+
+                // Registrar caída intratrade real sobre la cuenta antes de que cierre la operación
+                const sueloIntratrade = saldoVivo - flotanteAdversoUsd;
+                const ddIntra = ((peakCuenta - sueloIntratrade) / Math.max(1, peakCuenta)) * 100.0;
+                if (ddIntra > maxDdSemPct) maxDdSemPct = ddIntra;
 
                 tomados++;
                 if (rOp > 0) wSem++;
                 else lSem++;
 
                 netR += rOp;
-                saldoVivo += rOp * rUnitActual;
+                saldoVivo += rOp * rUnitSem;
+
                 if (saldoVivo <= 0) {
                     liquidada = true;
+                    saldoVivo = 0;
+                    maxDdSemPct = 100.0;
+                    break;
                 }
+
+                if (saldoVivo > peakCuenta) peakCuenta = saldoVivo;
+                const ddCierre = ((peakCuenta - saldoVivo) / Math.max(1, peakCuenta)) * 100.0;
+                if (ddCierre > maxDdSemPct) maxDdSemPct = ddCierre;
             }
-            return { netR, tomados, wSem, lSem, dispValidas, liquidada };
+
+            return { netR, tomados, wSem, lSem, dispValidas, liquidada, peakCuenta, maxDdSemPct };
+        }
+
+        function actualizarRUnitFinDeSemana(rActual, netRSem, capActual, cfg, streakActual) {
+            const nuevaRacha = netRSem >= 0 ? (streakActual >= 0 ? streakActual + 1 : 1) : (streakActual <= 0 ? streakActual - 1 : -1);
+            if (cfg.varRPct <= 0 || capActual <= 0) {
+                return { rNext: rActual, streakNext: nuevaRacha };
+            }
+            const damp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(nuevaRacha) - 1));
+            const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damp));
+            const rEscalado = rActual * (1.0 + step);
+            // Sin el recorte artificial a cap*0.025 cuando el usuario eligió un % superior
+            const rNext = Math.max(
+                Math.min(cfg.rIni * 0.40, capActual * 0.50),
+                Math.min(cfg.rMax, rEscalado, capActual * cfg.userRiskRatioCap)
+            );
+            return { rNext, streakNext: nuevaRacha };
         }
 
         function ejecutarSimulacionCompleta() {
@@ -1614,73 +1697,75 @@
 
             setTxt("mc-header-sub", `Horizonte elegido: ${cfg.mcWeeks} semanas`);
 
-            let totalW = 0, totalL = 0, sumaNetR = 0;
             let semanasEvaluadas = [];
-
             let capHist = cfg.capIni;
             let rUnitHist = cfg.rIni;
             let retirosHist = 0;
             let rachaHist = 0;
-            let peakAccountHist = cfg.capIni;
-            let maxDdAccountPctHist = 0;
+            let peakCuentaHist = cfg.capIni;
+            let maxDdCuentaPctHist = 0;
             let cuentaLiquidadaHist = false;
+
+            const infoMargenDia1 = calcularCupoSemanalPorMargen(cfg.capIni, cfg.rIni, cfg.maxTradesWk);
+            if (infoMargenDia1.bloqueadoPorMargen) {
+                cuentaLiquidadaHist = true;
+                capHist = 0;
+                rUnitHist = 0;
+                maxDdCuentaPctHist = 100.0;
+            }
 
             semanasSlice.forEach((sem) => {
                 const infoMargen = calcularCupoSemanalPorMargen(capHist, rUnitHist, cfg.maxTradesWk);
-                const resSem = simularOperacionesDeSemanaEnCuenta(
+                const resSem = simularSemanaRealistaEnCuenta(
                     sem.trades,
-                    cuentaLiquidadaHist ? 0 : infoMargen.cupoEfectivo,
+                    (cuentaLiquidadaHist || infoMargen.bloqueadoPorMargen) ? 0 : infoMargen.cupoEfectivo,
                     cfg.execMode,
                     commR,
                     capHist,
-                    rUnitHist
+                    rUnitHist,
+                    peakCuentaHist,
+                    false
                 );
-
-                totalW += resSem.wSem;
-                totalL += resSem.lSem;
-                sumaNetR += resSem.netR;
 
                 const rUsadoSemana = cuentaLiquidadaHist ? 0 : rUnitHist;
                 const pnlSemanaUsd = resSem.netR * rUsadoSemana;
 
                 if (!cuentaLiquidadaHist) {
-                    if (resSem.liquidada || (capHist + pnlSemanaUsd) <= 0) {
+                    if (resSem.maxDdSemPct > maxDdCuentaPctHist) maxDdCuentaPctHist = resSem.maxDdSemPct;
+                    peakCuentaHist = resSem.peakCuenta;
+
+                    if (resSem.liquidada || infoMargen.bloqueadoPorMargen || (capHist + pnlSemanaUsd) <= 0) {
                         capHist = 0;
                         rUnitHist = 0;
                         cuentaLiquidadaHist = true;
-                        maxDdAccountPctHist = 100.0;
+                        maxDdCuentaPctHist = 100.0;
                     } else {
+                        capHist += pnlSemanaUsd;
+
+                        // Retiros voluntarios: reescalan el pico de la cuenta proporcionalmente (un retiro al bolsillo no es un Drawdown operativo)
                         if (pnlSemanaUsd > 0 && capHist < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                             const retiroParcial = pnlSemanaUsd * cfg.withdrawGrowthPct;
-                            retirosHist += retiroParcial;
-                            capHist += (pnlSemanaUsd - retiroParcial);
-                        } else {
-                            capHist += pnlSemanaUsd;
+                            if (capHist - retiroParcial > 10) {
+                                const prevCap = capHist;
+                                retirosHist += retiroParcial;
+                                capHist -= retiroParcial;
+                                peakCuentaHist = peakCuentaHist * (capHist / prevCap);
+                            }
                         }
 
                         if (capHist >= cfg.capTop) {
                             retirosHist += (capHist - cfg.capTop);
                             capHist = cfg.capTop;
+                            peakCuentaHist = cfg.capTop;
                         }
 
-                        const wealthNowCheck = capHist + retirosHist;
-                        if (wealthNowCheck > peakAccountHist) peakAccountHist = wealthNowCheck;
-                        const ddPctNow = ((peakAccountHist - wealthNowCheck) / Math.max(1, peakAccountHist)) * 100.0;
-                        if (ddPctNow > maxDdAccountPctHist) maxDdAccountPctHist = ddPctNow;
-
-                        if ((resSem.wSem + resSem.lSem) > 0 && capHist > 0 && cfg.varRPct > 0) {
-                            rachaHist = resSem.netR >= 0 ? (rachaHist >= 0 ? rachaHist + 1 : 1) : (rachaHist <= 0 ? rachaHist - 1 : -1);
-                            const damping = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(rachaHist) - 1));
-                            const step = Math.max(-0.15, Math.min(0.18, resSem.netR * cfg.varRPct * damping));
-                            rUnitHist = Math.max(
-                                Math.min(cfg.rIni * 0.40, capHist * 0.50),
-                                Math.min(cfg.rMax, rUnitHist * (1.0 + step), capHist * 0.025)
-                            );
+                        if ((resSem.wSem + resSem.lSem) > 0) {
+                            const upd = actualizarRUnitFinDeSemana(rUnitHist, resSem.netR, capHist, cfg, rachaHist);
+                            rUnitHist = upd.rNext;
+                            rachaHist = upd.streakNext;
                         }
                     }
                 }
-
-                const wealthNow = capHist + retirosHist;
 
                 semanasEvaluadas.push({
                     key: sem.key,
@@ -1694,20 +1779,9 @@
                     rUnit: rUsadoSemana,
                     capClose: capHist,
                     retirosAcum: retirosHist,
-                    wealthClose: wealthNow
+                    wealthClose: capHist + retirosHist
                 });
             });
-
-            const elDdUser = document.getElementById("bt-max-dd-pct-user");
-            if (elDdUser) {
-                if (cuentaLiquidadaHist || maxDdAccountPctHist >= 99.9) {
-                    elDdUser.innerText = "Con tus parámetros: -100.0% (Cuenta liquidada)";
-                    elDdUser.style.color = "var(--crimson)";
-                } else {
-                    elDdUser.innerText = `Con tus parámetros: -${maxDdAccountPctHist.toFixed(1)}% de tu cuenta`;
-                    elDdUser.style.color = "#fca5a5";
-                }
-            }
 
             let rSumBase = 0, nBase = 0;
             semanasSlice.forEach(s => s.trades.forEach(t => {
@@ -1717,6 +1791,26 @@
             const expTrade = nBase > 0 ? rSumBase / nBase : 0.22;
 
             const mcStats = correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
+
+            // Mostrar en la tarjeta superior de Backtesting (Drawdown Máximo Histórico -20.27 R) el impacto real sobre la cuenta del usuario:
+            // Tomamos el peor entre la secuencia cronológica exacta y lo que supone sufrir ese bache histórico (-20.27R) con su ratio de riesgo inicial
+            const maxDdRBase = window._alfaMaxDdRBase || 18.66;
+            const impactoDirectoBachePct = cfg.varRPct > 0
+                ? (1.0 - Math.pow(Math.max(0.0, 1.0 - (cfg.rIni / cfg.capIni)), maxDdRBase)) * 100.0
+                : Math.min(100.0, (maxDdRBase * cfg.rIni / cfg.capIni) * 100.0);
+            const ddMostrarBacktest = Math.min(100.0, Math.max(maxDdCuentaPctHist, impactoDirectoBachePct));
+
+            const elDdUser = document.getElementById("bt-max-dd-pct-user");
+            if (elDdUser) {
+                if (cuentaLiquidadaHist || ddMostrarBacktest >= 99.5 || (mcStats && mcStats.ruinPct >= 50.0)) {
+                    elDdUser.innerText = "Con tus parámetros: -100.0% (Cuenta quemada)";
+                    elDdUser.style.color = "var(--crimson)";
+                } else {
+                    elDdUser.innerText = `Con tus parámetros: -${ddMostrarBacktest.toFixed(1)}% de tu cuenta`;
+                    elDdUser.style.color = ddMostrarBacktest > 40 ? "var(--crimson)" : "#fca5a5";
+                }
+            }
+
             actualizarBloqueGestionYViabilidad(cfg, mcStats);
             renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR);
             renderizarHistorico105SemanasYMensual(semanasEvaluadas);
@@ -1748,11 +1842,13 @@
             const box = document.getElementById("viability-box");
             if (!badge || !verdict || !ddAdvice || !box) return;
 
-            if (cfg.rIni >= cfg.capIni * 0.50) {
-                badge.innerText = "🚨 RIESGO DE QUIEBRA INMEDIATA";
+            const ruinPct = mcStats ? mcStats.ruinPct : 0;
+
+            if (infoM.bloqueadoPorMargen || pctRiesgoPorOp >= 35.0 || ruinPct >= 25.0) {
+                badge.innerText = "🚨 RIESGO DE QUIEBRA / INVIABLE";
                 badge.style.color = "var(--crimson)";
-                box.style.borderColor = "rgba(244, 63, 94, 0.6)";
-                verdict.innerHTML = `❌ <b>No viable:</b> Estás arriesgando <b>$${cfg.rIni.toLocaleString("es-ES")} (${pctRiesgoPorOp.toFixed(0)}% de tu cuenta)</b> en una sola operación sobre un capital de <b>$${cfg.capIni.toLocaleString("es-ES")}</b>. Un par de Stop Loss seguidos liquidan la cuenta al 100%.`;
+                box.style.borderColor = "rgba(244, 63, 94, 0.65)";
+                verdict.innerHTML = `❌ <b>Inviable:</b> Arriesgar <b>1R = $${cfg.rIni.toLocaleString("es-ES")} (${pctRiesgoPorOp.toFixed(0)}% de tu cuenta)</b> con un capital de <b>$${cfg.capIni.toLocaleString("es-ES")}</b> exige abrir posiciones de ~$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} y provoca una probabilidad de quemar la cuenta del <b>${ruinPct.toFixed(1)}%</b>.`;
             } else if (cfg.capIni >= capContadoNecesario) {
                 badge.innerText = "✔ 100% VIABLE AL CONTADO";
                 badge.style.color = "var(--emerald)";
@@ -1772,12 +1868,12 @@
 
             const dd90 = mcStats ? mcStats.dd90 : 0;
             const rSugeridoPrudente = Math.max(5, Math.round(cfg.capIni * 0.02));
-            if (dd90 <= 25.0 && pctRiesgoPorOp <= 2.5) {
+            if (dd90 <= 28.0 && ruinPct === 0) {
                 ddAdvice.innerHTML = `🛡️ <b>Drawdown viable (Óptimo):</b> En escenario de estrés (P90) tu caída máxima ronda el <b style="color:var(--emerald);">-${dd90.toFixed(1)}%</b> (dentro del umbral saludable &le; 25%–30% para operar con tranquilidad psicológica).`;
-            } else if (dd90 <= 40.0) {
-                ddAdvice.innerHTML = `⚖️ <b>Drawdown exigente:</b> En estrés P90 asumirías baches de hasta <b style="color:var(--alfa-gold-light);">-${dd90.toFixed(1)}%</b>. Recomendamos mantener el estrés P90 por debajo del <b>30%</b> (por ejemplo, ajustando tu 1R inicial en torno a <b>$${rSugeridoPrudente}</b>, un 2% de tu capital).`;
+            } else if (dd90 <= 42.0 && ruinPct < 2.0) {
+                ddAdvice.innerHTML = `⚖️ <b>Drawdown exigente:</b> En estrés P90 asumirías baches de hasta <b style="color:var(--alfa-gold-light);">-${dd90.toFixed(1)}%</b>. Recomendamos mantener el estrés P90 por debajo del <b>30%</b> (ajustando tu 1R inicial cerca de <b>$${rSugeridoPrudente}</b>, un 2% de tu capital).`;
             } else {
-                ddAdvice.innerHTML = `🚨 <b>Drawdown excesivo:</b> Tu estrés P90 llega al <b style="color:var(--crimson);">-${dd90.toFixed(1)}%</b> (riesgo real de ruina o bloqueo por margen). Para un Drawdown viable (&lt; 25%–30%), reduce tu 1R inicial hacia <b>$${rSugeridoPrudente}</b> (2% de tu cuenta).`;
+                ddAdvice.innerHTML = `🚨 <b>Drawdown excesivo:</b> Tu estrés P90 llega al <b style="color:var(--crimson);">-${dd90.toFixed(1)}%</b> (${ruinPct.toFixed(1)}% de rutas quemadas). Para un Drawdown viable (&le; 25%–30%), sitúa tu 1R inicial en torno a <b>$${rSugeridoPrudente}</b> (2% de tu cuenta).`;
             }
         }
 
@@ -1801,30 +1897,41 @@
             const SAMPLE_CURVES = 800;
             let wealthCurves = Array.from({ length: nWeeksSim + 1 }, () => new Float64Array(SAMPLE_CURVES));
 
+            const infoDia1 = calcularCupoSemanalPorMargen(cfg.capIni, cfg.rIni, cfg.maxTradesWk);
+
             for (let p = 0; p < NUM_PATHS; p++) {
-                let cap = cfg.capIni;
-                let rUnit = cfg.rIni;
+                let cap = infoDia1.bloqueadoPorMargen ? 0 : cfg.capIni;
+                let rUnit = infoDia1.bloqueadoPorMargen ? 0 : cfg.rIni;
                 let ret = 0;
-                let peak = cfg.capIni;
-                let maxDd = 0;
+                let peakCuenta = cfg.capIni;
+                let maxDd = infoDia1.bloqueadoPorMargen ? 100.0 : 0;
                 let streak = 0;
                 let hitCapW = -1;
                 let hitSalW = -1;
-                let quemada = false;
+                let quemada = infoDia1.bloqueadoPorMargen;
 
                 if (p < SAMPLE_CURVES) wealthCurves[0][p] = cap;
 
                 for (let w = 1; w <= nWeeksSim; w++) {
-                    if (cap <= 0) {
+                    if (cap <= 0 || quemada) {
                         if (p < SAMPLE_CURVES) wealthCurves[w][p] = ret;
                         continue;
                     }
 
                     const randSem = semanasSlice[(Math.random() * nWeeksPool) | 0];
                     const infoM = calcularCupoSemanalPorMargen(cap, rUnit, cfg.maxTradesWk);
-                    const resSem = simularOperacionesDeSemanaEnCuenta(
-                        randSem.trades, infoM.cupoEfectivo, cfg.execMode, commR, cap, rUnit
+                    if (infoM.bloqueadoPorMargen || infoM.cupoEfectivo <= 0) {
+                        cap = 0; rUnit = 0; quemada = true; maxDd = 100.0;
+                        if (p < SAMPLE_CURVES) wealthCurves[w][p] = ret;
+                        continue;
+                    }
+
+                    const resSem = simularSemanaRealistaEnCuenta(
+                        randSem.trades, infoM.cupoEfectivo, cfg.execMode, commR, cap, rUnit, peakCuenta, true
                     );
+                    if (resSem.maxDdSemPct > maxDd) maxDd = resSem.maxDdSemPct;
+                    peakCuenta = resSem.peakCuenta;
+
                     const netRSem = resSem.netR;
                     const pnl = netRSem * rUnit;
 
@@ -1837,35 +1944,33 @@
                         continue;
                     }
 
-                    if (pnl > 0 && cap < cfg.capTop && cfg.withdrawGrowthPct > 0) {
-                        const sacado = pnl * cfg.withdrawGrowthPct;
-                        ret += sacado;
-                        cap += (pnl - sacado);
-                    } else {
-                        cap += pnl;
+                    cap += pnl;
+
+                    if (cap <= cfg.capIni * 0.30) {
+                        quemada = true;
                     }
 
-                    if (cap <= cfg.capIni * 0.30) quemada = true;
+                    if (pnl > 0 && cap < cfg.capTop && cfg.withdrawGrowthPct > 0) {
+                        const sacado = pnl * cfg.withdrawGrowthPct;
+                        if (cap - sacado > 10) {
+                            const prevCap = cap;
+                            ret += sacado;
+                            cap -= sacado;
+                            peakCuenta = peakCuenta * (cap / prevCap);
+                        }
+                    }
 
                     if (cap >= cfg.capTop) {
                         if (hitCapW === -1) hitCapW = w;
                         ret += (cap - cfg.capTop);
                         cap = cfg.capTop;
+                        peakCuenta = cfg.capTop;
                     }
 
-                    const totalW = cap + ret;
-                    if (totalW > peak) peak = totalW;
-                    const dd = ((peak - totalW) / peak) * 100.0;
-                    if (dd > maxDd) maxDd = dd;
-
-                    if (cfg.varRPct > 0 && cap > 0) {
-                        streak = netRSem >= 0 ? (streak >= 0 ? streak + 1 : 1) : (streak <= 0 ? streak - 1 : -1);
-                        const damp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(streak) - 1));
-                        const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damp));
-                        rUnit = Math.max(
-                            Math.min(cfg.rIni * 0.40, cap * 0.50),
-                            Math.min(cfg.rMax, rUnit * (1.0 + step), cap * 0.025)
-                        );
+                    if (resSem.tomados > 0 && cap > 0) {
+                        const upd = actualizarRUnitFinDeSemana(rUnit, netRSem, cap, cfg, streak);
+                        rUnit = upd.rNext;
+                        streak = upd.streakNext;
                     }
 
                     const rMensualEsperado = infoM.cupoEfectivo * expPorTrade * 4.333;
@@ -1873,19 +1978,19 @@
                     if (hitSalW === -1 && sueldoMesEur >= cfg.targetSalaryEur) {
                         hitSalW = w;
                     }
-                    if (p < SAMPLE_CURVES) wealthCurves[w][p] = totalW;
+                    if (p < SAMPLE_CURVES) wealthCurves[w][p] = cap + ret;
                 }
 
                 if (quemada) ruinCount++;
-                if (cap + ret > cfg.capIni) profitableCount++;
+                if (!quemada && (cap + ret > cfg.capIni)) profitableCount++;
 
                 finalSaldo[p] = cap;
                 finalRet[p] = ret;
                 finalWealth[p] = cap + ret;
                 finalR[p] = rUnit;
                 finalMaxDD[p] = maxDd;
-                weekHitCap[p] = hitCapW;
-                weekHitSalary[p] = hitSalW;
+                weekHitCap[p] = quemada ? -1 : hitCapW;
+                weekHitSalary[p] = quemada ? -1 : hitSalW;
             }
 
             const idxSorted = Array.from({ length: NUM_PATHS }, (_, i) => i).sort((a, b) => finalWealth[a] - finalWealth[b]);
@@ -1898,7 +2003,9 @@
                 const rVal = finalR[i];
                 const sVal = finalSaldo[i];
                 const mInfo = calcularCupoSemanalPorMargen(sVal, rVal, cfg.maxTradesWk);
-                const sueldoNetoEur = sVal > 0 ? (rVal * (mInfo.cupoEfectivo * expPorTrade * 4.333) * 0.79 * 0.92) : 0;
+                const sueldoNetoEur = (sVal > 0 && !mInfo.bloqueadoPorMargen)
+                    ? (rVal * (mInfo.cupoEfectivo * expPorTrade * 4.333) * 0.79 * 0.92)
+                    : 0;
                 return {
                     saldo: sVal,
                     ret: finalRet[i],
@@ -1917,8 +2024,9 @@
             const dd90 = ddSorted[Math.floor(NUM_PATHS * 0.90)];
             const dd95 = ddSorted[Math.floor(NUM_PATHS * 0.95)];
 
-            const medCapW = validCapW.length >= NUM_PATHS * 0.5 ? validCapW[Math.floor(validCapW.length * 0.5)] : (validCapW.length ? validCapW[Math.floor(validCapW.length * 0.5)] : null);
-            const medSalW = validSalW.length ? validSalW[Math.floor(validSalW.length * 0.5)] : null;
+            // Solo mostramos mediana de semanas a techo si al menos la mitad de las 10.000 rutas consigue llegar sin quemarse
+            const medCapW = validCapW.length >= (NUM_PATHS * 0.50) ? validCapW[Math.floor(validCapW.length * 0.50)] : null;
+            const medSalW = validSalW.length >= (NUM_PATHS * 0.50) ? validSalW[Math.floor(validSalW.length * 0.50)] : null;
 
             const ruinPct = (ruinCount / NUM_PATHS) * 100.0;
             const profPct = (profitableCount / NUM_PATHS) * 100.0;
@@ -1926,17 +2034,17 @@
             const elRuin = document.getElementById("mc-ruin-prob");
             if (elRuin) {
                 elRuin.innerText = `${ruinPct.toFixed(2)}%`;
-                elRuin.style.color = ruinPct === 0 ? "var(--emerald)" : "var(--crimson)";
+                elRuin.style.color = ruinPct === 0 ? "var(--emerald)" : (ruinPct < 5 ? "var(--alfa-gold-light)" : "var(--crimson)");
             }
-            setTxt("mc-ruin-sub", `${ruinCount} de 10.000 rutas`);
-            setTxt("mc-time-cap", (medCapW && ruinPct < 50) ? `${medCapW} semanas` : `> ${nWeeksSim} sem`);
-            setTxt("mc-time-salary-sub", (medSalW && ruinPct < 50) ? `Sueldo obj. en Sem ${medSalW}` : `Sueldo obj.: > ${nWeeksSim}s`);
+            setTxt("mc-ruin-sub", `${ruinCount.toLocaleString("es-ES")} de 10.000 rutas`);
+            setTxt("mc-time-cap", medCapW ? `${medCapW} semanas` : (ruinPct >= 50 ? "No alcanza (Quiebra)" : `> ${nWeeksSim} sem`));
+            setTxt("mc-time-salary-sub", medSalW ? `Sueldo obj. en Sem ${medSalW}` : (ruinPct >= 50 ? "Riesgo excesivo" : `Sueldo obj.: > ${nWeeksSim}s`));
             setTxt("mc-wealth-p50", `$${Math.round(p50.wealth).toLocaleString("es-ES")}`);
             setTxt("mc-ret-p50", `Retirado: $${Math.round(p50.ret).toLocaleString("es-ES")}`);
             setTxt("mc-dd-p50", `-${dd50.toFixed(1)}%`);
             setTxt("mc-dd-p90", `Estrés P90: -${dd90.toFixed(1)}%`);
             setTxt("mc-wealth-p05", `$${Math.round(p05.wealth).toLocaleString("es-ES")}`);
-            setTxt("mc-prob-profit", `Rentables: ${profPct.toFixed(1)}%`);
+            setTxt("mc-prob-profit", `Supervivientes +: ${profPct.toFixed(1)}%`);
 
             setTxt("dd-p10", `-${dd10.toFixed(1)}%`);
             setTxt("dd-p25", `-${dd25.toFixed(1)}%`);
@@ -1998,7 +2106,7 @@
             const n = cP50.length - 1;
             if (n < 1) return;
 
-            const maxV = Math.max(capIni * 2.2, ...cP90) * 1.06;
+            const maxV = Math.max(capIni * 1.5, ...cP90) * 1.06;
             const minV = Math.min(0, ...cP10);
             const padL = 62, padR = 20, padT = 18, padB = 26;
             const pw = w - padL - padR, ph = h - padT - padB;
@@ -2049,7 +2157,7 @@
         }
 
         // =========================================================================
-        // BLOQUE 5: SIMULADOR A FUTURO (CON RESUMEN POR PUNTOS)
+        // BLOQUE 5: SIMULADOR A FUTURO (CON MISMA FÍSICA REALISTA Y PUNTOS)
         // =========================================================================
         function renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR) {
             const expPorTrade = Math.max(0.12, expTrade || 0.22);
@@ -2066,42 +2174,64 @@
             let matR = Array.from({ length: targetWeeks + 1 }, () => new Float64Array(nPathsFut));
             let matDD = Array.from({ length: targetWeeks + 1 }, () => new Float64Array(nPathsFut));
 
+            const infoDia1 = calcularCupoSemanalPorMargen(cfg.capIni, cfg.rIni, cfg.maxTradesWk);
+
             for (let p = 0; p < nPathsFut; p++) {
-                let c = cfg.capIni, r = cfg.rIni, ret = 0, pk = cfg.capIni, mdd = 0, st = 0;
-                matCap[0][p] = c; matRet[0][p] = 0; matR[0][p] = r; matDD[0][p] = 0;
+                let c = infoDia1.bloqueadoPorMargen ? 0 : cfg.capIni;
+                let r = infoDia1.bloqueadoPorMargen ? 0 : cfg.rIni;
+                let ret = 0;
+                let pk = cfg.capIni;
+                let mdd = infoDia1.bloqueadoPorMargen ? 100.0 : 0;
+                let st = 0;
+                let dead = infoDia1.bloqueadoPorMargen;
+
+                matCap[0][p] = c; matRet[0][p] = 0; matR[0][p] = r; matDD[0][p] = mdd;
+
                 for (let w = 1; w <= targetWeeks; w++) {
-                    if (c <= 0) {
+                    if (c <= 0 || dead) {
                         matCap[w][p] = 0; matRet[w][p] = ret; matR[w][p] = 0; matDD[w][p] = 100.0;
                         continue;
                     }
                     const randSem = semanasSlice[(Math.random() * semanasSlice.length) | 0];
                     const infoM = calcularCupoSemanalPorMargen(c, r, cfg.maxTradesWk);
-                    const resSem = simularOperacionesDeSemanaEnCuenta(
-                        randSem.trades, infoM.cupoEfectivo, cfg.execMode, commR, c, r
+                    if (infoM.bloqueadoPorMargen || infoM.cupoEfectivo <= 0) {
+                        c = 0; r = 0; dead = true; mdd = 100.0;
+                        matCap[w][p] = 0; matRet[w][p] = ret; matR[w][p] = 0; matDD[w][p] = 100.0;
+                        continue;
+                    }
+
+                    const resSem = simularSemanaRealistaEnCuenta(
+                        randSem.trades, infoM.cupoEfectivo, cfg.execMode, commR, c, r, pk, true
                     );
+                    if (resSem.maxDdSemPct > mdd) mdd = resSem.maxDdSemPct;
+                    pk = resSem.peakCuenta;
+
                     const nr = resSem.netR;
                     const pnl = nr * r;
 
                     if (resSem.liquidada || (c + pnl) <= 0) {
-                        c = 0; r = 0; mdd = 100.0;
+                        c = 0; r = 0; dead = true; mdd = 100.0;
                     } else {
+                        c += pnl;
+                        if (c <= cfg.capIni * 0.30) dead = true;
+
                         if (pnl > 0 && c < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                             const s = pnl * cfg.withdrawGrowthPct;
-                            ret += s; c += (pnl - s);
-                        } else c += pnl;
-                        if (c > cfg.capTop) { ret += (c - cfg.capTop); c = cfg.capTop; }
-                        const tot = c + ret;
-                        if (tot > pk) pk = tot;
-                        const dd = ((pk - tot) / pk) * 100.0;
-                        if (dd > mdd) mdd = dd;
-                        if (cfg.varRPct > 0 && c > 0) {
-                            st = nr >= 0 ? (st >= 0 ? st + 1 : 1) : (st <= 0 ? st - 1 : -1);
-                            const dmp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(st) - 1));
-                            const step = Math.max(-0.15, Math.min(0.18, nr * cfg.varRPct * dmp));
-                            r = Math.max(
-                                Math.min(cfg.rIni * 0.40, c * 0.50),
-                                Math.min(cfg.rMax, r * (1.0 + step), c * 0.025)
-                            );
+                            if (c - s > 10) {
+                                const prevC = c;
+                                ret += s; c -= s;
+                                pk = pk * (c / prevC);
+                            }
+                        }
+                        if (c >= cfg.capTop) {
+                            ret += (c - cfg.capTop);
+                            c = cfg.capTop;
+                            pk = cfg.capTop;
+                        }
+                        if (resSem.tomados > 0 && c > 0) {
+                            const upd = actualizarRUnitFinDeSemana(r, nr, c, cfg, st);
+                            r = upd.rNext;
+                            st = upd.streakNext;
                         }
                     }
                     matCap[w][p] = c; matRet[w][p] = ret; matR[w][p] = r; matDD[w][p] = mdd;
@@ -2115,7 +2245,7 @@
                 const cMed = matCap[w][mid];
                 const rMed = matR[w][mid];
                 const infoM = calcularCupoSemanalPorMargen(cMed, rMed, cfg.maxTradesWk);
-                const grossMoUsd = cMed > 0 ? Math.max(0, rMed * (infoM.cupoEfectivo * expPorTrade * 4.333)) : 0;
+                const grossMoUsd = (cMed > 0 && !infoM.bloqueadoPorMargen) ? Math.max(0, rMed * (infoM.cupoEfectivo * expPorTrade * 4.333)) : 0;
                 const netMoEur = grossMoUsd * 0.79 * 0.92;
                 const dds = Float64Array.from(matDD[w]).sort();
                 const fechaPunto = new Date(hoy.getTime() + w * 7 * 86400000).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
@@ -2137,17 +2267,30 @@
 
             const futBox = document.getElementById("story-future-box");
             if (futBox) {
-                futBox.innerHTML = `
-                    <div style="font-size:11.5px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08);">
-                        🚀 PROYECCIÓN MEDIANA REALISTA (P50) DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
-                    </div>
-                    <ul class="future-bullets-grid">
-                        <li><b>Punto de partida:</b> Capital inicial de <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, riesgo inicial <b>1R = $${cfg.rIni}</b> y ajuste semanal del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>.</li>
-                        <li><b>Patrimonio proyectado:</b> Evolución total hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>, repartidos en <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta y <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> retirados al bolsillo.</li>
-                        <li><b>Unidad de riesgo y flujo mensual:</b> Tu unidad escalaría a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando unos <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF).</li>
-                        <li><b>Riesgo esperado en el trayecto:</b> Drawdown máximo mediano estimado durante el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.</li>
-                    </ul>
-                `;
+                if (snapFin.cap <= 0 && snapFin.wealth < cfg.capIni * 0.5) {
+                    futBox.innerHTML = `
+                        <div style="font-size:11.5px; text-transform:uppercase; letter-spacing:0.6px; color:var(--crimson); font-weight:800; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08);">
+                            🚨 PROYECCIÓN MEDIANA (P50) HASTA EL ${fechaNice.toUpperCase()}: CUENTA LIQUIDADA POR EXCESO DE RIESGO
+                        </div>
+                        <ul class="future-bullets-grid">
+                            <li><b>Configuración inviable:</b> Empezar con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> y arriesgar <b>1R = $${cfg.rIni.toLocaleString("es-ES")}</b> supone exponer el <b>${((cfg.rIni / cfg.capIni) * 100).toFixed(0)}%</b> de la cuenta en una sola operación.</li>
+                            <li><b>Resultado mediano (P50):</b> Más de la mitad de los escenarios terminan en <span class="hl-red">liquidación / Stop-Out ($0 en cuenta · -100% DD)</span> durante las primeras semanas.</li>
+                            <li><b>Solución recomendada:</b> Reduce tu <b>1R Inicial</b> hacia el 1.5% – 2.5% de tu capital inicial (aprox. <b>$${Math.max(5, Math.round(cfg.capIni * 0.02))}</b>) para permitir que la ventaja estadística trabaje sin riesgo de ruina.</li>
+                        </ul>
+                    `;
+                } else {
+                    futBox.innerHTML = `
+                        <div style="font-size:11.5px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08);">
+                            🚀 PROYECCIÓN MEDIANA REALISTA (P50) DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
+                        </div>
+                        <ul class="future-bullets-grid">
+                            <li><b>Punto de partida:</b> Capital inicial de <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, riesgo inicial <b>1R = $${cfg.rIni}</b> y ajuste semanal del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>.</li>
+                            <li><b>Patrimonio proyectado:</b> Evolución total hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>, repartidos en <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta y <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> retirados al bolsillo.</li>
+                            <li><b>Unidad de riesgo y flujo mensual:</b> Tu unidad escalaría a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando unos <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF).</li>
+                            <li><b>Riesgo esperado en el trayecto:</b> Drawdown máximo mediano estimado sobre el saldo de cuenta del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.</li>
+                        </ul>
+                    `;
+                }
             }
 
             const hitos = [3, 6, 9, 12, 18, 24, 36].filter(m => m <= Math.max(36, targetMonths));
