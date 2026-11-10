@@ -1522,7 +1522,6 @@
         // =========================================================================
         // MOTOR DE RIESGO, MARGEN FÍSICO Y STOP-OUT REALISTA (SIN FRENOS OCULTOS)
         // =========================================================================
-const MAX_BROKER_LEVERAGE = 20.0; // Techo físico de apalancamiento retail (5% margen mínimo)
 
         function calcularCupoSemanalPorMargen(capitalActual, rActual, maxTradesDeseados) {
             const nominalPorTrade = rActual / (STOP_LOSS_MEDIO_PCT / 100.0);
