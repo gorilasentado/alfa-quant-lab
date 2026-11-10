@@ -1522,6 +1522,8 @@
         // =========================================================================
         // MOTOR DE RIESGO, MARGEN FÍSICO Y STOP-OUT REALISTA (SIN FRENOS OCULTOS)
         // =========================================================================
+const MAX_BROKER_LEVERAGE = 20.0; // Techo físico de apalancamiento retail (5% margen mínimo)
+
         function calcularCupoSemanalPorMargen(capitalActual, rActual, maxTradesDeseados) {
             const nominalPorTrade = rActual / (STOP_LOSS_MEDIO_PCT / 100.0);
             if (capitalActual <= 0 || rActual > capitalActual) {
@@ -1561,9 +1563,7 @@
                 rIni,
                 varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById("inp-var-r")?.value) || 0)) / 100.0,
                 capTop: Math.max(500, parseFloat(document.getElementById("inp-cap-top")?.value) || 25000),
-                // Si el usuario escribe un 1R inicial mayor que el tope 1R máx, respetamos su 1R inicial sin recortárselo en secreto
                 rMax: Math.max(rMaxInput, rIni),
-                // Ratio máximo de riesgo permitido respecto a la cuenta: respeta la proporción inicial elegida por el usuario
                 userRiskRatioCap: Math.max(0.025, rIni / Math.max(capIni, 1.0)),
                 maxTradesWk: Math.max(1, Math.min(30, parseInt(document.getElementById("inp-max-trades")?.value) || 15)),
                 withdrawGrowthPct: Math.max(0, Math.min(80, parseFloat(document.getElementById("inp-withdraw-growth")?.value) || 0)) / 100.0,
@@ -1596,12 +1596,6 @@
             }
         }
 
-        /**
-         * Simula una semana operación por operación verificando:
-         * 1. Margen mínimo de mantenimiento del bróker (Stop-Out si capital - pérdida flotante MAE <= garantía mínima retenida).
-         * 2. Drawdown real sobre el saldo de la cuenta incluyendo excursión adversa intratrade (MAE).
-         * 3. Aleatorización opcional del orden de llegada dentro de la semana (para Monte Carlo, evitando el sesgo de elegir solo lunes 1ª hora).
-         */
         function simularSemanaRealistaEnCuenta(listaTrades, cupo, execMode, commR, capInicialSem, rUnitSem, peakCuentaPrev, barajarOrden = false) {
             let validos = [];
             for (let i = 0; i < listaTrades.length; i++) {
@@ -1638,7 +1632,7 @@
                 const maeFrac = Math.min(1.0, Math.max(0.0, (tr.mae ?? (rOp > 0 ? 30.0 : 100.0)) / 100.0));
                 const flotanteAdversoUsd = riesgoUsd * maeFrac;
 
-                // Stop-Out real del bróker durante la vida del trade (o incapacidad física de abrir posición)
+                // Stop-Out real si la pérdida flotante intratrade consume el margen libre
                 if ((saldoVivo - flotanteAdversoUsd) <= margenMantenimiento || riesgoUsd > saldoVivo * 1.05) {
                     liquidada = true;
                     saldoVivo = 0;
@@ -1646,7 +1640,6 @@
                     break;
                 }
 
-                // Registrar caída intratrade real sobre la cuenta antes de que cierre la operación
                 const sueloIntratrade = saldoVivo - flotanteAdversoUsd;
                 const ddIntra = ((peakCuenta - sueloIntratrade) / Math.max(1, peakCuenta)) * 100.0;
                 if (ddIntra > maxDdSemPct) maxDdSemPct = ddIntra;
@@ -1681,7 +1674,6 @@
             const damp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(nuevaRacha) - 1));
             const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damp));
             const rEscalado = rActual * (1.0 + step);
-            // Sin el recorte artificial a cap*0.025 cuando el usuario eligió un % superior
             const rNext = Math.max(
                 Math.min(cfg.rIni * 0.40, capActual * 0.50),
                 Math.min(cfg.rMax, rEscalado, capActual * cfg.userRiskRatioCap)
@@ -1742,7 +1734,6 @@
                     } else {
                         capHist += pnlSemanaUsd;
 
-                        // Retiros voluntarios: reescalan el pico de la cuenta proporcionalmente (un retiro al bolsillo no es un Drawdown operativo)
                         if (pnlSemanaUsd > 0 && capHist < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                             const retiroParcial = pnlSemanaUsd * cfg.withdrawGrowthPct;
                             if (capHist - retiroParcial > 10) {
@@ -1792,9 +1783,8 @@
 
             const mcStats = correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
 
-            // Mostrar en la tarjeta superior de Backtesting (Drawdown Máximo Histórico -20.27 R) el impacto real sobre la cuenta del usuario:
-            // Tomamos el peor entre la secuencia cronológica exacta y lo que supone sufrir ese bache histórico (-20.27R) con su ratio de riesgo inicial
-            const maxDdRBase = window._alfaMaxDdRBase || 18.66;
+            const txtDdR = document.getElementById("bt-max-dd-r")?.innerText || "-18.66";
+            const maxDdRBase = Math.abs(parseFloat(txtDdR.replace(/[^0-9.-]/g, ""))) || 18.66;
             const impactoDirectoBachePct = cfg.varRPct > 0
                 ? (1.0 - Math.pow(Math.max(0.0, 1.0 - (cfg.rIni / cfg.capIni)), maxDdRBase)) * 100.0
                 : Math.min(100.0, (maxDdRBase * cfg.rIni / cfg.capIni) * 100.0);
@@ -1945,10 +1935,7 @@
                     }
 
                     cap += pnl;
-
-                    if (cap <= cfg.capIni * 0.30) {
-                        quemada = true;
-                    }
+                    if (cap <= cfg.capIni * 0.30) quemada = true;
 
                     if (pnl > 0 && cap < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                         const sacado = pnl * cfg.withdrawGrowthPct;
@@ -2011,8 +1998,7 @@
                     ret: finalRet[i],
                     wealth: finalWealth[i],
                     rFinal: rVal,
-                    sueldoNetoEur,
-                    dd: finalMaxDD[i]
+                    sueldoNetoEur
                 };
             }
 
@@ -2024,7 +2010,6 @@
             const dd90 = ddSorted[Math.floor(NUM_PATHS * 0.90)];
             const dd95 = ddSorted[Math.floor(NUM_PATHS * 0.95)];
 
-            // Solo mostramos mediana de semanas a techo si al menos la mitad de las 10.000 rutas consigue llegar sin quemarse
             const medCapW = validCapW.length >= (NUM_PATHS * 0.50) ? validCapW[Math.floor(validCapW.length * 0.50)] : null;
             const medSalW = validSalW.length >= (NUM_PATHS * 0.50) ? validSalW[Math.floor(validSalW.length * 0.50)] : null;
 
@@ -2037,7 +2022,7 @@
                 elRuin.style.color = ruinPct === 0 ? "var(--emerald)" : (ruinPct < 5 ? "var(--alfa-gold-light)" : "var(--crimson)");
             }
             setTxt("mc-ruin-sub", `${ruinCount.toLocaleString("es-ES")} de 10.000 rutas`);
-            setTxt("mc-time-cap", medCapW ? `${medCapW} semanas` : (ruinPct >= 50 ? "No alcanza (Quiebra)" : `> ${nWeeksSim} sem`));
+            setTxt("mc-time-cap", medCapW ? `${medCapW} semanas` : (ruinPct >= 50 ? "Quiebra (Inviable)" : `> ${nWeeksSim} sem`));
             setTxt("mc-time-salary-sub", medSalW ? `Sueldo obj. en Sem ${medSalW}` : (ruinPct >= 50 ? "Riesgo excesivo" : `Sueldo obj.: > ${nWeeksSim}s`));
             setTxt("mc-wealth-p50", `$${Math.round(p50.wealth).toLocaleString("es-ES")}`);
             setTxt("mc-ret-p50", `Retirado: $${Math.round(p50.ret).toLocaleString("es-ES")}`);
@@ -2073,7 +2058,7 @@
                         <td style="color:var(--cyan); font-weight:700;">${mult}</td>
                         <td style="color:var(--alfa-gold-light);">$${r.d.rFinal.toFixed(0)}</td>
                         <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString("es-ES")} €/mes</td>
-                        <td style="color:var(--crimson);">-${Math.max(r.d.dd, r.ddShow).toFixed(1)}%</td>
+                        <td style="color:var(--crimson);">-${r.ddShow.toFixed(1)}%</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -2156,9 +2141,6 @@
             drawLine(cP10, "#38bdf8", 1.8);
         }
 
-        // =========================================================================
-        // BLOQUE 5: SIMULADOR A FUTURO (CON MISMA FÍSICA REALISTA Y PUNTOS)
-        // =========================================================================
         function renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR) {
             const expPorTrade = Math.max(0.12, expTrade || 0.22);
             const dateStr = document.getElementById("inp-future-date")?.value;
