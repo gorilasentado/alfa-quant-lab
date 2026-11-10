@@ -124,7 +124,7 @@
             display: flex; align-items: center; gap: 10px;
         }
 
-        /* BLOQUE 1: DESCRIPCIÓN DE LA ESTRATEGIA (UX POR PASOS Y DETALLES) */
+        /* BLOQUE 1: DESCRIPCIÓN DE LA ESTRATEGIA */
         .strategy-ux-grid {
             display: grid; grid-template-columns: 1fr 1.15fr; gap: 22px; align-items: stretch;
         }
@@ -192,7 +192,7 @@
         .bt-stat-card b { font-family: var(--font-mono); font-size: 23px; font-weight: 800; color: #fff; }
         .bt-stat-card small { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* BLOQUE 3: GESTIÓN DE RIESGO DIGERIBLE */
+        /* BLOQUE 3: GESTIÓN DE RIESGO */
         .risk-ux-top {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
         }
@@ -365,7 +365,7 @@
         .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         @media (max-width: 980px) { .two-col-grid { grid-template-columns: 1fr; } }
 
-        /* BLOQUE 7: BOT DE TELEGRAM + COMANDOS */
+        /* BLOQUE 6: BOT DE TELEGRAM + COMANDOS */
         .bot-steps-grid {
             display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
         }
@@ -1582,7 +1582,6 @@
             }
         }
 
-        // Simula una semana operación a operación verificando liquidación inmediata si cap <= 0
         function simularOperacionesDeSemanaEnCuenta(listaTrades, cupo, execMode, commR, capDisponible, rUnitActual) {
             let netR = 0, tomados = 0, wSem = 0, lSem = 0, dispValidas = 0;
             let saldoVivo = capDisponible;
@@ -1699,7 +1698,6 @@
                 });
             });
 
-            // Actualizar en la tarjeta de Drawdown Máximo del Backtesting el % perdido con los parámetros del usuario
             const elDdUser = document.getElementById("bt-max-dd-pct-user");
             if (elDdUser) {
                 if (cuentaLiquidadaHist || maxDdAccountPctHist >= 99.9) {
@@ -1711,7 +1709,6 @@
                 }
             }
 
-            // Calcular esperanza base limpia sobre las 104 semanas para proyecciones
             let rSumBase = 0, nBase = 0;
             semanasSlice.forEach(s => s.trades.forEach(t => {
                 const v = evaluarTradeIndividualSegunModo(t, cfg.execMode, commR);
@@ -1751,7 +1748,6 @@
             const box = document.getElementById("viability-box");
             if (!badge || !verdict || !ddAdvice || !box) return;
 
-            // 1. Veredicto directo de viabilidad de operaciones
             if (cfg.rIni >= cfg.capIni * 0.50) {
                 badge.innerText = "🚨 RIESGO DE QUIEBRA INMEDIATA";
                 badge.style.color = "var(--crimson)";
@@ -1774,7 +1770,6 @@
                 verdict.innerHTML = `⚠️ <b>Parcialmente viable:</b> Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> y <b>1R = $${cfg.rIni}</b>, al inicio solo podrás sostener <b>~${infoM.cupoEfectivo} de tus ${cfg.maxTradesWk} operaciones/semana</b> (${infoM.maxSimultaneas} abiertas a la vez). Para abrir las ${cfg.maxTradesWk} desde el Día 1 necesitas <b>$${Math.round(capMargenNecesario).toLocaleString("es-ES")}</b> en cuenta o bajar tu 1R a <b>$${Math.max(5, Math.floor((cfg.capIni * 9.5 * (STOP_LOSS_MEDIO_PCT / 100)) / simDeseadas))}</b>.`;
             }
 
-            // 2. Recomendación clara de Drawdown máximo viable
             const dd90 = mcStats ? mcStats.dd90 : 0;
             const rSugeridoPrudente = Math.max(5, Math.round(cfg.capIni * 0.02));
             if (dd90 <= 25.0 && pctRiesgoPorOp <= 2.5) {
@@ -2293,7 +2288,6 @@
         }
 
         function renderizarHistorico105SemanasYMensual(semanasEvaluadas) {
-            // Conteo real sobre todas las semanas estudiadas (con "semanas" completo)
             let semPosBase = 0;
             semanasOrdenadas.forEach(sem => {
                 let rS = 0;
@@ -2310,7 +2304,6 @@
 
             const semanasConFecha = semanasEvaluadas.map((s, idx) => {
                 const infoF = extraerClaveYEtiquetaMes(s);
-                // Para la gráfica pura de R del estudio usamos las R de las operaciones válidas de esa semana
                 let rEstudio = 0, wEst = 0, lEst = 0, opsEst = 0;
                 const rawSem = semanasOrdenadas[idx];
                 if (rawSem) {
