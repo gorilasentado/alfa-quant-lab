@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ALFA Strategy | Backtesting, Gestión de Riesgo & Simulador Cuantitativo</title>
-    <!-- Favicon oficial de alfamarkets.io -->
     <link rel="icon" type="image/png" href="https://www.google.com/s2/favicons?domain=alfamarkets.io&sz=128">
     <link rel="alternate icon" href="https://alfamarkets.io/favicon.ico">
     <link rel="apple-touch-icon" href="https://www.google.com/s2/favicons?domain=alfamarkets.io&sz=180">
@@ -57,8 +56,13 @@
             display: flex; align-items: center; justify-content: space-between;
             flex-wrap: wrap; gap: 14px;
         }
-        .brand-wrap { display: flex; align-items: center; gap: 14px; text-decoration: none; }
-        .brand-logo { height: 40px; width: auto; max-width: 210px; object-fit: contain; display: block; }
+        .brand-wrap {
+            display: flex; align-items: center; gap: 14px; text-decoration: none;
+        }
+        .brand-logo {
+            height: 40px; width: auto; max-width: 210px;
+            object-fit: contain; display: block;
+        }
         .brand-badge {
             width: 40px; height: 40px; border-radius: 10px;
             background: linear-gradient(135deg, var(--alfa-gold), var(--alfa-orange));
@@ -93,7 +97,7 @@
             display: flex; flex-direction: column; gap: 26px;
         }
 
-        /* BLOQUES DE SECCIÓN */
+        /* SECCIONES */
         .section-block {
             background: linear-gradient(160deg, rgba(16, 22, 34, 0.95), rgba(11, 15, 23, 0.97));
             border: 1px solid var(--border-subtle);
@@ -120,35 +124,53 @@
             display: flex; align-items: center; gap: 10px;
         }
 
-        /* BLOQUE 1: DESCRIPCIÓN DE LA ESTRATEGIA */
-        .strategy-intro-grid {
-            display: grid; grid-template-columns: 1.35fr 1fr; gap: 24px; align-items: stretch;
+        /* BLOQUE 1: DESCRIPCIÓN DE LA ESTRATEGIA (UX POR PASOS Y DETALLES) */
+        .strategy-ux-grid {
+            display: grid; grid-template-columns: 1fr 1.15fr; gap: 22px; align-items: stretch;
         }
-        @media (max-width: 1024px) { .strategy-intro-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1024px) { .strategy-ux-grid { grid-template-columns: 1fr; } }
 
-        .prose-text {
-            font-size: 13.8px; color: #cbd5e1; line-height: 1.72;
-            display: flex; flex-direction: column; gap: 12px;
+        .ux-subpanel {
+            background: rgba(11, 15, 23, 0.75);
+            border: 1px solid var(--border-subtle);
+            border-radius: 13px; padding: 18px 20px;
+            display: flex; flex-direction: column; gap: 14px;
         }
-        .prose-text b { color: #ffffff; font-weight: 700; }
-        .prose-text .hl-gold { color: var(--alfa-gold-light); font-weight: 700; }
-        .prose-text .hl-emerald { color: var(--emerald); font-weight: 700; }
+        .ux-subpanel-title {
+            font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+            color: var(--alfa-gold-light); display: flex; align-items: center; gap: 8px;
+            padding-bottom: 8px; border-bottom: 1px solid var(--border-subtle);
+        }
 
-        .pillars-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-content: start;
-        }
-        @media (max-width: 600px) { .pillars-grid { grid-template-columns: 1fr; } }
-        .pillar-card {
+        .step-list { display: flex; flex-direction: column; gap: 11px; list-style: none; }
+        .step-item {
+            display: grid; grid-template-columns: 28px 1fr; gap: 11px; align-items: start;
             background: var(--bg-card); border: 1px solid var(--border-subtle);
-            border-radius: 11px; padding: 13px 14px;
-            display: flex; flex-direction: column; gap: 5px;
-            transition: border-color 0.15s, transform 0.15s;
+            border-radius: 10px; padding: 11px 13px;
         }
-        .pillar-card:hover { border-color: var(--border-gold); transform: translateY(-1px); }
-        .pillar-card h4 { font-size: 12px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
-        .pillar-card p { font-size: 11.5px; color: var(--text-secondary); line-height: 1.5; }
+        .step-badge {
+            width: 26px; height: 26px; border-radius: 7px;
+            background: rgba(245, 158, 11, 0.16); border: 1px solid var(--border-gold);
+            color: var(--alfa-gold-light); font-family: var(--font-mono); font-size: 12px; font-weight: 800;
+            display: flex; align-items: center; justify-content: center; margin-top: 1px;
+        }
+        .step-body strong { display: block; font-size: 13px; color: #fff; margin-bottom: 2px; }
+        .step-body span { font-size: 12.2px; color: var(--text-secondary); line-height: 1.5; display: block; }
 
-        /* BLOQUE 2: BACKTESTING DE LA ESTRATEGIA */
+        .features-grid-2 {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+        }
+        @media (max-width: 640px) { .features-grid-2 { grid-template-columns: 1fr; } }
+        .feature-chip-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 10px; padding: 12px 14px;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        .feature-chip-card h4 { font-size: 12.5px; font-weight: 800; color: #f8fafc; display: flex; align-items: center; gap: 6px; }
+        .feature-chip-card p { font-size: 11.8px; color: var(--text-secondary); line-height: 1.5; }
+        .feature-chip-card.span-full { grid-column: 1 / -1; }
+
+        /* BLOQUE 2: BACKTESTING DE LA ESTRATEGIA (9 KPIs) */
         .backtest-grid-9 {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
         }
@@ -159,31 +181,51 @@
             background: var(--bg-card); border: 1px solid var(--border-subtle);
             border-radius: 12px; padding: 14px 16px;
             display: flex; flex-direction: column; gap: 4px;
-            cursor: help; transition: border-color 0.15s;
+            position: relative; overflow: hidden; cursor: help;
+            transition: border-color 0.15s;
         }
         .bt-stat-card:hover { border-color: var(--alfa-gold); }
         .bt-stat-card span {
             font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.6px;
             color: var(--text-secondary); font-weight: 700;
         }
-        .bt-stat-card b {
-            font-family: var(--font-mono); font-size: 23px; font-weight: 800; color: #fff;
-        }
-        .bt-stat-card small {
-            font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);
-        }
+        .bt-stat-card b { font-family: var(--font-mono); font-size: 23px; font-weight: 800; color: #fff; }
+        .bt-stat-card small { font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); }
 
-        /* BLOQUE 3: GESTIÓN DE RIESGO */
+        /* BLOQUE 3: GESTIÓN DE RIESGO DIGERIBLE */
+        .risk-ux-top {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+        }
+        @media (max-width: 980px) { .risk-ux-top { grid-template-columns: 1fr; } }
+        .concept-card {
+            background: var(--bg-card); border: 1px solid var(--border-subtle);
+            border-radius: 12px; padding: 15px 16px;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .concept-card h4 { font-size: 13px; font-weight: 800; color: var(--cyan); display: flex; align-items: center; gap: 7px; }
+        .concept-card p { font-size: 12.2px; color: #cbd5e1; line-height: 1.55; }
+
         .risk-edu-grid {
-            display: grid; grid-template-columns: 1.2fr 1fr; gap: 22px; align-items: center;
+            display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; align-items: stretch;
         }
         @media (max-width: 1024px) { .risk-edu-grid { grid-template-columns: 1fr; } }
+
+        .bullet-clean-list {
+            list-style: none; display: flex; flex-direction: column; gap: 10px;
+        }
+        .bullet-clean-list li {
+            position: relative; padding-left: 18px; font-size: 12.6px; color: #cbd5e1; line-height: 1.58;
+        }
+        .bullet-clean-list li::before {
+            content: "▸"; position: absolute; left: 0; top: 0; color: var(--alfa-gold-light); font-weight: 900;
+        }
+        .bullet-clean-list li b { color: #fff; }
 
         .capital-calc-showcase {
             background: linear-gradient(145deg, rgba(16, 22, 34, 0.98), rgba(8, 13, 22, 0.98));
             border: 1px solid rgba(56, 189, 248, 0.32);
             border-radius: 14px; padding: 18px 20px;
-            display: flex; flex-direction: column; gap: 12px;
+            display: flex; flex-direction: column; gap: 12px; justify-content: space-between;
         }
         .cap-compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         @media (max-width: 560px) { .cap-compare-row { grid-template-columns: 1fr; } }
@@ -209,7 +251,7 @@
             border: 1px solid var(--border-subtle);
             border-radius: 14px; padding: 18px 20px;
             display: flex; flex-direction: column; gap: 14px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.38);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
         }
         .card-header {
             display: flex; justify-content: space-between; align-items: center;
@@ -247,10 +289,10 @@
         }
 
         .viability-alert-box {
-            background: linear-gradient(135deg, rgba(16, 22, 34, 0.95), rgba(15, 23, 42, 0.95));
+            background: linear-gradient(135deg, rgba(16, 22, 34, 0.96), rgba(11, 15, 23, 0.98));
             border: 1px solid rgba(56, 189, 248, 0.35);
-            border-radius: 11px; padding: 13px 14px; font-size: 11.5px;
-            display: flex; flex-direction: column; gap: 7px;
+            border-radius: 11px; padding: 14px 15px; font-size: 12px;
+            display: flex; flex-direction: column; gap: 9px;
         }
         .collateral-row {
             display: flex; justify-content: space-between; align-items: center;
@@ -281,10 +323,10 @@
 
         .canvas-wrap {
             width: 100%; height: 270px; position: relative;
-            background: #080c14; border: 1px solid var(--border-subtle);
+            background: #070a10; border: 1px solid var(--border-subtle);
             border-radius: 10px; overflow: hidden;
         }
-        canvas { width: 100%; height: 100%; display: block; cursor: crosshair; }
+        canvas { width: 100%; height: 100%; display: block; }
 
         .quant-table { width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 11.5px; }
         .quant-table th, .quant-table td { padding: 8px 10px; border-bottom: 1px solid var(--border-subtle); text-align: right; }
@@ -292,27 +334,41 @@
         .quant-table th {
             font-family: var(--font-sans); font-size: 10px; font-weight: 700;
             text-transform: uppercase; color: var(--text-secondary);
-            background: rgba(16, 22, 34, 0.96); cursor: help;
-            position: sticky; top: 0; z-index: 2;
+            background: rgba(255, 255, 255, 0.025); cursor: help;
+            position: sticky; top: 0; z-index: 2; backdrop-filter: blur(8px);
         }
         .quant-table tr:hover { background: rgba(255, 255, 255, 0.035); }
-        .scroll-table-box { max-height: 310px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
+        .scroll-table-box { max-height: 330px; overflow-y: auto; border: 1px solid var(--border-subtle); border-radius: 10px; }
 
         .story-card {
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.09), rgba(16, 185, 129, 0.06));
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.08), rgba(16, 185, 129, 0.06));
             border: 1px solid var(--border-gold);
             border-radius: 12px; padding: 18px 20px;
-            font-size: 13.2px; line-height: 1.68; color: #f1f5f9;
+            font-size: 13px; line-height: 1.6; color: #f1f5f9;
         }
         .story-card b { color: var(--alfa-gold-light); font-family: var(--font-mono); }
         .story-card .hl-green { color: var(--emerald); font-weight: 800; font-family: var(--font-mono); }
         .story-card .hl-red { color: var(--crimson); font-weight: 800; font-family: var(--font-mono); }
 
+        .future-bullets-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 22px; margin-top: 10px;
+            list-style: none;
+        }
+        @media (max-width: 860px) { .future-bullets-grid { grid-template-columns: 1fr; } }
+        .future-bullets-grid li {
+            position: relative; padding-left: 20px; font-size: 12.8px; color: #e2e8f0; line-height: 1.55;
+        }
+        .future-bullets-grid li::before {
+            content: "•"; position: absolute; left: 4px; top: 0; color: var(--emerald); font-weight: 900; font-size: 16px;
+        }
+
         .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         @media (max-width: 980px) { .two-col-grid { grid-template-columns: 1fr; } }
 
-        /* BLOQUE BOT DE TELEGRAM */
-        .bot-steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+        /* BLOQUE 7: BOT DE TELEGRAM + COMANDOS */
+        .bot-steps-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+        }
         @media (max-width: 1100px) { .bot-steps-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 600px) { .bot-steps-grid { grid-template-columns: 1fr; } }
 
@@ -330,6 +386,24 @@
         }
         .bot-step-card h4 { font-size: 13.5px; font-weight: 800; color: #fff; }
         .bot-step-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.55; }
+
+        .bot-commands-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+        }
+        @media (max-width: 960px) { .bot-commands-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .bot-commands-grid { grid-template-columns: 1fr; } }
+        .cmd-card {
+            background: rgba(16, 22, 34, 0.85); border: 1px solid var(--border-subtle);
+            border-radius: 10px; padding: 12px 14px;
+            display: flex; flex-direction: column; gap: 5px;
+        }
+        .cmd-code {
+            font-family: var(--font-mono); font-size: 12px; font-weight: 800;
+            color: var(--alfa-gold-light); background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.28);
+            padding: 3px 8px; border-radius: 6px; align-self: flex-start;
+        }
+        .cmd-card span { font-size: 11.8px; color: var(--text-secondary); line-height: 1.48; }
 
         .link-subtle-btn {
             background: none; border: none; color: var(--cyan);
@@ -362,7 +436,7 @@
     <div id="custom-tooltip"></div>
     <div id="chart-hover-tooltip"></div>
 
-    <!-- NAVBAR CON LOGO-MARCA.PNG Y ACCESO A CUENTA / TELEGRAM -->
+    <!-- NAVBAR -->
     <nav class="navbar">
         <a href="#" class="brand-wrap">
             <img src="logo-marca.png" alt="Alfa Markets" class="brand-logo" onerror="this.style.display='none'; document.getElementById('brand-fallback-badge').style.display='flex';">
@@ -373,7 +447,7 @@
             </div>
         </a>
         <div class="nav-actions">
-            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta, recupera tu contraseña o inicia sesión en Supabase para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
+            <button class="btn-gold" id="btn-nav-auth" onclick="abrirModalCuenta()" data-tip="Crea tu cuenta, recupera tu contraseña o inicia sesión en nuestra base de datos en la nube (Supabase) para guardar tus parámetros y vincular tu bot personalizado de Telegram.">
                 📲 Cuenta / Conectar Bot de Telegram
             </button>
         </div>
@@ -387,170 +461,193 @@
         <section class="section-block gold-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Fundamentos Operativos & Reglas Cuantitativas</span>
+                    <span class="section-eyebrow">Lógica Operativa Paso a Paso</span>
                     <h2 class="section-title">📐 DESCRIPCIÓN DE LA ESTRATEGIA</h2>
                 </div>
-                <span class="tag-pill">Sin Look-Ahead Bias · Ejecución Horaria</span>
             </div>
 
-            <div class="strategy-intro-grid">
-                <div class="prose-text">
-                    <p>
-                        Esta estrategia cuantitativa se basa en captar rebotes institucionales del precio en zonas de ineficiencia conocidas como <b>Fair Value Gaps (FVG)</b> o vacíos de liquidez. El motor rastrea el mercado en busca de <b>FVG semanales válidos</b> —aquellos que acompañan la tendencia principal confirmada por la alineación de sus medias móviles de 20 semanas— y monitoriza su mitigación progresiva sin que el vacío sea invalidado.
-                    </p>
-                    <p>
-                        Una vez que el precio penetra en el FVG semanal, el algoritmo hace zoom al <b>gráfico horario (1H)</b> para localizar el <b>Order Block (OB)</b> o último nivel estructural clave previo al extremo de mitigación. Las entradas se evalúan exclusivamente a <b>cierre de vela horaria</b>: solo cuando una vela de 1H cierra superando dicho nivel se confirma el giro. Además, se descartan operaciones cuya distancia al Stop Loss supere el umbral máximo calculado según la volatilidad histórica de cada activo, así como rupturas con velas erráticas o de agotamiento climático.
-                    </p>
-                    <p>
-                        Por defecto se establece un objetivo simétrico con <b>Ratio 1:1</b>, pero cuando convergen métricas de alta tracción temprana el sistema amplía automáticamente el recorrido a <span class="hl-emerald">Ratio 1.5:1 (Runner)</span>. Asimismo, se priorizan las <span class="hl-gold">entradas A+</span> —setups con características estadísticas de mayor tasa de acierto— en las que se asigna un porcentaje adicional de riesgo (<b>1.25x R</b>). Para eliminar el <i>slippage</i>, todas las entradas y salidas se ejecutan mediante <b>órdenes límite</b> situadas a una ligera distancia favorable respecto al cierre horario (cancelándose automáticamente si no se ejecutan en las <b>4 horas</b> siguientes).
-                    </p>
+            <div class="strategy-ux-grid">
+                <!-- PASOS BÁSICOS -->
+                <div class="ux-subpanel">
+                    <div class="ux-subpanel-title">🎯 Pasos Básicos del Algoritmo</div>
+                    <ul class="step-list">
+                        <li class="step-item">
+                            <div class="step-badge">1</div>
+                            <div class="step-body">
+                                <strong>Detección de FVG Semanal en Tendencia</strong>
+                                <span>Rastreamos vacíos de liquidez (<i>Fair Value Gaps</i>) semanales válidos a favor de la tendencia principal (medias de 20 semanas alineadas) y esperamos a que el precio entre a rellenarlos sin perforar ni invalidar la caja.</span>
+                            </div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-badge">2</div>
+                            <div class="step-body">
+                                <strong>Confirmación en 1H al Superar el Order Block</strong>
+                                <span>Hacemos zoom al gráfico horario (1H) para trazar el último nivel estructural clave (<i>Order Block</i>) previo al suelo o techo de la mitigación. El giro solo se confirma cuando una <b>vela de 1H cierra superando</b> ese nivel.</span>
+                            </div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-badge">3</div>
+                            <div class="step-body">
+                                <strong>Filtro de Volatilidad y Calidad de Vela</strong>
+                                <span>Se descartan las rupturas cuya distancia al Stop Loss supere el máximo permitido para la volatilidad histórica de ese activo, así como velas erráticas sin cuerpo o velones climáticos de agotamiento.</span>
+                            </div>
+                        </li>
+                        <li class="step-item">
+                            <div class="step-badge">4</div>
+                            <div class="step-body">
+                                <strong>Ejecución Límite con Ratio 1:1 (o Ampliado)</strong>
+                                <span>Al cierre horario se sitúa una orden límite ligeramente más favorable buscando un recorrido base <b>Ratio 1:1</b> (ampliable dinámicamente si hay fuerte tracción inicial). Si no se ejecuta en 4 horas, se cancela.</span>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
 
-                <div class="pillars-grid">
-                    <div class="pillar-card">
-                        <h4>🗓️ Ventana Lunes – Miércoles</h4>
-                        <p>Solo se abren operaciones entre lunes y miércoles (&le; 65h desde el arranque semanal), evitando entrar jueves o viernes y quedar expuestos al azar de los <i>gaps</i> de fin de semana.</p>
-                    </div>
-                    <div class="pillar-card">
-                        <h4>🛡️ Protocolo de Viernes y Break Even</h4>
-                        <p>Antes del cierre del viernes, las operaciones abiertas con flotante débil (&lt; +0.35R) se cierran para liberar liquidez; las fuertes (&ge; +0.35R) se mantienen al lunes moviendo el Stop a Break Even.</p>
-                    </div>
-                    <div class="pillar-card">
-                        <h4>🎯 Órdenes Límite Anti-Slippage</h4>
-                        <p>La entrada se sitúa ligeramente por debajo del cierre horario en largos (o por encima en cortos) según el ATR. Si el precio no toca la orden en 4 velas de 1H, queda anulada.</p>
-                    </div>
-                    <div class="pillar-card">
-                        <h4>⭐ Jerarquía A+ y Runners Dinámicos</h4>
-                        <p>Los setups con penetración limpia en el FVG, volumen relativo alto y distancia óptima en ATR reciben calificación A+ (1.25x R) o extienden su Take Profit a 1.5R.</p>
+                <!-- CARACTERÍSTICAS Y REGLAS OPERATIVAS -->
+                <div class="ux-subpanel">
+                    <div class="ux-subpanel-title">⚡ Reglas Clave y Gestión de Escenarios</div>
+                    <div class="features-grid-2">
+                        <div class="feature-chip-card">
+                            <h4>🗓️ Ventana Lunes – Miércoles</h4>
+                            <p>Solo abrimos operaciones entre lunes y miércoles (&le; 65h de semana). Así damos margen suficiente para que el precio alcance el objetivo antes del fin de semana.</p>
+                        </div>
+                        <div class="feature-chip-card">
+                            <h4>🎯 Solo Órdenes Límite</h4>
+                            <p>Tanto la entrada (ligeramente por debajo del cierre en largos o por encima en cortos) como la toma de beneficios usan órdenes límite para eliminar el <i>slippage</i>.</p>
+                        </div>
+                        <div class="feature-chip-card">
+                            <h4>⭐ Setups A+ (1.25x R)</h4>
+                            <p>Las entradas con rebote limpio, volumen relativo sólido y distancia óptima en ATR tienen mayor Winrate histórico y reciben un <b>25% extra de unidad de riesgo</b>.</p>
+                        </div>
+                        <div class="feature-chip-card">
+                            <h4>🚀 Operaciones Runner (1.5R)</h4>
+                            <p>Cuando la ruptura ocurre temprano (&le; 40h), cerca de medias semanales y con poca perforación del FVG, el sistema extiende automáticamente el Take Profit a <b>Ratio 1.5:1</b>.</p>
+                        </div>
+                        <div class="feature-chip-card span-full" style="border-color: rgba(245, 158, 11, 0.28); background: rgba(245, 158, 11, 0.04);">
+                            <h4>⚠️ El Problema de los Gaps y el Protocolo de los Viernes</h4>
+                            <p>Los huecos de apertura entre sesiones —y muy especialmente los del fin de semana— pueden saltar nuestro Stop Loss produciendo pérdidas superiores a 1R (aunque alguna vez abran a nuestro favor, mantener riesgo ciego el fin de semana es exponerse al azar). Por ello, cada viernes antes del cierre cerramos a mercado las posiciones débiles (&lt; +0.35R) y solo mantenemos al lunes aquellas con colchón fuerte (&ge; +0.35R) protegiendo su Stop Loss en <b>Break Even</b>.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- ======================================================================= -->
-        <!-- BLOQUE 2: BACKTESTING DE LA ESTRATEGIA (KPIs + CURVA R + SEMANAS/MESES) -->
+        <!-- BLOQUE 2: BACKTESTING DE LA ESTRATEGIA + HISTÓRICO GRÁFICO              -->
         <!-- ======================================================================= -->
         <section class="section-block emerald-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Desempeño Histórico Real Auditado · Pasa el cursor sobre cualquier gráfica para inspeccionar</span>
                     <h2 class="section-title">📊 BACKTESTING DE LA ESTRATEGIA</h2>
-                </div>
-                <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                    <span id="wk-pos-neg-badge" class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">-- sem positivas / -- negativas</span>
-                    <span id="mo-pos-neg-badge" class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">-- meses positivos / -- negativos</span>
                 </div>
             </div>
 
-            <!-- 9 INDICADORES BASE DEL ESTUDIO HISTÓRICO -->
             <div class="backtest-grid-9">
-                <div class="bt-stat-card" data-tip="Número total de semanas auditadas de forma continua en el histórico.">
+                <div class="bt-stat-card" data-tip="Número total de semanas completas auditadas de forma continua en el estudio histórico.">
                     <span>Histórico Estudiado</span>
-                    <b id="bt-weeks">105 semanas</b>
+                    <b id="bt-weeks">104 semanas</b>
                     <small>2 años completos de mercado</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Universo total de acciones de EE. UU. (NYSE / NASDAQ / AMEX) y Europa filtradas por liquidez y calidad.">
+                <div class="bt-stat-card" data-tip="Universo total de acciones de EE. UU. (NYSE / NASDAQ / AMEX) y Europa filtradas por liquidez y calidad de cotización.">
                     <span>Activos Rastreados</span>
                     <b id="bt-assets" style="color:var(--cyan);">6.254</b>
                     <small>Acciones líquidas US & EU</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Total de operaciones reales ejecutadas entre lunes y miércoles (<= 65h) tras aplicar todos los filtros.">
+                <div class="bt-stat-card" data-tip="Total de operaciones reales ejecutadas tras aplicar todos los filtros de tendencia, volatilidad, ventana Lun-Mié y ejecución Limit.">
                     <span>Operaciones Estudiadas</span>
                     <b id="bt-trades">1.205</b>
                     <small id="bt-trades-sub">Muestra cerrada auditada</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Porcentaje real de operaciones ganadoras contemplando el objetivo base 1:1, las operaciones con ampliación de ratio (Runners 1.5R) y cierres de viernes.">
+                <div class="bt-stat-card" data-tip="Porcentaje real de operaciones ganadoras contemplando el objetivo base 1:1, las operaciones con ampliación de ratio (Runners 1.5R) y el protocolo de los viernes.">
                     <span>Winrate Real</span>
-                    <b id="bt-winrate" style="color:var(--emerald);">60.8%</b>
-                    <small id="bt-wl-detail">Base 1:1 + Runners 1.5R</small>
+                    <b id="bt-winrate" style="color:var(--emerald);">60.7%</b>
+                    <small id="bt-wl-detail">Ratio 1:1 + Runners ampliados</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Suma total neta de Unidades de Riesgo (R) generadas en el histórico (mostrando ponderación A+ 1.25x y base 1.0x).">
+                <div class="bt-stat-card" data-tip="Suma total neta de Unidades de Riesgo (R) generadas durante todo el histórico estudiado, descontando pérdidas y gaps adversos.">
                     <span>Ganancia Neta Acumulada</span>
-                    <b id="bt-net-r" style="color:var(--alfa-gold-light);">+463.1 R</b>
-                    <small id="bt-exp-trade">Base 1.0x: +404.8 R</small>
+                    <b id="bt-net-r" style="color:var(--alfa-gold-light);">+0.0 R</b>
+                    <small id="bt-exp-trade">Esperanza matemática por trade</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Rendimiento mediano semanal en Unidades de Riesgo (R) a lo largo de todas las semanas estudiadas.">
+                <div class="bt-stat-card" data-tip="Rendimiento mediano semanal en Unidades de Riesgo (R) a lo largo de las semanas estudiadas.">
                     <span>Ganancia Mediana Semanal</span>
-                    <b id="bt-median-wk-r" style="color:var(--emerald);">+3.88 R</b>
-                    <small id="bt-mean-wk-r">Media semanal: +4.45 R</small>
+                    <b id="bt-median-wk-r" style="color:var(--emerald);">+0.00 R</b>
+                    <small id="bt-mean-wk-r">Media semanal: +0.00 R</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Frecuencia semanal real de oportunidades válidas generadas por la estrategia de lunes a miércoles.">
+                <div class="bt-stat-card" data-tip="Frecuencia semanal real de oportunidades válidas generadas por la estrategia.">
                     <span>Operaciones por Semana</span>
-                    <b id="bt-ops-wk">11.6 / sem</b>
-                    <small id="bt-ops-wk-sub">Mediana y rango semanal</small>
+                    <b id="bt-ops-wk">11.6 ops/sem</b>
+                    <small id="bt-ops-wk-sub">Mediana y pico semanal</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Mayor caída acumulada desde un pico histórico hasta un valle medida en Unidades de Riesgo (R).">
+                <div class="bt-stat-card" data-tip="Mayor caída acumulada desde un pico histórico en Unidades R, mostrando debajo qué porcentaje de caída habría supuesto en tu cuenta con los parámetros que tienes configurados abajo.">
                     <span>Drawdown Máximo Histórico</span>
-                    <b id="bt-max-dd-r" style="color:var(--crimson);">-16.41 R</b>
-                    <small id="bt-max-dd-sub">Cierre semanal auditado</small>
+                    <b id="bt-max-dd-r" style="color:var(--crimson);">-0.00 R</b>
+                    <small id="bt-max-dd-pct-user" style="color:#fca5a5;">Con tus parámetros: -0.0% de la cuenta</small>
                 </div>
-                <div class="bt-stat-card" data-tip="Relación rentabilidad / volatilidad semanal anualizada obtenida sobre los retornos reales del histórico.">
+                <div class="bt-stat-card" data-tip="Relación rentabilidad / volatilidad semanal anualizada obtenida sobre los retornos reales.">
                     <span>Ratio de Sharpe</span>
-                    <b id="bt-sharpe" style="color:var(--cyan);">5.81</b>
+                    <b id="bt-sharpe" style="color:var(--cyan);">0.00</b>
                     <small>Consistencia ajustada a riesgo</small>
                 </div>
             </div>
 
-            <!-- GRÁFICA ESTRELLA 1 (ANCHO COMPLETO): CURVA ACUMULADA DE UNIDADES R -->
+            <!-- GRÁFICA 1: CURVA ACUMULADA SEMANAL -->
             <div class="card-panel" style="padding:16px 18px;">
                 <div class="card-header">
-                    <h3>📈 1. Curva Histórica de Unidades R Acumuladas (Ponderación A+ 1.25x vs. Base 1.0x)</h3>
-                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);">Pasa el cursor para inspeccionar el crecimiento acumulado semana a semana</span>
+                    <h3>📈 1. Curva Histórica de Unidades R Acumuladas (gráfico semanal)</h3>
                 </div>
-                <div class="canvas-wrap" style="height:295px;">
-                    <canvas id="canvas-bt-equity"></canvas>
+                <div class="canvas-wrap" style="height:265px;">
+                    <canvas id="canvas-cum-r"></canvas>
                 </div>
             </div>
 
-            <!-- GRÁFICA 2 (ANCHO COMPLETO): BARRAS SEMANALES EN R -->
+            <!-- GRÁFICA 2: RESULTADO SEMANAL CON PÍLDORA MOVIDA AQUÍ -->
             <div class="card-panel" style="padding:16px 18px;">
                 <div class="card-header">
                     <h3>📊 2. Resultado Neto Semanal (en R) a lo largo de las Semanas Estudiadas</h3>
-                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);">Verde = Semana Positiva · Rojo = Semana Negativa</span>
+                    <span id="wk-pos-neg-badge" class="tag-pill" style="color:var(--emerald); border-color:rgba(16,185,129,0.4);">-- semanas positivas · -- negativas</span>
                 </div>
                 <div class="canvas-wrap" style="height:245px;">
                     <canvas id="canvas-weekly-bars"></canvas>
                 </div>
             </div>
 
-            <!-- GRÁFICA 3 (ANCHO COMPLETO): NÚMERO DE OPERACIONES POR SEMANA -->
+            <!-- GRÁFICA 3: OPERACIONES POR SEMANA -->
             <div class="card-panel" style="padding:16px 18px;">
                 <div class="card-header">
-                    <h3>🔢 3. Volumen de Operaciones Válidas en cada Semana del Histórico</h3>
-                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);" id="lbl-avg-ops-chart">Media semanal: -- ops</span>
+                    <h3>📉 3. Volumen de Operaciones en cada Semana Estudiada</h3>
+                    <span style="font-size:11.5px; color:var(--text-secondary); font-family:var(--font-mono);" id="lbl-avg-ops-chart">Media estudiada: -- ops/sem</span>
                 </div>
-                <div class="canvas-wrap" style="height:210px;">
+                <div class="canvas-wrap" style="height:215px;">
                     <canvas id="canvas-weekly-ops"></canvas>
                 </div>
             </div>
 
-            <!-- GRÁFICA 4 + TABLA MENSUAL DEL BACKTESTING -->
+            <!-- GRÁFICA 4 + TABLA MENSUAL -->
             <div class="two-col-grid">
                 <div class="card-panel" style="padding:16px 18px;">
                     <div class="card-header">
-                        <h3>🗓️ 4. Desempeño Histórico Agrupado por Meses (Rs Netas / Mes)</h3>
-                        <span id="mo-winrate-pill" class="tag-pill">--% Meses en Positivo</span>
+                        <h3>🗓️ 4. Balance Neto Mensual (Rs por Mes)</h3>
+                        <span id="mo-winrate-pill" class="tag-pill">--% Meses Positivos</span>
                     </div>
-                    <div class="canvas-wrap" style="height:305px;">
+                    <div class="canvas-wrap" style="height:310px;">
                         <canvas id="canvas-monthly-bars"></canvas>
                     </div>
                 </div>
 
                 <div class="card-panel" style="padding:16px 18px;">
                     <div class="card-header">
-                        <h3>📋 5. Tabla Histórica Mensual del Backtesting</h3>
-                        <span style="font-size:11px; color:var(--text-secondary); font-family:var(--font-mono);">Cierres mensuales reales en R</span>
+                        <h3>📋 5. Desglose Histórico Mensual con tu Configuración</h3>
                     </div>
-                    <div class="scroll-table-box" style="max-height:305px;">
+                    <div class="scroll-table-box" style="max-height:310px;">
                         <table class="quant-table">
                             <thead>
                                 <tr>
                                     <th>Mes</th>
-                                    <th data-tip="Operaciones válidas cerradas en ese mes.">Ops</th>
+                                    <th data-tip="Operaciones ejecutadas en el mes según tu límite y margen.">Ops</th>
                                     <th>W / L (WR%)</th>
-                                    <th data-tip="Suma mensual sin ponderación extra en A+ (1.0x).">R Base (1x)</th>
-                                    <th data-tip="Suma mensual aplicando 1.25x en entradas A+.">R Neta (1.25x)</th>
-                                    <th data-tip="Unidades R acumuladas desde el inicio del backtest hasta el cierre de ese mes.">R Acumulada</th>
+                                    <th>R Neto Mes</th>
+                                    <th>Tu 1R ($)</th>
+                                    <th>Retirado Acum.</th>
+                                    <th>Patrimonio ($)</th>
                                 </tr>
                             </thead>
                             <tbody id="tbody-monthly-real"></tbody>
@@ -566,28 +663,46 @@
         <section class="section-block cyan-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Interés Compuesto Controlado, Exposición Nominal & Apalancamiento</span>
                     <h2 class="section-title">🛡️ GESTIÓN DE RIESGO</h2>
                 </div>
-                <span class="tag-pill" style="color:var(--cyan); border-color:rgba(56,189,248,0.4);">Curva Exponencial vs. Recta Lineal</span>
             </div>
 
+            <!-- FILA 1: CONCEPTOS BÁSICOS -->
+            <div class="risk-ux-top">
+                <div class="concept-card">
+                    <h4>🎯 1. ¿Qué es tu Unidad de Riesgo (1R)?</h4>
+                    <p>Es el dinero exacto que aceptas perder si una operación toca su Stop Loss, cueste lo que cueste la acción. El tamaño de posición se adapta automáticamente en cada entrada (<span style="font-family:var(--font-mono);">Acciones = 1R / Distancia al Stop</span>).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>⚖️ 2. Relación Óptima Capital Inicial / 1R</h4>
+                    <p>Para absorber cualquier racha estadística adversa sin comprometer la cuenta, lo óptimo es que tu <b>1R inicial represente entre el 1% y el 2.5%</b> de tu capital inicial (evitando superar nunca el 4%–5% por operación).</p>
+                </div>
+                <div class="concept-card">
+                    <h4>📈 3. % de Variación de R (Lineal vs. Exponencial)</h4>
+                    <p>Con <b>0% de variación</b> arriesgas siempre lo mismo (crecimiento en línea recta). Al fijar un <b>% de variación</b>, tu 1R <b>sube</b> tras semanas ganadoras (acelerando el interés compuesto) y <b>baja</b> en rachas negativas para frenar en seco el <i>Drawdown</i>.</p>
+                </div>
+            </div>
+
+            <!-- FILA 2: FACTORES OPERATIVOS + CALCULADORA DE CAPITAL NECESARIO -->
             <div class="risk-edu-grid">
-                <div class="prose-text">
-                    <p>
-                        No es lo mismo arriesgar una cantidad fija de dinero en cada operación que adaptar dinámicamente tu riesgo a la evolución de tu cuenta. Si arriesgas siempre un importe constante (<b>0% de variación</b>), tu curva de ganancias crece como una recta; en cambio, al establecer un <b>% de Variación de R</b>, tu unidad de riesgo (<b>1R</b>) sube proporcionalmente a medida que encadenas operaciones ganadoras y se reduce para protegerte cuando atraviesas una racha perdedora, transformando una ventaja estadística sólida en una <span class="hl-gold">curva de crecimiento exponencial</span>.
-                    </p>
-                    <p>
-                        Además de la variación de R, una correcta gestión de riesgo debe contemplar <b>las comisiones de tu bróker</b>, <b>tu capital inicial</b>, <b>tu unidad de riesgo inicial (1R)</b> y <b>el número máximo de operaciones por semana</b> que estás dispuesto a ejecutar.
-                    </p>
-                    <p>
-                        <b>Cálculo del capital disponible requerido:</b> Con una distancia media al Stop Loss del <b id="txt-sl-medio">3.05%</b> y una unidad de riesgo de <b id="txt-r-ejemplo">$40</b>, cada operación requiere emplear de media un capital nominal de <b id="txt-nominal-ejemplo">$1,311</b> (<span style="font-family:var(--font-mono); font-size:12px;">Nominal = 1R / %StopLoss</span>). Si fijas un máximo de <b id="txt-maxops-ejemplo">15 operaciones semanales</b> (unas <b id="txt-sim-ejemplo">10 posiciones simultáneas</b> abiertas a mitad de semana), deberás disponer de ese capital completo si operas al contado, o bien emplear una cuenta con margen/apalancamiento calculando exactamente el colateral necesario.
-                    </p>
+                <div class="ux-subpanel">
+                    <div class="ux-subpanel-title" style="color:var(--cyan);">🔍 Factores Operativos que Determinan tu Resultado Real</div>
+                    <ul class="bullet-clean-list">
+                        <li>
+                            <b>Impacto de las comisiones del bróker:</b> En estrategias de rotación semanal con objetivos cortos (Ratio 1:1 a 1.5:1), pagar comisiones altas de compra/venta recorta directamente tu esperanza matemática por operación. Operar en plataformas de comisión $0 o muy baja marca una gran diferencia compuesta.
+                        </li>
+                        <li>
+                            <b>Tope de operaciones semanales según tu Capital y tu R:</b> Con una distancia media al Stop Loss del <b id="txt-sl-medio">3.05%</b> y un riesgo de <b id="txt-r-ejemplo">$40</b>, cada posición mueve de media unos <b id="txt-nominal-ejemplo">$1.311</b> en acciones. Si fijas un tope de <b id="txt-maxops-ejemplo">15 operaciones semanales</b> (~<b id="txt-sim-ejemplo">10 abiertas a la vez</b>), necesitas poder cubrir ese nominal al contado o disponer de margen suficiente en tu bróker.
+                        </li>
+                        <li>
+                            <b>El problema de las órdenes a mercado:</b> Entrar a mercado justo al cambio de hora sufre horquillas abiertas (<i>spread</i>) y deslizamientos (<i>slippage</i>) que empeoran sistemáticamente tu precio de entrada y salida. Por eso ejecutamos siempre con <b>órdenes límite</b>: entramos al precio exacto calculado (o mejor) sin regalar margen al mercado.
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="capital-calc-showcase">
                     <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-subtle); padding-bottom:8px;">
-                        <span style="font-size:12px; font-weight:800; color:#fff;">🧮 Capital Necesario según tu Configuración</span>
+                        <span style="font-size:12px; font-weight:800; color:#fff;">🧮 Capital Necesario para tu Configuración</span>
                         <span style="font-family:var(--font-mono); font-size:11px; color:var(--alfa-gold-light);" id="cap-req-params-lbl">1R = $40 · Tope 15 ops/sem</span>
                     </div>
 
@@ -596,24 +711,24 @@
                         <b id="cap-req-sl">3.05%</b>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Capital medio empleado por operación:</span>
-                        <b style="color:var(--alfa-gold-light);" id="cap-req-per-trade">$1,311 / trade</b>
+                        <span style="color:var(--text-secondary);">Capital nominal medio por operación:</span>
+                        <b style="color:var(--alfa-gold-light);" id="cap-req-per-trade">$1.311 / trade</b>
                     </div>
                     <div class="collateral-row">
-                        <span style="color:var(--text-secondary);">Posiciones simultáneas estimadas en semana tope:</span>
-                        <b id="cap-req-concurrent">~10 simultáneas</b>
+                        <span style="color:var(--text-secondary);">Pico estimado de posiciones simultáneas:</span>
+                        <b id="cap-req-concurrent">~10 abiertas a la vez</b>
                     </div>
 
                     <div class="cap-compare-row">
                         <div class="cap-mode-box">
-                            <span>💵 Al Contado (1:1 Sin Apalancar)</span>
-                            <b style="color:#f8fafc;" id="cap-req-cash">$13,115</b>
-                            <small>Fondos requeridos para cubrir el 100% del capital nominal sin apalancamiento.</small>
+                            <span>💵 Al Contado (Sin Apalancar)</span>
+                            <b style="color:#f8fafc;" id="cap-req-cash">$13.115</b>
+                            <small>Fondos requeridos para cubrir el 100% del nominal sin margen.</small>
                         </div>
                         <div class="cap-mode-box" style="border-color:rgba(16,185,129,0.35); background:rgba(16,185,129,0.05);">
-                            <span>⚡ Con Margen / Apalancamiento</span>
-                            <b style="color:var(--emerald);" id="cap-req-margin">$1,381</b>
-                            <small>Colateral mínimo requerido en bróker con margen (~9.5x) manteniendo idéntico riesgo 1R.</small>
+                            <span>⚡ Cuenta con Margen</span>
+                            <b style="color:var(--emerald);" id="cap-req-margin">$1.381</b>
+                            <small>Colateral mínimo operativo (poder de compra ~9.5x) manteniendo idéntico riesgo 1R.</small>
                         </div>
                     </div>
                 </div>
@@ -621,141 +736,125 @@
         </section>
 
         <!-- ======================================================================= -->
-        <!-- BLOQUE 4: CONFIGURACIÓN PERSONAL + VIABILIDAD + MONTE CARLO 10.000      -->
+        <!-- BLOQUE 4: TUS DATOS, VIABILIDAD & MONTE CARLO (10.000 ESCENARIOS)       -->
         <!-- ======================================================================= -->
         <section class="section-block gold-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Tus Parámetros Operativos & Prueba de Estrés sobre 10.000 Escenarios</span>
                     <h2 class="section-title">⚙️ TUS DATOS, VIABILIDAD DE FONDOS & MONTE CARLO</h2>
                 </div>
-                <span class="tag-pill">Órdenes Límite Predefinidas · Base 105 Semanas</span>
             </div>
 
             <div class="lab-grid">
 
-                <!-- COLUMNA IZQUIERDA: INPUTS DEL USUARIO + CUADRO DE VIABILIDAD -->
+                <!-- COLUMNA IZQUIERDA: PARÁMETROS DEL USUARIO + VIABILIDAD CLARA -->
                 <div class="card-panel">
                     <div class="card-header">
-                        <h3 data-tip="Configura tus datos personales y el rango de fechas a evaluar. El motor verifica si tus fondos permiten abrir tu tope semanal de operaciones.">
-                            🎛️ Introduce tus Datos Operativos
-                        </h3>
+                        <h3>🎛️ Introduce tus Datos Operativos</h3>
                     </div>
 
                     <div class="preset-row">
-                        <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Constante (0% Variación R): Misma cantidad fija por trade (curva lineal).">📏 Lineal (0%)</button>
-                        <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Prudente: Riesgo inicial 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
-                        <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Exponencial Dinámico: Riesgo inicial 2% y variación del 2.5% semanal.">⚖️ Dinámico (2.5%)</button>
+                        <button class="btn-preset" onclick="cargarPresetRiesgo('sin_compuesto', event)" data-tip="Riesgo Fijo (0% Variación R): Arriesgas siempre la misma cantidad fija por operación (curva lineal).">📏 Lineal (0%)</button>
+                        <button class="btn-preset active" onclick="cargarPresetRiesgo('prudente', event)" data-tip="Crecimiento Compuesto Prudente: Riesgo inicial del 2% y variación suave del 1.5% semanal.">🛡️ Prudente (1.5%)</button>
+                        <button class="btn-preset" onclick="cargarPresetRiesgo('equilibrado', event)" data-tip="Crecimiento Exponencial Dinámico: Riesgo inicial del 2% y variación del 2.5% semanal con techo de seguridad.">⚖️ Dinámico (2.5%)</button>
                     </div>
 
                     <div class="inputs-grid">
                         <div class="field-box">
-                            <label data-tip="Capital depositado en tu cuenta el Día 1.">Capital Inicial ($/€)</label>
-                            <input type="number" id="inp-cap-ini" value="2000" step="250" min="200">
+                            <label data-tip="Capital real depositado en tu cuenta operativa en el Día 1.">Capital Inicial ($/€)</label>
+                            <input type="number" id="inp-cap-ini" value="2000" step="100" min="50">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Dinero arriesgado en tu primera operación (1R).">Tu 1R Inicial ($/€)</label>
+                            <label data-tip="Dinero que arriesgas en tu primera operación (1R) si salta el Stop Loss.">Tu 1R Inicial ($/€)</label>
                             <input type="number" id="inp-r-ini" value="40" step="5" min="5">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Porcentaje en que varía tu 1R por cada +1R ganado o -1R perdido. Pon 0% para riesgo fijo.">% Variación de R</label>
+                            <label data-tip="Porcentaje en que sube o baja tu unidad 1R cada semana por cada +1R ganado o -1R perdido. Pon 0% para riesgo constante.">% Variación de R</label>
                             <input type="number" id="inp-var-r" value="1.5" step="0.5" min="0" max="6">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Saldo tope de cuenta a partir del cual retiras el 100% de los beneficios.">Techo Cuenta ($/€)</label>
-                            <input type="number" id="inp-cap-top" value="25000" step="1000" min="1000">
+                            <label data-tip="Capital tope hasta el que quieres hacer crecer tu cuenta antes de retirar el 100% de los beneficios excedentes. Capital expuesto a riesgo de contrapartida por quiebra del bróker o similar.">Techo Cuenta ($/€)</label>
+                            <input type="number" id="inp-cap-top" value="25000" step="1000" min="500">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta crece.">Tope 1R Máximo ($/€)</label>
-                            <input type="number" id="inp-r-max" value="500" step="50" min="50">
+                            <label data-tip="Riesgo máximo permitido por operación cuando tu cuenta alcanza gran tamaño.">Tope 1R Máximo ($/€)</label>
+                            <input type="number" id="inp-r-max" value="500" step="50" min="25">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Tope máximo de operaciones semanales que deseas ejecutar.">Máx Operaciones / Sem</label>
+                            <label data-tip="Número máximo de operaciones a la semana que estás dispuesto a ejecutar.">Máx Operaciones / Sem</label>
                             <input type="number" id="inp-max-trades" value="15" step="1" min="1" max="30">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Porcentaje de ganancias semanales retirado antes de llegar al Techo de Cuenta.">% Retiro en Crecimiento</label>
+                            <label data-tip="Porcentaje de las ganancias semanales que retiras a tu bolsillo mientras la cuenta aún está creciendo hacia su techo.">% Retiro en Crecimiento</label>
                             <input type="number" id="inp-withdraw-growth" value="20" step="5" min="0" max="80">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Meta personal de sueldo mensual neto en Euros (tras IRPF).">🎯 Sueldo Objetivo (€/mes)</label>
+                            <label data-tip="Sueldo mensual neto en Euros (descontando IRPF) que te marcas como meta.">🎯 Sueldo Objetivo (€/mes)</label>
                             <input type="number" id="inp-target-salary" value="2500" step="250" min="500">
                         </div>
                         <div class="field-box" style="grid-column: span 2;">
-                            <label data-tip="Comisión total por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
+                            <label data-tip="Comisión de compra/venta por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
                             <input type="number" id="inp-comm-usd" value="0.00" step="0.25" min="0" max="15">
                         </div>
 
+                        <!-- RANGO DE FECHAS EDITABLE -->
                         <div class="field-box">
-                            <label data-tip="Fecha inicial del horizonte a evaluar en el Monte Carlo.">📅 Fecha Inicio Rango</label>
+                            <label data-tip="Fecha de inicio del horizonte temporal para evaluar los 10.000 escenarios de Monte Carlo.">📅 Fecha Inicio Rango</label>
                             <input type="date" id="inp-mc-start">
                         </div>
                         <div class="field-box">
-                            <label data-tip="Fecha final del horizonte a evaluar en el Monte Carlo.">📅 Fecha Fin Rango</label>
+                            <label data-tip="Fecha final del horizonte temporal para evaluar el riesgo de ruina, llegada al techo de cuenta y percentiles.">📅 Fecha Fin Rango</label>
                             <input type="date" id="inp-mc-end">
                         </div>
                     </div>
 
-                    <!-- AVISO RESUMEN DE VIABILIDAD DE FONDOS -->
+                    <!-- CUADRO DE VIABILIDAD SIMPLIFICADO Y RECOMENDACIÓN DE DRAWDOWN -->
                     <div class="viability-alert-box" id="viability-box">
-                        <div style="font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:6px;">
-                            <span style="color:var(--cyan);">🏦 ¿Puedo abrir mi tope de operaciones?</span>
-                            <span id="collat-status-badge" style="color:var(--emerald);">✔ VIABLE CON MARGEN</span>
+                        <div style="font-weight:800; display:flex; justify-content:space-between; align-items:center; gap:8px;">
+                            <span style="color:var(--cyan);">🏦 Viabilidad de tu Configuración</span>
+                            <span id="collat-status-badge" style="color:var(--emerald);">✔ VIABLE</span>
                         </div>
-                        <div class="collateral-row">
-                            <span style="color:var(--text-secondary);">Operaciones ejecutables Día 1:</span>
-                            <b id="collat-qf-min" style="color:var(--alfa-gold-light);">15 de 15 ops / sem</b>
-                        </div>
-                        <div class="collateral-row">
-                            <span style="color:var(--text-secondary);">Posiciones simultáneas soportadas:</span>
-                            <b id="collat-sim-trades">14 abiertas a la vez</b>
-                        </div>
-                        <div class="collateral-row">
-                            <span style="color:var(--text-secondary);">Nominal medio por operación:</span>
-                            <b id="collat-bp-ini">$1,311 / op</b>
-                        </div>
-                        <div id="collat-warning-text" style="font-size:11px; color:#e2e8f0; border-top:1px solid rgba(255,255,255,0.08); padding-top:6px; line-height:1.48;"></div>
+                        <div id="collat-verdict-main" style="font-size:12px; color:#f1f5f9; line-height:1.5;"></div>
+                        <div id="collat-dd-advice" style="font-size:11.3px; color:var(--text-secondary); border-top:1px solid rgba(255,255,255,0.08); padding-top:7px; line-height:1.5;"></div>
                     </div>
                 </div>
 
-                <!-- COLUMNA DERECHA: RESUMEN MONTE CARLO + PERCENTILES DD + TABLA -->
+                <!-- COLUMNA DERECHA: RESUMEN MONTE CARLO + PERCENTILES + TABLA -->
                 <div class="card-panel">
                     <div class="card-header">
-                        <h3 data-tip="Resultados estadísticos tras simular 10.000 trayectorias aleatorias en el rango de fechas seleccionado.">
-                            🎲 Cuadro Resumen Monte Carlo (10.000 Escenarios)
-                        </h3>
-                        <span id="mc-header-sub" style="font-family:var(--font-mono); font-size:11.5px; color:var(--alfa-gold-light);">Horizonte: 105 semanas</span>
+                        <h3>🎲 Cuadro Resumen Monte Carlo (simulación de 10.000 Escenarios)</h3>
+                        <span id="mc-header-sub" style="font-family:var(--font-mono); font-size:11.5px; color:var(--alfa-gold-light);">Horizonte elegido: 105 semanas</span>
                     </div>
 
                     <div class="kpi-row-5">
-                        <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Probabilidad de perder el 70% o más del capital inicial en los 10.000 escenarios.">
+                        <div class="kpi-card" style="border-color:rgba(16,185,129,0.4); background:rgba(16,185,129,0.05);" data-tip="Porcentaje de los 10.000 escenarios en los que la cuenta perdió el 70% o más de su capital inicial (o quedó liquidada).">
                             <span>💀 Riesgo Quemar Cuenta</span>
                             <b id="mc-ruin-prob" style="color:var(--emerald);">0.00%</b>
                             <small id="mc-ruin-sub">0 de 10.000 rutas</small>
                         </div>
-                        <div class="kpi-card" data-tip="Número mediano de semanas necesarias para alcanzar el Techo de Cuenta.">
+                        <div class="kpi-card" data-tip="Número mediano de semanas necesarias para alcanzar el Techo de Cuenta configurado.">
                             <span>🏔️ Semanas a Techo Cuenta</span>
                             <b id="mc-time-cap" style="color:var(--alfa-gold-light);">-- sem</b>
                             <small id="mc-time-salary-sub">Sueldo obj.: -- sem</small>
                         </div>
-                        <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros) al cierre del rango de fechas.">
+                        <div class="kpi-card" data-tip="Patrimonio total mediano (Saldo en cuenta + Retiros acumulados) al concluir el rango de fechas.">
                             <span>🏆 Patrimonio Mediano (P50)</span>
                             <b id="mc-wealth-p50" style="color:var(--cyan);">$0</b>
                             <small id="mc-ret-p50">Retirado: $0</small>
                         </div>
-                        <div class="kpi-card" data-tip="Drawdown máximo porcentual en el escenario mediano (P50) y en percentil 90.">
+                        <div class="kpi-card" data-tip="Caída máxima porcentual desde el pico de patrimonio en el escenario mediano (P50) y en estrés severo (P90).">
                             <span>📉 Drawdown Máx (P50)</span>
                             <b id="mc-dd-p50" style="color:var(--crimson);">-0.0%</b>
                             <small id="mc-dd-p90">Estrés P90: -0.0%</small>
                         </div>
-                        <div class="kpi-card" data-tip="Patrimonio final en el 5% peor de los 10.000 escenarios simulados.">
+                        <div class="kpi-card" data-tip="Patrimonio total final en el 5% peor de las 10.000 simulaciones (Percentil 5%).">
                             <span>🛡️ Peor Escenario (P5%)</span>
                             <b id="mc-wealth-p05" style="color:#facc15;">$0</b>
                             <small id="mc-prob-profit">Rentables: 100%</small>
                         </div>
                     </div>
 
-                    <div class="dd-percentiles-strip" data-tip="Drawdown máximo sufrido en tu cuenta a través de todos los percentiles de los 10.000 escenarios de Monte Carlo.">
+                    <div class="dd-percentiles-strip" data-tip="Distribución completa del Drawdown Máximo porcentual sufrido a lo largo de los 10.000 escenarios, desde el 10% más suave (P10) hasta el 5% más adverso (P95).">
                         <div style="font-size:11px; font-weight:800; color:#f8fafc; text-transform:uppercase;">
                             📐 Drawdown Máx. por Percentiles:
                         </div>
@@ -769,31 +868,27 @@
                         </div>
                     </div>
 
-                    <div class="canvas-wrap" data-tip="Abanico de Patrimonio Total sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo punteado = Techo de Cuenta.">
+                    <div class="canvas-wrap" data-tip="Curvas de Patrimonio Total (Saldo en Cuenta + Dinero Retirado) sobre 10.000 escenarios: Verde = Optimista (P90), Dorado = Mediano (P50), Azul = Prudente (P10), Rojo punteado = Techo de Cuenta.">
                         <canvas id="canvas-mc"></canvas>
                     </div>
 
-                    <div>
-                        <div style="font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">
-                            📊 Tabla de Escenarios Monte Carlo (<span id="lbl-weeks-table">105</span> semanas simuladas)
-                        </div>
-                        <div style="overflow-x:auto;">
-                            <table class="quant-table">
-                                <thead>
-                                    <tr>
-                                        <th>Escenario Monte Carlo</th>
-                                        <th>Saldo Cuenta</th>
-                                        <th>Retirado</th>
-                                        <th>Patrimonio Total</th>
-                                        <th>Múltiplo</th>
-                                        <th>1R Final</th>
-                                        <th>Sueldo Neto (€/mes)</th>
-                                        <th>Max DD</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="tbody-mc-percentiles"></tbody>
-                            </table>
-                        </div>
+                    <!-- TABLA MONTE CARLO SIN TÍTULO SUPERIOR -->
+                    <div style="overflow-x:auto;">
+                        <table class="quant-table">
+                            <thead>
+                                <tr>
+                                    <th data-tip="Percentil estadístico sobre los 10.000 escenarios.">Escenario Monte Carlo</th>
+                                    <th data-tip="Saldo líquido que permanece en la cuenta operativa.">Saldo Cuenta</th>
+                                    <th data-tip="Dinero total retirado a tu bolsillo.">Retirado</th>
+                                    <th data-tip="Suma de Saldo en Cuenta + Dinero Retirado.">Patrimonio Total</th>
+                                    <th data-tip="Multiplicador sobre tu capital inicial.">Múltiplo</th>
+                                    <th data-tip="Tamaño alcanzado por tu unidad de riesgo 1R.">1R Final</th>
+                                    <th data-tip="Flujo mensual neto estimado en Euros (descontando 21% IRPF) con ese 1R.">Sueldo Neto (€/mes)</th>
+                                    <th data-tip="Drawdown máximo asociado al percentil.">Max DD</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody-mc-percentiles"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -805,7 +900,7 @@
         <section class="section-block emerald-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Proyección Temporal Personalizada desde la Fecha de Hoy</span>
+                    <span class="section-eyebrow">Proyección Temporal Personalizada desde Hoy</span>
                     <h2 class="section-title">🚀 SIMULADOR DE DESEMPEÑO A FUTURO</h2>
                 </div>
                 <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -825,7 +920,7 @@
             <div class="two-col-grid">
                 <div>
                     <div style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">
-                        📈 Curva Proyectada de Patrimonio Total (Pasa el cursor para ver fecha e importe)
+                        📈 Curva Proyectada de Patrimonio Total
                     </div>
                     <div class="canvas-wrap" style="height:265px;">
                         <canvas id="canvas-future-curve"></canvas>
@@ -833,7 +928,7 @@
                 </div>
                 <div>
                     <div style="font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:8px;">
-                        🗓️ Hoja de Ruta por Plazos (Escenario Mediano P50)
+                        🗓️ Hoja de Ruta por Hitos (Escenario Mediano P50)
                     </div>
                     <div class="scroll-table-box" style="max-height:265px;">
                         <table class="quant-table">
@@ -856,43 +951,68 @@
         </section>
 
         <!-- ======================================================================= -->
-        <!-- BLOQUE 6: FUNCIONAMIENTO OPERATIVO DEL BOT DE TELEGRAM                  -->
+        <!-- BLOQUE 6: FUNCIONAMIENTO DEL BOT DE TELEGRAM + COMANDOS                 -->
         <!-- ======================================================================= -->
         <section class="section-block cyan-top">
             <div class="section-header">
                 <div class="section-title-group">
-                    <span class="section-eyebrow">Alertas Horarias, Gestión de Viernes & Seguimiento de Cartera</span>
+                    <span class="section-eyebrow">Ejecución Guiada en Tiempo Real & Auditoría Interactiva</span>
                     <h2 class="section-title">🤖 FUNCIONAMIENTO OPERATIVO DEL BOT DE TELEGRAM</h2>
                 </div>
                 <button class="btn-gold" onclick="abrirModalCuenta()">🔗 Vincular mi Telegram ahora</button>
-            </div>
-
-            <div class="prose-text">
-                <p>
-                    El motor cuantitativo está conectado en tiempo real con el <b>Bot de Telegram de ALFA Strategy</b> para guiarte paso a paso durante la sesión sin necesidad de vigilar gráficos, personalizando automáticamente los cálculos según tu unidad <b>1R</b> y tus parámetros guardados:
-                </p>
             </div>
 
             <div class="bot-steps-grid">
                 <div class="bot-step-card">
                     <span class="bot-step-num">01</span>
                     <h4>⏳ Pre-Alerta antes del Cierre 1H</h4>
-                    <p>Minutos antes de que cierre cada vela horaria (<code>:20</code> y <code>:50</code>), recibes un aviso previo con las acciones que están a punto de confirmar entrada para que puedas ir localizando el ticker con calma en tu bróker.</p>
+                    <p>Minutos antes de cerrar cada vela horaria (<code>:20</code> y <code>:50</code>), recibes un aviso previo con los niveles que están a punto de activarse para que vayas localizando la acción en tu bróker con calma.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">02</span>
-                    <h4>🚨 Señal Activada + Tamaño Exacto</h4>
-                    <p>Al cerrar la vela horaria confirmando ruptura (<code>:01</code> y <code>:31</code>), el bot te envía la lámina doble HD (<code>1WK + 1H</code>), precio exacto de Entrada Limit, Take Profit, Stop Loss y el <b>número exacto de acciones</b> acorde a tu 1R actual.</p>
+                    <h4>🚨 Señal Exacta + Gráfico Doble</h4>
+                    <p>Al cerrar la vela horaria (<code>:01</code> y <code>:31</code>), el bot envía la confirmación con lámina HD (<code>1WK + 1H</code>), precio exacto de Entrada Limit, TP, SL y el <b>número exacto de acciones</b> calculado para tu 1R.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">03</span>
-                    <h4>🔔 Protocolo de Cierre de Viernes</h4>
-                    <p>Los viernes antes del cierre de mercado recibes una notificación indicando exactamente qué posiciones abiertas debes <b>cerrar a mercado</b> (&lt; +0.35R) y cuáles mantener al lunes moviendo el Stop Loss a <b>Break Even</b>.</p>
+                    <h4>🔔 Notificación de los Viernes</h4>
+                    <p>Cada viernes antes del cierre de mercado te indica qué posiciones abiertas debes <b>cerrar a mercado</b> (&lt; +0.35R) y cuáles mantener al lunes moviendo su Stop Loss a <b>Break Even</b>.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">04</span>
-                    <h4>📈 Tu R Dinámica y Auditoría Pasada</h4>
-                    <p>Marca desde el propio bot las operaciones en las que has entrado para que actualice tu unidad <b>1R</b> y tus futuros tamaños de posición conforme cierren los trades. Además, consulta el balance de la semana anterior, de <b>X semanas atrás</b> o de cualquier semana concreta de las 105 estudiadas.</p>
+                    <h4>📈 Seguimiento Real de tu Cuenta</h4>
+                    <p>Marca desde el propio bot las operaciones en las que has entrado para auditar tu desempeño real, revisar la semana anterior o consultar cualquier periodo dentro de las semanas estudiadas.</p>
+                </div>
+            </div>
+
+            <!-- APARTADO DE ÓRDENES / COMANDOS DEL BOT -->
+            <div class="ux-subpanel" style="margin-top:4px;">
+                <div class="ux-subpanel-title" style="color:var(--cyan);">⌨️ Órdenes y Comandos Disponibles en el Bot de Telegram</div>
+                <div class="bot-commands-grid">
+                    <div class="cmd-card">
+                        <code class="cmd-code">/id</code>
+                        <span>Te devuelve al instante tu código numérico (<code>Chat ID</code>) y el estado de vinculación para conectarlo arriba en tu cuenta web.</span>
+                    </div>
+                    <div class="cmd-card">
+                        <code class="cmd-code">/info</code>
+                        <span>Muestra el panel de ayuda con todos los comandos disponibles y un resumen de tu configuración activa en la nube (1R, cupo semanal y ratios).</span>
+                    </div>
+                    <div class="cmd-card">
+                        <code class="cmd-code">/test</code>
+                        <span>Envía al momento una alerta de prueba real con su lámina gráfica doble HD (<code>1WK + 1H</code>) para verificar cómo recibirás las señales en vivo.</span>
+                    </div>
+                    <div class="cmd-card">
+                        <code class="cmd-code">/resumensemanal</code>
+                        <span>Genera el balance completo de la semana en curso (ganadas, perdidas, en curso y balance en R/$) seguido de todas sus láminas gráficas.</span>
+                    </div>
+                    <div class="cmd-card">
+                        <code class="cmd-code">/resumensemanal N</code>
+                        <span><i>(Ej: <code>/resumensemanal 20</code> o <code>/resumensemanal 104</code>)</i> Simula y desglosa en tabla el rendimiento de las últimas <b>N</b> semanas con tu perfil actual.</span>
+                    </div>
+                    <div class="cmd-card">
+                        <code class="cmd-code">/imagenes N</code>
+                        <span><i>(O <code>/resumensemanal N fotos</code>, ej: <code>/imagenes 1</code>)</i> Recupera el informe detallado y las láminas gráficas de hace <b>N</b> semanas concretas hacia atrás.</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -900,7 +1020,7 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!-- MODAL DE CUENTA SUPABASE + RECUPERAR CONTRASEÑA + TELEGRAM              -->
+    <!-- MODAL DE ALTA / LOGIN / RECUPERAR CONTRASEÑA EN SUPABASE + TELEGRAM     -->
     <!-- ======================================================================= -->
     <div id="modal-cuenta" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100; align-items:center; justify-content:center; padding:16px;">
         <div class="card-panel" style="width:100%; max-width:445px; border-color:var(--alfa-gold);">
@@ -909,25 +1029,25 @@
                 <span style="cursor:pointer; font-size:16px; color:var(--text-secondary);" onclick="cerrarModalCuenta()">✕</span>
             </div>
             <div style="font-size:11.5px; color:var(--text-secondary); line-height:1.5;">
-                Crea tu cuenta o inicia sesión para guardar tu configuración en <b>Supabase</b> y vincular tu <b>Telegram Chat ID</b> (escribe <code>/id</code> al bot en Telegram para obtenerlo).
+                Crea tu cuenta o inicia sesión para guardar tu configuración de riesgo en <b>Supabase</b> y vincular tu <b>Telegram Chat ID</b> (envía <code>/id</code> al bot de Telegram para obtener tu código).
             </div>
 
             <div class="field-box">
                 <label>Correo Electrónico</label>
                 <input type="email" id="sync-email" placeholder="tu@email.com">
             </div>
-            <div class="field-box">
+            <div class="field-box" id="box-sync-pass">
                 <label>Contraseña</label>
                 <input type="password" id="sync-pass" placeholder="Mínimo 6 caracteres">
             </div>
             <div style="display:flex; justify-content:flex-end; margin-top:-6px;">
                 <button type="button" class="link-subtle-btn" onclick="recuperarContrasenaSupabase()">
-                    🔑 ¿Olvidaste tu contraseña? Recuperar contraseña por email
+                    🔑 ¿Olvidaste tu contraseña? Enviar enlace de recuperación
                 </button>
             </div>
 
             <div id="box-new-password" style="display:none; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.4); border-radius:9px; padding:12px; flex-direction:column; gap:8px;">
-                <div style="font-size:11.5px; font-weight:700; color:var(--emerald);">🔐 Enlace verificado: Introduce tu nueva contraseña</div>
+                <div style="font-size:11.5px; font-weight:700; color:var(--emerald);">🔐 Enlace de recuperación verificado: Escribe tu nueva contraseña</div>
                 <input type="password" id="sync-new-pass" placeholder="Nueva contraseña (mín. 6 caracteres)" style="background:var(--bg-card); color:#fff; border:1px solid var(--border-subtle); border-radius:7px; padding:8px 10px; font-family:var(--font-mono); font-size:12px;">
                 <button class="btn-gold" style="justify-content:center;" onclick="guardarNuevaContrasenaRecuperada()">💾 Guardar Nueva Contraseña</button>
             </div>
@@ -974,7 +1094,6 @@
             }
         } catch (e) {}
 
-        // Parámetros maestros predefinidos de la estrategia (lógica intacta)
         const STOP_LOSS_MEDIO_PCT = 3.05;
         const APLUS_MULT_LOCKED = 1.25;
         const EXEC_MODE_PREDEFINIDO = "limit_015";
@@ -988,7 +1107,7 @@
             if (el) el.innerText = val;
         }
 
-        // TOOLTIPS DE AYUDA CON RETARDO
+        // TOOLTIPS
         let tipTimer = null;
         const tipEl = document.getElementById("custom-tooltip");
         const chartTipEl = document.getElementById("chart-hover-tooltip");
@@ -1010,7 +1129,7 @@
                 if (top + r.height > window.innerHeight - 12) top = cy - r.height - 10;
                 tipEl.style.left = `${Math.max(8, left)}px`;
                 tipEl.style.top = `${Math.max(8, top)}px`;
-            }, 900);
+            }, 750);
         });
         document.addEventListener("mousemove", e => {
             if (tipEl && tipEl.style.display === "block") {
@@ -1143,23 +1262,9 @@
             return { actualizado: "Hoy", universo_analizado: 6254, trades };
         }
 
-        // Localiza automáticamente el canvas de "Curva Histórica de Unidades R Acumuladas"
         function obtenerCanvasCurvaAcumuladaR() {
-            const posiblesIds = [
-                "canvas-cum-r",
-                "canvas-cumulative-r",
-                "canvas-equity-r",
-                "canvas-r-acum",
-                "canvas-curva-r",
-                "canvas-bt-curve",
-                "canvas-backtest-curve",
-                "canvas-hist-equity",
-                "canvas-r-curve"
-            ];
-            for (const id of posiblesIds) {
-                const el = document.getElementById(id);
-                if (el && el.tagName === "CANVAS") return el;
-            }
+            const el = document.getElementById("canvas-cum-r");
+            if (el) return el;
             const paneles = document.querySelectorAll(".card-panel, .section-block");
             for (const panel of paneles) {
                 const header = panel.querySelector(".card-header h3, h3, h4");
@@ -1198,7 +1303,6 @@
                 const xOf = i => padL + (i / Math.max(1, n)) * pw;
                 const yOf = v => padT + ph - ((v - minV) / Math.max(1e-4, maxV - minV)) * ph;
 
-                // Rejilla horizontal y Eje Y
                 ctx.font = "10px JetBrains Mono";
                 ctx.strokeStyle = "rgba(255,255,255,0.06)";
                 ctx.fillStyle = "#94a3b8";
@@ -1213,7 +1317,6 @@
                     ctx.fillText(`${v >= 0 ? "+" : ""}${Math.round(v)}R`, 6, y + 3);
                 }
 
-                // Eje X con fechas espaciadas
                 const maxTicks = Math.max(4, Math.floor(pw / 95));
                 const stride = Math.max(1, Math.ceil(serieCurva.length / maxTicks));
                 for (let i = 0; i < serieCurva.length; i += stride) {
@@ -1221,7 +1324,6 @@
                     ctx.fillText(serieCurva[i].shortDate, xPos, h - 8);
                 }
 
-                // Sombreado bajo la curva principal A+ 1.25x
                 const yZero = yOf(0);
                 const grad = ctx.createLinearGradient(0, padT, 0, padT + ph);
                 grad.addColorStop(0, "rgba(245, 158, 11, 0.22)");
@@ -1234,7 +1336,6 @@
                 ctx.closePath();
                 ctx.fill();
 
-                // Curva Base 1.0x (azul discontinua)
                 ctx.strokeStyle = "#38bdf8";
                 ctx.lineWidth = 1.7;
                 ctx.setLineDash([5, 4]);
@@ -1246,7 +1347,6 @@
                 ctx.stroke();
                 ctx.setLineDash([]);
 
-                // Curva Ponderada A+ 1.25x (dorada sólida)
                 ctx.strokeStyle = "#f59e0b";
                 ctx.lineWidth = 2.6;
                 ctx.beginPath();
@@ -1256,7 +1356,6 @@
                 }
                 ctx.stroke();
 
-                // Leyenda integrada arriba a la izquierda
                 const ult = serieCurva[n];
                 const boxX = padL + 10, boxY = padT + 6;
                 ctx.fillStyle = "rgba(11, 15, 23, 0.88)";
@@ -1270,7 +1369,7 @@
                 ctx.beginPath(); ctx.moveTo(boxX + 10, boxY + 14); ctx.lineTo(boxX + 28, boxY + 14); ctx.stroke();
                 ctx.fillStyle = "#f8fafc";
                 ctx.font = "bold 10.5px JetBrains Mono";
-                ctx.fillText(`Ponderación A+ 1.25x (${ult.acum125 >= 0 ? "+" : ""}${ult.acum125.toFixed(1)} R)`, boxX + 35, boxY + 17);
+                ctx.fillText(`Con A+ 1.25x  (${ult.acum125 >= 0 ? "+" : ""}${ult.acum125.toFixed(1)} R)`, boxX + 35, boxY + 17);
 
                 ctx.strokeStyle = "#38bdf8";
                 ctx.lineWidth = 1.7;
@@ -1279,9 +1378,8 @@
                 ctx.setLineDash([]);
                 ctx.fillStyle = "#94a3b8";
                 ctx.font = "10.5px JetBrains Mono";
-                ctx.fillText(`Base 1.0x sin A+     (${ult.acumBase >= 0 ? "+" : ""}${ult.acumBase.toFixed(1)} R)`, boxX + 35, boxY + 34);
+                ctx.fillText(`Base 1.0x     (${ult.acumBase >= 0 ? "+" : ""}${ult.acumBase.toFixed(1)} R)`, boxX + 35, boxY + 34);
 
-                // Guía vertical y puntos al pasar el cursor
                 if (hoverIdx >= 0 && hoverIdx <= n) {
                     const hx = xOf(hoverIdx);
                     const hy125 = yOf(serieCurva[hoverIdx].acum125);
@@ -1333,9 +1431,6 @@
             };
         }
 
-        // =========================================================================
-        // BLOQUE 2: CÁLCULO PURO DE LAS BASES DEL BACKTESTING + CURVA ACUMULADA R
-        // =========================================================================
         function renderizarBacktestingBaseEstrategia() {
             if (!semanasOrdenadas.length) return;
             const nSem = semanasOrdenadas.length;
@@ -1423,9 +1518,12 @@
         }
 
         // =========================================================================
-        // MOTOR DE SIMULACIÓN PERSONAL Y MONTE CARLO (LÓGICA ORIGINAL INTACTA)
+        // MOTOR DE SIMULACIÓN PERSONAL Y MONTE CARLO (CON LIQUIDACIÓN REAL EN $0)
         // =========================================================================
         function calcularCupoSemanalPorMargen(capitalActual, rActual, maxTradesDeseados) {
+            if (capitalActual <= 0) {
+                return { cupoEfectivo: 0, maxSimultaneas: 0, maxSemanalesPorMargen: 0, nominalPorTrade: rActual / (STOP_LOSS_MEDIO_PCT / 100.0) };
+            }
             const nominalPorTrade = rActual / (STOP_LOSS_MEDIO_PCT / 100.0);
             const poderCompraEfectivoSeguro = capitalActual * 9.5;
             const maxSimultaneas = Math.max(1, Math.floor(poderCompraEfectivoSeguro / Math.max(nominalPorTrade, 50)));
@@ -1448,7 +1546,7 @@
             }
 
             return {
-                capIni: Math.max(200, parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000),
+                capIni: Math.max(50, parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000),
                 rIni: Math.max(5, parseFloat(document.getElementById("inp-r-ini")?.value) || 40),
                 varRPct: Math.max(0, Math.min(6, parseFloat(document.getElementById("inp-var-r")?.value) || 0)) / 100.0,
                 capTop: Math.max(500, parseFloat(document.getElementById("inp-cap-top")?.value) || 25000),
@@ -1484,13 +1582,37 @@
             }
         }
 
+        // Simula una semana operación a operación verificando liquidación inmediata si cap <= 0
+        function simularOperacionesDeSemanaEnCuenta(listaTrades, cupo, execMode, commR, capDisponible, rUnitActual) {
+            let netR = 0, tomados = 0, wSem = 0, lSem = 0, dispValidas = 0;
+            let saldoVivo = capDisponible;
+            let liquidada = (saldoVivo <= 0);
+
+            for (let i = 0; i < listaTrades.length; i++) {
+                const rOp = evaluarTradeIndividualSegunModo(listaTrades[i], execMode, commR);
+                if (rOp === null) continue;
+                dispValidas++;
+                if (liquidada || tomados >= cupo) continue;
+
+                tomados++;
+                if (rOp > 0) wSem++;
+                else lSem++;
+
+                netR += rOp;
+                saldoVivo += rOp * rUnitActual;
+                if (saldoVivo <= 0) {
+                    liquidada = true;
+                }
+            }
+            return { netR, tomados, wSem, lSem, dispValidas, liquidada };
+        }
+
         function ejecutarSimulacionCompleta() {
             if (!semanasOrdenadas.length) return;
             const cfg = leerConfigUsuario();
             const semanasSlice = semanasOrdenadas;
             const commR = cfg.commUsd / Math.max(cfg.rIni, 10.0);
 
-            setTxt("lbl-weeks-table", cfg.mcWeeks);
             setTxt("mc-header-sub", `Horizonte elegido: ${cfg.mcWeeks} semanas`);
 
             let totalW = 0, totalL = 0, sumaNetR = 0;
@@ -1500,60 +1622,76 @@
             let rUnitHist = cfg.rIni;
             let retirosHist = 0;
             let rachaHist = 0;
+            let peakAccountHist = cfg.capIni;
+            let maxDdAccountPctHist = 0;
+            let cuentaLiquidadaHist = false;
 
             semanasSlice.forEach((sem) => {
                 const infoMargen = calcularCupoSemanalPorMargen(capHist, rUnitHist, cfg.maxTradesWk);
-                let wSem = 0, lSem = 0, netRSem = 0, ejecutadasSem = 0, dispValidas = 0;
+                const resSem = simularOperacionesDeSemanaEnCuenta(
+                    sem.trades,
+                    cuentaLiquidadaHist ? 0 : infoMargen.cupoEfectivo,
+                    cfg.execMode,
+                    commR,
+                    capHist,
+                    rUnitHist
+                );
 
-                for (let i = 0; i < sem.trades.length; i++) {
-                    const tr = sem.trades[i];
-                    const rOp = evaluarTradeIndividualSegunModo(tr, cfg.execMode, commR);
-                    if (rOp === null) continue;
-                    dispValidas++;
-                    if (ejecutadasSem >= infoMargen.cupoEfectivo) continue;
+                totalW += resSem.wSem;
+                totalL += resSem.lSem;
+                sumaNetR += resSem.netR;
 
-                    ejecutadasSem++;
-                    if (rOp > 0) { wSem++; totalW++; }
-                    else { lSem++; totalL++; }
-                    netRSem += rOp;
-                    sumaNetR += rOp;
-                }
+                const rUsadoSemana = cuentaLiquidadaHist ? 0 : rUnitHist;
+                const pnlSemanaUsd = resSem.netR * rUsadoSemana;
 
-                const rUsadoSemana = rUnitHist;
-                const pnlSemanaUsd = netRSem * rUsadoSemana;
+                if (!cuentaLiquidadaHist) {
+                    if (resSem.liquidada || (capHist + pnlSemanaUsd) <= 0) {
+                        capHist = 0;
+                        rUnitHist = 0;
+                        cuentaLiquidadaHist = true;
+                        maxDdAccountPctHist = 100.0;
+                    } else {
+                        if (pnlSemanaUsd > 0 && capHist < cfg.capTop && cfg.withdrawGrowthPct > 0) {
+                            const retiroParcial = pnlSemanaUsd * cfg.withdrawGrowthPct;
+                            retirosHist += retiroParcial;
+                            capHist += (pnlSemanaUsd - retiroParcial);
+                        } else {
+                            capHist += pnlSemanaUsd;
+                        }
 
-                if (pnlSemanaUsd > 0 && capHist < cfg.capTop && cfg.withdrawGrowthPct > 0) {
-                    const retiroParcial = pnlSemanaUsd * cfg.withdrawGrowthPct;
-                    retirosHist += retiroParcial;
-                    capHist += (pnlSemanaUsd - retiroParcial);
-                } else {
-                    capHist += pnlSemanaUsd;
-                }
+                        if (capHist >= cfg.capTop) {
+                            retirosHist += (capHist - cfg.capTop);
+                            capHist = cfg.capTop;
+                        }
 
-                if (capHist < 20) capHist = 20;
-                if (capHist >= cfg.capTop) {
-                    retirosHist += (capHist - cfg.capTop);
-                    capHist = cfg.capTop;
+                        const wealthNowCheck = capHist + retirosHist;
+                        if (wealthNowCheck > peakAccountHist) peakAccountHist = wealthNowCheck;
+                        const ddPctNow = ((peakAccountHist - wealthNowCheck) / Math.max(1, peakAccountHist)) * 100.0;
+                        if (ddPctNow > maxDdAccountPctHist) maxDdAccountPctHist = ddPctNow;
+
+                        if ((resSem.wSem + resSem.lSem) > 0 && capHist > 0 && cfg.varRPct > 0) {
+                            rachaHist = resSem.netR >= 0 ? (rachaHist >= 0 ? rachaHist + 1 : 1) : (rachaHist <= 0 ? rachaHist - 1 : -1);
+                            const damping = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(rachaHist) - 1));
+                            const step = Math.max(-0.15, Math.min(0.18, resSem.netR * cfg.varRPct * damping));
+                            rUnitHist = Math.max(
+                                Math.min(cfg.rIni * 0.40, capHist * 0.50),
+                                Math.min(cfg.rMax, rUnitHist * (1.0 + step), capHist * 0.025)
+                            );
+                        }
+                    }
                 }
 
                 const wealthNow = capHist + retirosHist;
-
-                if ((wSem + lSem) > 0 && capHist > 20 && cfg.varRPct > 0) {
-                    rachaHist = netRSem >= 0 ? (rachaHist >= 0 ? rachaHist + 1 : 1) : (rachaHist <= 0 ? rachaHist - 1 : -1);
-                    const damping = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(rachaHist) - 1));
-                    const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damping));
-                    rUnitHist = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, rUnitHist * (1.0 + step), capHist * 0.025));
-                }
 
                 semanasEvaluadas.push({
                     key: sem.key,
                     label: sem.label,
                     ts: sem.ts,
-                    trades: ejecutadasSem,
-                    totalDisponibles: dispValidas,
-                    wins: wSem,
-                    losses: lSem,
-                    netR: netRSem,
+                    trades: resSem.tomados,
+                    totalDisponibles: resSem.dispValidas,
+                    wins: resSem.wSem,
+                    losses: resSem.lSem,
+                    netR: resSem.netR,
                     rUnit: rUsadoSemana,
                     capClose: capHist,
                     retirosAcum: retirosHist,
@@ -1561,72 +1699,91 @@
                 });
             });
 
-            const totalCerradas = totalW + totalL;
-            const expTrade = totalCerradas > 0 ? sumaNetR / totalCerradas : 0.22;
+            // Actualizar en la tarjeta de Drawdown Máximo del Backtesting el % perdido con los parámetros del usuario
+            const elDdUser = document.getElementById("bt-max-dd-pct-user");
+            if (elDdUser) {
+                if (cuentaLiquidadaHist || maxDdAccountPctHist >= 99.9) {
+                    elDdUser.innerText = "Con tus parámetros: -100.0% (Cuenta liquidada)";
+                    elDdUser.style.color = "var(--crimson)";
+                } else {
+                    elDdUser.innerText = `Con tus parámetros: -${maxDdAccountPctHist.toFixed(1)}% de tu cuenta`;
+                    elDdUser.style.color = "#fca5a5";
+                }
+            }
 
-            actualizarBloqueGestionYViabilidad(cfg);
-            correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
+            // Calcular esperanza base limpia sobre las 104 semanas para proyecciones
+            let rSumBase = 0, nBase = 0;
+            semanasSlice.forEach(s => s.trades.forEach(t => {
+                const v = evaluarTradeIndividualSegunModo(t, cfg.execMode, commR);
+                if (v !== null) { rSumBase += v; nBase++; }
+            }));
+            const expTrade = nBase > 0 ? rSumBase / nBase : 0.22;
+
+            const mcStats = correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR);
+            actualizarBloqueGestionYViabilidad(cfg, mcStats);
             renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR);
             renderizarHistorico105SemanasYMensual(semanasEvaluadas);
         }
 
-        function actualizarBloqueGestionYViabilidad(cfg) {
+        function actualizarBloqueGestionYViabilidad(cfg, mcStats) {
             const infoM = calcularCupoSemanalPorMargen(cfg.capIni, cfg.rIni, cfg.maxTradesWk);
             const simDeseadas = Math.max(1, Math.ceil(cfg.maxTradesWk * 0.65));
             const capContadoNecesario = simDeseadas * infoM.nominalPorTrade;
             const capMargenNecesario = capContadoNecesario / 9.5;
+            const pctRiesgoPorOp = (cfg.rIni / cfg.capIni) * 100.0;
 
             setTxt("txt-sl-medio", `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`);
             setTxt("txt-r-ejemplo", `$${cfg.rIni.toLocaleString("es-ES")}`);
             setTxt("txt-nominal-ejemplo", `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")}`);
             setTxt("txt-maxops-ejemplo", `${cfg.maxTradesWk} operaciones semanales`);
-            setTxt("txt-sim-ejemplo", `${simDeseadas} posiciones simultáneas`);
+            setTxt("txt-sim-ejemplo", `${simDeseadas} abiertas a la vez`);
 
             setTxt("cap-req-params-lbl", `1R = $${cfg.rIni} · Tope ${cfg.maxTradesWk} ops/sem`);
             setTxt("cap-req-sl", `${STOP_LOSS_MEDIO_PCT.toFixed(2)}%`);
             setTxt("cap-req-per-trade", `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / trade`);
-            setTxt("cap-req-concurrent", `~${simDeseadas} simultáneas`);
+            setTxt("cap-req-concurrent", `~${simDeseadas} abiertas a la vez`);
             setTxt("cap-req-cash", `$${Math.round(capContadoNecesario).toLocaleString("es-ES")}`);
             setTxt("cap-req-margin", `$${Math.round(capMargenNecesario).toLocaleString("es-ES")}`);
 
-            setTxt("collat-sim-trades", `${infoM.maxSimultaneas} abiertas a la vez`);
-            setTxt("collat-bp-ini", `$${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} / operación`);
-            setTxt("collat-qf-min", `${infoM.cupoEfectivo} de ${cfg.maxTradesWk} ops / semana`);
-
             const badge = document.getElementById("collat-status-badge");
-            const warn = document.getElementById("collat-warning-text");
+            const verdict = document.getElementById("collat-verdict-main");
+            const ddAdvice = document.getElementById("collat-dd-advice");
             const box = document.getElementById("viability-box");
-            if (!badge || !warn || !box) return;
+            if (!badge || !verdict || !ddAdvice || !box) return;
 
-            if (cfg.capIni >= capContadoNecesario) {
-                badge.innerText = "✔ VIABLE AL CONTADO (1:1)";
+            // 1. Veredicto directo de viabilidad de operaciones
+            if (cfg.rIni >= cfg.capIni * 0.50) {
+                badge.innerText = "🚨 RIESGO DE QUIEBRA INMEDIATA";
+                badge.style.color = "var(--crimson)";
+                box.style.borderColor = "rgba(244, 63, 94, 0.6)";
+                verdict.innerHTML = `❌ <b>No viable:</b> Estás arriesgando <b>$${cfg.rIni.toLocaleString("es-ES")} (${pctRiesgoPorOp.toFixed(0)}% de tu cuenta)</b> en una sola operación sobre un capital de <b>$${cfg.capIni.toLocaleString("es-ES")}</b>. Un par de Stop Loss seguidos liquidan la cuenta al 100%.`;
+            } else if (cfg.capIni >= capContadoNecesario) {
+                badge.innerText = "✔ 100% VIABLE AL CONTADO";
                 badge.style.color = "var(--emerald)";
                 box.style.borderColor = "rgba(16, 185, 129, 0.45)";
-                warn.innerHTML = `✅ Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> dispones de fondos suficientes incluso operando <b>sin apalancamiento (1:1 al contado)</b> para abrir las <b>${cfg.maxTradesWk} operaciones semanales</b> con 1R = $${cfg.rIni}.`;
+                verdict.innerHTML = `✅ <b>Sí es viable:</b> Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> y <b>1R = $${cfg.rIni}</b> (${pctRiesgoPorOp.toFixed(1)}%/trade) puedes abrir tu tope de <b>${cfg.maxTradesWk} operaciones/semana</b> incluso sin apalancamiento.`;
             } else if (infoM.cupoEfectivo >= cfg.maxTradesWk) {
                 badge.innerText = "⚡ VIABLE CON MARGEN";
                 badge.style.color = "var(--cyan)";
                 box.style.borderColor = "rgba(56, 189, 248, 0.45)";
-                warn.innerHTML = `ℹ️ Al contado necesitarías <b>$${Math.round(capContadoNecesario).toLocaleString("es-ES")}</b>, pero operando en cuenta con margen/apalancamiento tus <b>$${cfg.capIni.toLocaleString("es-ES")}</b> cubren holgadamente las <b>${cfg.maxTradesWk} operaciones semanales</b> (mínimo requerido con margen: $${Math.round(capMargenNecesario).toLocaleString("es-ES")}).`;
+                verdict.innerHTML = `✅ <b>Sí es viable operando con margen:</b> Tus <b>$${cfg.capIni.toLocaleString("es-ES")}</b> cubren las <b>${cfg.maxTradesWk} operaciones/semana</b> con 1R = $${cfg.rIni} (mínimo en margen: $${Math.round(capMargenNecesario).toLocaleString("es-ES")} · al contado requeriría $${Math.round(capContadoNecesario).toLocaleString("es-ES")}).`;
             } else {
-                badge.innerText = "⚠️ FONDOS INSUFICIENTES PARA TU TOPE";
+                badge.innerText = "⚠️ LIMITADO POR CAPITAL";
                 badge.style.color = "var(--alfa-gold-light)";
                 box.style.borderColor = "rgba(245, 158, 11, 0.55)";
-                warn.innerHTML = `⚠️ Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> y <b>1R = $${cfg.rIni}</b> ($${Math.round(infoM.nominalPorTrade).toLocaleString("es-ES")} nominal/trade), no puedes abrir las ${cfg.maxTradesWk} ops/sem deseadas: tu margen limita el Día 1 a <b>${infoM.maxSimultaneas} posiciones simultáneas (~${infoM.cupoEfectivo} ops/sem)</b>. Necesitarías al menos <b>$${Math.round(capMargenNecesario).toLocaleString("es-ES")}</b> en margen (o bajar tu 1R inicial).`;
+                verdict.innerHTML = `⚠️ <b>Parcialmente viable:</b> Con <b>$${cfg.capIni.toLocaleString("es-ES")}</b> y <b>1R = $${cfg.rIni}</b>, al inicio solo podrás sostener <b>~${infoM.cupoEfectivo} de tus ${cfg.maxTradesWk} operaciones/semana</b> (${infoM.maxSimultaneas} abiertas a la vez). Para abrir las ${cfg.maxTradesWk} desde el Día 1 necesitas <b>$${Math.round(capMargenNecesario).toLocaleString("es-ES")}</b> en cuenta o bajar tu 1R a <b>$${Math.max(5, Math.floor((cfg.capIni * 9.5 * (STOP_LOSS_MEDIO_PCT / 100)) / simDeseadas))}</b>.`;
             }
-        }
 
-        function EvaluarSemanaConCupo(semObj, cupo, execMode, commR) {
-            const lista = semObj.trades;
-            let netR = 0, tomados = 0;
-            for (let i = 0; i < lista.length; i++) {
-                if (tomados >= cupo) break;
-                const rOp = evaluarTradeIndividualSegunModo(lista[i], execMode, commR);
-                if (rOp === null) continue;
-                tomados++;
-                netR += rOp;
+            // 2. Recomendación clara de Drawdown máximo viable
+            const dd90 = mcStats ? mcStats.dd90 : 0;
+            const rSugeridoPrudente = Math.max(5, Math.round(cfg.capIni * 0.02));
+            if (dd90 <= 25.0 && pctRiesgoPorOp <= 2.5) {
+                ddAdvice.innerHTML = `🛡️ <b>Drawdown viable (Óptimo):</b> En escenario de estrés (P90) tu caída máxima ronda el <b style="color:var(--emerald);">-${dd90.toFixed(1)}%</b> (dentro del umbral saludable &le; 25%–30% para operar con tranquilidad psicológica).`;
+            } else if (dd90 <= 40.0) {
+                ddAdvice.innerHTML = `⚖️ <b>Drawdown exigente:</b> En estrés P90 asumirías baches de hasta <b style="color:var(--alfa-gold-light);">-${dd90.toFixed(1)}%</b>. Recomendamos mantener el estrés P90 por debajo del <b>30%</b> (por ejemplo, ajustando tu 1R inicial en torno a <b>$${rSugeridoPrudente}</b>, un 2% de tu capital).`;
+            } else {
+                ddAdvice.innerHTML = `🚨 <b>Drawdown excesivo:</b> Tu estrés P90 llega al <b style="color:var(--crimson);">-${dd90.toFixed(1)}%</b> (riesgo real de ruina o bloqueo por margen). Para un Drawdown viable (&lt; 25%–30%), reduce tu 1R inicial hacia <b>$${rSugeridoPrudente}</b> (2% de tu cuenta).`;
             }
-            return netR;
         }
 
         function correrMonteCarlo10000(cfg, semanasSlice, expTrade, commR) {
@@ -1663,10 +1820,27 @@
                 if (p < SAMPLE_CURVES) wealthCurves[0][p] = cap;
 
                 for (let w = 1; w <= nWeeksSim; w++) {
+                    if (cap <= 0) {
+                        if (p < SAMPLE_CURVES) wealthCurves[w][p] = ret;
+                        continue;
+                    }
+
                     const randSem = semanasSlice[(Math.random() * nWeeksPool) | 0];
                     const infoM = calcularCupoSemanalPorMargen(cap, rUnit, cfg.maxTradesWk);
-                    const netRSem = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, commR);
+                    const resSem = simularOperacionesDeSemanaEnCuenta(
+                        randSem.trades, infoM.cupoEfectivo, cfg.execMode, commR, cap, rUnit
+                    );
+                    const netRSem = resSem.netR;
                     const pnl = netRSem * rUnit;
+
+                    if (resSem.liquidada || (cap + pnl) <= 0) {
+                        cap = 0;
+                        rUnit = 0;
+                        quemada = true;
+                        maxDd = 100.0;
+                        if (p < SAMPLE_CURVES) wealthCurves[w][p] = ret;
+                        continue;
+                    }
 
                     if (pnl > 0 && cap < cfg.capTop && cfg.withdrawGrowthPct > 0) {
                         const sacado = pnl * cfg.withdrawGrowthPct;
@@ -1677,7 +1851,6 @@
                     }
 
                     if (cap <= cfg.capIni * 0.30) quemada = true;
-                    if (cap < 20) cap = 20;
 
                     if (cap >= cfg.capTop) {
                         if (hitCapW === -1) hitCapW = w;
@@ -1690,11 +1863,14 @@
                     const dd = ((peak - totalW) / peak) * 100.0;
                     if (dd > maxDd) maxDd = dd;
 
-                    if (cfg.varRPct > 0) {
+                    if (cfg.varRPct > 0 && cap > 0) {
                         streak = netRSem >= 0 ? (streak >= 0 ? streak + 1 : 1) : (streak <= 0 ? streak - 1 : -1);
                         const damp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(streak) - 1));
                         const step = Math.max(-0.15, Math.min(0.18, netRSem * cfg.varRPct * damp));
-                        rUnit = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, rUnit * (1.0 + step), cap * 0.025));
+                        rUnit = Math.max(
+                            Math.min(cfg.rIni * 0.40, cap * 0.50),
+                            Math.min(cfg.rMax, rUnit * (1.0 + step), cap * 0.025)
+                        );
                     }
 
                     const rMensualEsperado = infoM.cupoEfectivo * expPorTrade * 4.333;
@@ -1727,14 +1903,14 @@
                 const rVal = finalR[i];
                 const sVal = finalSaldo[i];
                 const mInfo = calcularCupoSemanalPorMargen(sVal, rVal, cfg.maxTradesWk);
-                const sueldoNetoEur = rVal * (mInfo.cupoEfectivo * expPorTrade * 4.333) * 0.79 * 0.92;
+                const sueldoNetoEur = sVal > 0 ? (rVal * (mInfo.cupoEfectivo * expPorTrade * 4.333) * 0.79 * 0.92) : 0;
                 return {
                     saldo: sVal,
                     ret: finalRet[i],
                     wealth: finalWealth[i],
                     rFinal: rVal,
                     sueldoNetoEur,
-                    dd: ddSorted[Math.min(NUM_PATHS - 1, Math.floor(NUM_PATHS * (1.0 - pct + 0.05)))]
+                    dd: finalMaxDD[i]
                 };
             }
 
@@ -1746,7 +1922,7 @@
             const dd90 = ddSorted[Math.floor(NUM_PATHS * 0.90)];
             const dd95 = ddSorted[Math.floor(NUM_PATHS * 0.95)];
 
-            const medCapW = validCapW.length ? validCapW[Math.floor(validCapW.length * 0.5)] : null;
+            const medCapW = validCapW.length >= NUM_PATHS * 0.5 ? validCapW[Math.floor(validCapW.length * 0.5)] : (validCapW.length ? validCapW[Math.floor(validCapW.length * 0.5)] : null);
             const medSalW = validSalW.length ? validSalW[Math.floor(validSalW.length * 0.5)] : null;
 
             const ruinPct = (ruinCount / NUM_PATHS) * 100.0;
@@ -1758,8 +1934,8 @@
                 elRuin.style.color = ruinPct === 0 ? "var(--emerald)" : "var(--crimson)";
             }
             setTxt("mc-ruin-sub", `${ruinCount} de 10.000 rutas`);
-            setTxt("mc-time-cap", medCapW ? `${medCapW} semanas` : `> ${nWeeksSim} sem`);
-            setTxt("mc-time-salary-sub", medSalW ? `Sueldo obj. en Sem ${medSalW}` : `Sueldo obj.: > ${nWeeksSim}s`);
+            setTxt("mc-time-cap", (medCapW && ruinPct < 50) ? `${medCapW} semanas` : `> ${nWeeksSim} sem`);
+            setTxt("mc-time-salary-sub", (medSalW && ruinPct < 50) ? `Sueldo obj. en Sem ${medSalW}` : `Sueldo obj.: > ${nWeeksSim}s`);
             setTxt("mc-wealth-p50", `$${Math.round(p50.wealth).toLocaleString("es-ES")}`);
             setTxt("mc-ret-p50", `Retirado: $${Math.round(p50.ret).toLocaleString("es-ES")}`);
             setTxt("mc-dd-p50", `-${dd50.toFixed(1)}%`);
@@ -1778,11 +1954,11 @@
             if (tbody) {
                 tbody.innerHTML = "";
                 [
-                    { name: "🟢 Optimista (P90)", d: p90, c: "var(--emerald)" },
-                    { name: "🟡 Mediano Realista (P50)", d: p50, c: "var(--alfa-gold-light)" },
-                    { name: "🔵 Moderado (P25)", d: p25, c: "var(--cyan)" },
-                    { name: "🟠 Prudente (P10)", d: p10, c: "#facc15" },
-                    { name: "🔴 Peor Escenario (P5%)", d: p05, c: "var(--crimson)" }
+                    { name: "🟢 Optimista (P90)", d: p90, ddShow: dd10, c: "var(--emerald)" },
+                    { name: "🟡 Mediano Realista (P50)", d: p50, ddShow: dd50, c: "var(--alfa-gold-light)" },
+                    { name: "🔵 Moderado (P25)", d: p25, ddShow: dd75, c: "var(--cyan)" },
+                    { name: "🟠 Prudente (P10)", d: p10, ddShow: dd90, c: "#facc15" },
+                    { name: "🔴 Peor Escenario (P5%)", d: p05, ddShow: dd95, c: "var(--crimson)" }
                 ].forEach(r => {
                     const mult = (r.d.wealth / cfg.capIni).toFixed(2) + "x";
                     const tr = document.createElement("tr");
@@ -1794,7 +1970,7 @@
                         <td style="color:var(--cyan); font-weight:700;">${mult}</td>
                         <td style="color:var(--alfa-gold-light);">$${r.d.rFinal.toFixed(0)}</td>
                         <td style="color:var(--emerald); font-weight:800;">~${Math.round(r.d.sueldoNetoEur).toLocaleString("es-ES")} €/mes</td>
-                        <td style="color:var(--crimson);">-${r.d.dd.toFixed(1)}%</td>
+                        <td style="color:var(--crimson);">-${Math.max(r.d.dd, r.ddShow).toFixed(1)}%</td>
                     `;
                     tbody.appendChild(tr);
                 });
@@ -1808,6 +1984,8 @@
                 cP10.push(col[Math.floor(SAMPLE_CURVES * 0.10)]);
             }
             dibujarCanvasMC(cP90, cP50, cP10, cfg.capTop, cfg.capIni);
+
+            return { dd50, dd90, ruinPct };
         }
 
         function dibujarCanvasMC(cP90, cP50, cP10, capTop, capIni) {
@@ -1826,7 +2004,7 @@
             if (n < 1) return;
 
             const maxV = Math.max(capIni * 2.2, ...cP90) * 1.06;
-            const minV = Math.min(capIni * 0.6, ...cP10);
+            const minV = Math.min(0, ...cP10);
             const padL = 62, padR = 20, padT = 18, padB = 26;
             const pw = w - padL - padR, ph = h - padT - padB;
 
@@ -1846,7 +2024,7 @@
 
             for (let xStep = 0; xStep <= 4; xStep++) {
                 const wk = Math.round((n * xStep) / 4);
-                ctx.fillText(`Sem ${wk}`, xOf(wk) - 16, h - 8);
+                ctx.fillText(`Sem ${wk}`, Math.min(w - 46, xOf(wk) - 16), h - 8);
             }
 
             ctx.fillStyle = "rgba(245, 158, 11, 0.08)";
@@ -1876,7 +2054,7 @@
         }
 
         // =========================================================================
-        // BLOQUE 5: SIMULADOR A FUTURO DESDE HOY HASTA FECHA X
+        // BLOQUE 5: SIMULADOR A FUTURO (CON RESUMEN POR PUNTOS)
         // =========================================================================
         function renderizarSimuladorFuturo(cfg, semanasSlice, expTrade, commR) {
             const expPorTrade = Math.max(0.12, expTrade || 0.22);
@@ -1897,25 +2075,39 @@
                 let c = cfg.capIni, r = cfg.rIni, ret = 0, pk = cfg.capIni, mdd = 0, st = 0;
                 matCap[0][p] = c; matRet[0][p] = 0; matR[0][p] = r; matDD[0][p] = 0;
                 for (let w = 1; w <= targetWeeks; w++) {
+                    if (c <= 0) {
+                        matCap[w][p] = 0; matRet[w][p] = ret; matR[w][p] = 0; matDD[w][p] = 100.0;
+                        continue;
+                    }
                     const randSem = semanasSlice[(Math.random() * semanasSlice.length) | 0];
                     const infoM = calcularCupoSemanalPorMargen(c, r, cfg.maxTradesWk);
-                    const nr = EvaluarSemanaConCupo(randSem, infoM.cupoEfectivo, cfg.execMode, commR);
+                    const resSem = simularOperacionesDeSemanaEnCuenta(
+                        randSem.trades, infoM.cupoEfectivo, cfg.execMode, commR, c, r
+                    );
+                    const nr = resSem.netR;
                     const pnl = nr * r;
-                    if (pnl > 0 && c < cfg.capTop && cfg.withdrawGrowthPct > 0) {
-                        const s = pnl * cfg.withdrawGrowthPct;
-                        ret += s; c += (pnl - s);
-                    } else c += pnl;
-                    if (c < 20) c = 20;
-                    if (c > cfg.capTop) { ret += (c - cfg.capTop); c = cfg.capTop; }
-                    const tot = c + ret;
-                    if (tot > pk) pk = tot;
-                    const dd = ((pk - tot) / pk) * 100.0;
-                    if (dd > mdd) mdd = dd;
-                    if (cfg.varRPct > 0) {
-                        st = nr >= 0 ? (st >= 0 ? st + 1 : 1) : (st <= 0 ? st - 1 : -1);
-                        const dmp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(st) - 1));
-                        const step = Math.max(-0.15, Math.min(0.18, nr * cfg.varRPct * dmp));
-                        r = Math.max(cfg.rIni * 0.40, Math.min(cfg.rMax, r * (1.0 + step), c * 0.025));
+
+                    if (resSem.liquidada || (c + pnl) <= 0) {
+                        c = 0; r = 0; mdd = 100.0;
+                    } else {
+                        if (pnl > 0 && c < cfg.capTop && cfg.withdrawGrowthPct > 0) {
+                            const s = pnl * cfg.withdrawGrowthPct;
+                            ret += s; c += (pnl - s);
+                        } else c += pnl;
+                        if (c > cfg.capTop) { ret += (c - cfg.capTop); c = cfg.capTop; }
+                        const tot = c + ret;
+                        if (tot > pk) pk = tot;
+                        const dd = ((pk - tot) / pk) * 100.0;
+                        if (dd > mdd) mdd = dd;
+                        if (cfg.varRPct > 0 && c > 0) {
+                            st = nr >= 0 ? (st >= 0 ? st + 1 : 1) : (st <= 0 ? st - 1 : -1);
+                            const dmp = 1.0 / (1.0 + 0.45 * Math.max(0, Math.abs(st) - 1));
+                            const step = Math.max(-0.15, Math.min(0.18, nr * cfg.varRPct * dmp));
+                            r = Math.max(
+                                Math.min(cfg.rIni * 0.40, c * 0.50),
+                                Math.min(cfg.rMax, r * (1.0 + step), c * 0.025)
+                            );
+                        }
                     }
                     matCap[w][p] = c; matRet[w][p] = ret; matR[w][p] = r; matDD[w][p] = mdd;
                 }
@@ -1928,7 +2120,7 @@
                 const cMed = matCap[w][mid];
                 const rMed = matR[w][mid];
                 const infoM = calcularCupoSemanalPorMargen(cMed, rMed, cfg.maxTradesWk);
-                const grossMoUsd = Math.max(0, rMed * (infoM.cupoEfectivo * expPorTrade * 4.333));
+                const grossMoUsd = cMed > 0 ? Math.max(0, rMed * (infoM.cupoEfectivo * expPorTrade * 4.333)) : 0;
                 const netMoEur = grossMoUsd * 0.79 * 0.92;
                 const dds = Float64Array.from(matDD[w]).sort();
                 const fechaPunto = new Date(hoy.getTime() + w * 7 * 86400000).toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" });
@@ -1951,11 +2143,15 @@
             const futBox = document.getElementById("story-future-box");
             if (futBox) {
                 futBox.innerHTML = `
-                    <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; margin-bottom:6px;">
-                        🚀 PROYECCIÓN PERSONALIZADA DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
+                    <div style="font-size:11.5px; text-transform:uppercase; letter-spacing:0.6px; color:var(--emerald); font-weight:800; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.08);">
+                        🚀 PROYECCIÓN MEDIANA REALISTA (P50) DESDE HOY HASTA EL ${fechaNice.toUpperCase()} (${targetMonths} MESES · ${targetWeeks} SEMANAS)
                     </div>
-                    Partiendo hoy con <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, <b>1R = $${cfg.rIni}</b> y una variación del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>, en el escenario mediano realista (<b>P50</b>) tu patrimonio total evolucionaría hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>: cerrarías con <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta más <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> ya retirados a tu bolsillo.<br>
-                    En esa fecha tu unidad de riesgo habría escalado a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando un flujo mensual estimado de <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF) con un Drawdown mediano esperado en el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.
+                    <ul class="future-bullets-grid">
+                        <li><b>Punto de partida:</b> Capital inicial de <b>$${cfg.capIni.toLocaleString("es-ES")}</b>, riesgo inicial <b>1R = $${cfg.rIni}</b> y ajuste semanal del <b>${(cfg.varRPct * 100).toFixed(1)}%</b>.</li>
+                        <li><b>Patrimonio proyectado:</b> Evolución total hasta <span class="hl-green">$${Math.round(snapFin.wealth).toLocaleString("es-ES")} (${multFut}x)</span>, repartidos en <b>$${Math.round(snapFin.cap).toLocaleString("es-ES")}</b> líquidos en cuenta y <span class="hl-green">$${Math.round(snapFin.ret).toLocaleString("es-ES")}</span> retirados al bolsillo.</li>
+                        <li><b>Unidad de riesgo y flujo mensual:</b> Tu unidad escalaría a <b>1R = $${snapFin.rUnit.toFixed(0)}</b>, generando unos <span class="hl-green">~${Math.round(snapFin.netMoEur).toLocaleString("es-ES")} € netos/mes</span> (descontado un 21% de IRPF).</li>
+                        <li><b>Riesgo esperado en el trayecto:</b> Drawdown máximo mediano estimado durante el camino del <span class="hl-red">-${snapFin.dd50.toFixed(1)}%</span>.</li>
+                    </ul>
                 `;
             }
 
@@ -2068,7 +2264,7 @@
         }
 
         // =========================================================================
-        // BLOQUE 6: GRÁFICAS FULL-WIDTH HISTÓRICO + AGRUPACIÓN Y TABLA MENSUAL
+        // GRÁFICAS FULL-WIDTH HISTÓRICO + AGRUPACIÓN Y TABLA MENSUAL
         // =========================================================================
         function extraerClaveYEtiquetaMes(sem) {
             if (sem.ts && sem.ts > 100000000) {
@@ -2097,34 +2293,60 @@
         }
 
         function renderizarHistorico105SemanasYMensual(semanasEvaluadas) {
-            const semPos = semanasEvaluadas.filter(s => s.netR >= 0).length;
-            const semNeg = semanasEvaluadas.length - semPos;
-            const pctSemPos = semanasEvaluadas.length ? ((semPos / semanasEvaluadas.length) * 100).toFixed(0) : 0;
-            setTxt("wk-pos-neg-badge", `${semPos} sem positivas (${pctSemPos}%) · ${semNeg} negativas`);
+            // Conteo real sobre todas las semanas estudiadas (con "semanas" completo)
+            let semPosBase = 0;
+            semanasOrdenadas.forEach(sem => {
+                let rS = 0;
+                sem.trades.forEach(tr => {
+                    const v = evaluarTradeIndividualSegunModo(tr, EXEC_MODE_PREDEFINIDO, 0);
+                    if (v !== null) rS += v;
+                });
+                if (rS >= 0) semPosBase++;
+            });
+            const semTotBase = semanasOrdenadas.length;
+            const semNegBase = semTotBase - semPosBase;
+            const pctSemPos = semTotBase ? ((semPosBase / semTotBase) * 100).toFixed(0) : 0;
+            setTxt("wk-pos-neg-badge", `${semPosBase} semanas positivas (${pctSemPos}%) · ${semNegBase} negativas`);
 
-            const semanasConFecha = semanasEvaluadas.map(s => {
+            const semanasConFecha = semanasEvaluadas.map((s, idx) => {
                 const infoF = extraerClaveYEtiquetaMes(s);
-                return { ...s, monthKey: infoF.key, monthLabel: infoF.label, shortDate: infoF.shortDate };
+                // Para la gráfica pura de R del estudio usamos las R de las operaciones válidas de esa semana
+                let rEstudio = 0, wEst = 0, lEst = 0, opsEst = 0;
+                const rawSem = semanasOrdenadas[idx];
+                if (rawSem) {
+                    rawSem.trades.forEach(tr => {
+                        const v = evaluarTradeIndividualSegunModo(tr, EXEC_MODE_PREDEFINIDO, 0);
+                        if (v !== null) {
+                            rEstudio += v; opsEst++;
+                            if (v > 0) wEst++; else lEst++;
+                        }
+                    });
+                }
+                return {
+                    ...s,
+                    rEstudio, wEst, lEst, opsEst,
+                    monthKey: infoF.key,
+                    monthLabel: infoF.label,
+                    shortDate: infoF.shortDate
+                };
             });
 
-            // Gráfica Full-Width de Rs por Semana
             dibujarGraficoBarrasInteractivo({
                 canvasId: "canvas-weekly-bars",
                 items: semanasConFecha,
-                getValue: it => it.netR,
+                getValue: it => it.rEstudio,
                 getXLabel: it => it.shortDate,
                 formatY: v => `${v >= 0 ? "+" : ""}${v.toFixed(0)}R`,
                 isDiverging: true,
                 tooltipBuilder: it => {
-                    const wr = it.trades > 0 ? ((it.wins / it.trades) * 100).toFixed(0) : 0;
-                    const col = it.netR >= 0 ? "var(--emerald)" : "var(--crimson)";
+                    const wr = it.opsEst > 0 ? ((it.wEst / it.opsEst) * 100).toFixed(0) : 0;
+                    const col = it.rEstudio >= 0 ? "var(--emerald)" : "var(--crimson)";
                     return `<b style="color:var(--alfa-gold-light);">📅 Semana ${it.label}</b><br>` +
-                           `Resultado: <b style="color:${col};">${it.netR >= 0 ? "+" : ""}${it.netR.toFixed(2)} R</b><br>` +
-                           `Operaciones: <b>${it.trades}</b> (${it.wins}W / ${it.losses}L · ${wr}%)`;
+                           `Resultado: <b style="color:${col};">${it.rEstudio >= 0 ? "+" : ""}${it.rEstudio.toFixed(2)} R</b><br>` +
+                           `Operaciones: <b>${it.opsEst}</b> (${it.wEst}W / ${it.lEst}L · ${wr}%)`;
                 }
             });
 
-            // Gráfica Full-Width de Nº de Operaciones por Semana
             const mediaOps = semanasConFecha.reduce((a, b) => a + b.totalDisponibles, 0) / Math.max(1, semanasConFecha.length);
             setTxt("lbl-avg-ops-chart", `Media estudiada: ${mediaOps.toFixed(1)} ops/sem`);
 
@@ -2143,7 +2365,6 @@
                     `Ejecutadas con tu cupo: <b>${it.trades} ops</b> (${it.wins}W / ${it.losses}L)`
             });
 
-            // Agrupar el histórico en Meses
             const mapaMeses = {};
             const mesesOrden = [];
             semanasConFecha.forEach(s => {
@@ -2172,10 +2393,7 @@
             });
 
             const mesesPos = mesesOrden.filter(m => m.netR >= 0).length;
-            const mesesNeg = mesesOrden.length - mesesPos;
             const pctMesPos = mesesOrden.length ? ((mesesPos / mesesOrden.length) * 100).toFixed(0) : 0;
-
-            setTxt("mo-pos-neg-badge", `${mesesPos} meses positivos · ${mesesNeg} negativos`);
             setTxt("mo-winrate-pill", `${mesesPos}/${mesesOrden.length} Meses Positivos (${pctMesPos}%)`);
 
             dibujarGraficoBarrasInteractivo({
@@ -2195,7 +2413,6 @@
                 }
             });
 
-            // Tabla Mensual (de más reciente a más antiguo)
             const tbodyMo = document.getElementById("tbody-monthly-real");
             if (tbodyMo) {
                 tbodyMo.innerHTML = "";
@@ -2217,7 +2434,6 @@
             }
         }
 
-        // Motor universal de gráficas de barras con Eje X, Eje Y e inspección interactiva por cursor
         function dibujarGraficoBarrasInteractivo({ canvasId, items, getValue, getXLabel, formatY, isDiverging, fixedColor, avgLine, tooltipBuilder }) {
             const canvas = document.getElementById(canvasId);
             if (!canvas || !items.length) return;
@@ -2332,20 +2548,20 @@
         }
 
         // =========================================================================
-        // PRESETS Y CONEXIÓN SUPABASE (CON RECUPERACIÓN DE CONTRASEÑA)
+        // PRESETS Y CONEXIÓN SUPABASE
         // =========================================================================
         function cargarPresetRiesgo(modo, ev) {
             document.querySelectorAll(".preset-row .btn-preset").forEach(b => b.classList.remove("active"));
             if (ev?.target) ev.target.classList.add("active");
             const cap = parseFloat(document.getElementById("inp-cap-ini")?.value) || 2000;
             if (modo === "sin_compuesto") {
-                document.getElementById("inp-r-ini").value = Math.round(cap * 0.015);
+                document.getElementById("inp-r-ini").value = Math.max(5, Math.round(cap * 0.015));
                 document.getElementById("inp-var-r").value = 0.0;
             } else if (modo === "prudente") {
-                document.getElementById("inp-r-ini").value = Math.round(cap * 0.02);
+                document.getElementById("inp-r-ini").value = Math.max(5, Math.round(cap * 0.02));
                 document.getElementById("inp-var-r").value = 1.5;
             } else {
-                document.getElementById("inp-r-ini").value = Math.round(cap * 0.02);
+                document.getElementById("inp-r-ini").value = Math.max(5, Math.round(cap * 0.02));
                 document.getElementById("inp-var-r").value = 2.5;
             }
             ejecutarSimulacionCompleta();
@@ -2512,7 +2728,7 @@
                 msg.innerText = "No se encontró configuración guardada para ese usuario.";
                 return;
             }
-            if (data.min_quality_score >= 100) document.getElementById("inp-cap-ini").value = data.min_quality_score;
+            if (data.min_quality_score >= 50) document.getElementById("inp-cap-ini").value = data.min_quality_score;
             if (data.current_risk_r) document.getElementById("inp-r-ini").value = data.current_risk_r;
             if (data.var_r_pct !== undefined) document.getElementById("inp-var-r").value = data.var_r_pct;
             if (data.max_trades_wk) document.getElementById("inp-max-trades").value = data.max_trades_wk;
