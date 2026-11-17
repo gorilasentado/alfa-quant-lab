@@ -508,15 +508,15 @@
                     <div class="features-grid-2">
                         <div class="feature-chip-card">
                             <h4>🗓️ Ventana Lunes – Miércoles</h4>
-                            <p>Solo abrimos operaciones entre lunes y miércoles (&le; 65h de semana). Así damos margen suficiente para que el precio alcance el objetivo antes del fin de semana.</p>
+                            <p>Solo abrimos operaciones entre lunes y miércoles (&le; 70h de semana). Así damos margen suficiente para que el precio alcance el objetivo antes del fin de semana.</p>
                         </div>
                         <div class="feature-chip-card">
                             <h4>🎯 Solo Órdenes Límite</h4>
-                            <p>Tanto la entrada (ligeramente por debajo del cierre en largos o por encima en cortos) como la toma de beneficios usan órdenes límite para eliminar el <i>slippage</i>.</p>
+                            <p>Tanto la entrada (-0.10R más favorable tras el cierre horario) como la toma de beneficios usan órdenes límite para eliminar el <i>slippage</i>.</p>
                         </div>
                         <div class="feature-chip-card">
-                            <h4>⭐ Setups A+ (1.25x R)</h4>
-                            <p>Las entradas con rebote limpio, volumen relativo sólido y distancia óptima en ATR tienen mayor Winrate histórico y reciben un <b>25% extra de unidad de riesgo</b>.</p>
+                            <h4>⭐ Setups A+ (1.50x R)</h4>
+                            <p>Las entradas con rebote limpio, cuerpo sólido y distancia óptima en ATR tienen mayor Winrate histórico y reciben un <b>50% extra de unidad de riesgo</b>.</p>
                         </div>
                         <div class="feature-chip-card">
                             <h4>🚀 Operaciones Runner (1.5R)</h4>
@@ -793,7 +793,7 @@
                             <input type="number" id="inp-target-salary" value="2500" step="250" min="500">
                         </div>
                         <div class="field-box" style="grid-column: span 2;">
-                            <label data-tip="Comisión de compra/venta por operación en dólares ($0 en Quantfury; ~$1.00 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
+                            <label data-tip="Comisión total de compra/venta por operación en dólares ($0.00 en brókers sin comisiones; ~$1.00–$2.50 en brókers tradicionales).">Comisión Bróker ($/operación)</label>
                             <input type="number" id="inp-comm-usd" value="0.00" step="0.25" min="0" max="15">
                         </div>
 
@@ -973,15 +973,15 @@
                     <h4>🚨 Señal Exacta + Gráfico Doble</h4>
                     <p>Al cerrar la vela horaria (<code>:01</code> y <code>:31</code>), el bot envía la confirmación con lámina HD (<code>1WK + 1H</code>), precio exacto de Entrada Limit, TP, SL y el <b>número exacto de acciones</b> calculado para tu 1R.</p>
                 </div>
-                <div class="bot-step-card">
+                
                     <span class="bot-step-num">03</span>
                     <h4>🔔 Notificación de los Viernes</h4>
                     <p>Cada viernes antes del cierre de mercado te indica qué posiciones abiertas debes <b>cerrar a mercado</b> (&lt; +0.35R) y cuáles mantener al lunes moviendo su Stop Loss a <b>Break Even</b>.</p>
                 </div>
                 <div class="bot-step-card">
                     <span class="bot-step-num">04</span>
-                    <h4>📈 Seguimiento Real de tu Cuenta</h4>
-                    <p>Marca desde el propio bot las operaciones en las que has entrado para auditar tu desempeño real, revisar la semana anterior o consultar cualquier periodo dentro de las semanas estudiadas.</p>
+                    <h4>📈 Botones Interactivos y 1R Viva</h4>
+                    <p>Pulsa <b>[✅ Entrar]</b> o <b>[⏭️ Descartar]</b> en cada tarjeta: el cupo semanal solo cuenta las entradas reales y, al tocar TP o SL, el bot cierra la operación y recalcula tu nueva <b>1R viva</b> automáticamente.</p>
                 </div>
             </div>
 
@@ -989,6 +989,10 @@
             <div class="ux-subpanel" style="margin-top:4px;">
                 <div class="ux-subpanel-title" style="color:var(--cyan);">⌨️ Órdenes y Comandos Disponibles en el Bot de Telegram</div>
                 <div class="bot-commands-grid">
+                    <div class="cmd-card">
+                        <code class="cmd-code">/r</code>
+                        <span><i>(O <code>/cartera</code>)</i> Muestra al instante tu <b>1R viva actual</b>, el capital acumulado, tu racha y las posiciones que tienes abiertas en tiempo real.</span>
+                    </div>
                     <div class="cmd-card">
                         <code class="cmd-code">/id</code>
                         <span>Te devuelve al instante tu código numérico (<code>Chat ID</code>) y el estado de vinculación para conectarlo arriba en tu cuenta web.</span>
@@ -1008,10 +1012,6 @@
                     <div class="cmd-card">
                         <code class="cmd-code">/resumensemanal N</code>
                         <span><i>(Ej: <code>/resumensemanal 20</code> o <code>/resumensemanal 104</code>)</i> Simula y desglosa en tabla el rendimiento de las últimas <b>N</b> semanas con tu perfil actual.</span>
-                    </div>
-                    <div class="cmd-card">
-                        <code class="cmd-code">/imagenes N</code>
-                        <span><i>(O <code>/resumensemanal N fotos</code>, ej: <code>/imagenes 1</code>)</i> Recupera el informe detallado y las láminas gráficas de hace <b>N</b> semanas concretas hacia atrás.</span>
                     </div>
                 </div>
             </div>
@@ -1095,7 +1095,7 @@
         } catch (e) {}
 
         const STOP_LOSS_MEDIO_PCT = 3.05;
-        const APLUS_MULT_LOCKED = 1.25;
+        const APLUS_MULT_LOCKED = 1.50;
         const EXEC_MODE_PREDEFINIDO = "limit_015";
         const MAX_BROKER_LEVERAGE = 20.0; // Techo físico de apalancamiento retail (5% margen de mantenimiento)
 
@@ -1370,7 +1370,7 @@
                 ctx.beginPath(); ctx.moveTo(boxX + 10, boxY + 14); ctx.lineTo(boxX + 28, boxY + 14); ctx.stroke();
                 ctx.fillStyle = "#f8fafc";
                 ctx.font = "bold 10.5px JetBrains Mono";
-                ctx.fillText(`Con A+ 1.25x  (${ult.acum125 >= 0 ? "+" : ""}${ult.acum125.toFixed(1)} R)`, boxX + 35, boxY + 17);
+                ctx.fillText(`Con A+ 1.50x  (${ult.acum125 >= 0 ? "+" : ""}${ult.acum125.toFixed(1)} R)`, boxX + 35, boxY + 17);
 
                 ctx.strokeStyle = "#38bdf8";
                 ctx.lineWidth = 1.7;
@@ -1420,7 +1420,7 @@
                 posicionarTooltipGrafico(
                     ev,
                     `<b style="color:var(--alfa-gold-light);">📅 Semana ${pt.label} (#${pt.idx})</b><br>` +
-                    `Acumulado A+ 1.25x: <b style="color:var(--alfa-gold-light);">${pt.acum125 >= 0 ? "+" : ""}${pt.acum125.toFixed(2)} R</b> <span style="color:${colSem};">(${signSem}${pt.rSem125.toFixed(2)}R)</span><br>` +
+                    `Acumulado A+ 1.50x: <b style="color:var(--alfa-gold-light);">${pt.acum125 >= 0 ? "+" : ""}${pt.acum125.toFixed(2)} R</b> <span style="color:${colSem};">(${signSem}${pt.rSem125.toFixed(2)}R)</span><br>` +
                     `Acumulado Base 1.0x: <b style="color:var(--cyan);">${pt.acumBase >= 0 ? "+" : ""}${pt.acumBase.toFixed(2)} R</b><br>` +
                     `Operaciones semana: <b>${pt.ops}</b> (${pt.wins}W / ${pt.losses}L)`
                 );
@@ -2792,27 +2792,84 @@
             }
 
             const cfg = leerConfigUsuario();
+
+            // Leer ficha previa en Supabase para NO machacar 1R viva, capital acumulado, racha ni filtros avanzados del otro panel
+            let prevRow = null;
+            if (supabaseClient) {
+                try {
+                    const { data: prevData } = await supabaseClient
+                        .from("user_configs")
+                        .select("*")
+                        .or(`id.eq.${email},telegram_chat_id.eq.${chatId}`)
+                        .order("updated_at", { ascending: false })
+                        .limit(1);
+                    if (prevData && prevData.length > 0) prevRow = prevData[0];
+                } catch (e) {}
+            }
+
+            const cambioBasePartida = prevRow && (
+                Math.abs(Number(prevRow.initial_risk_r || cfg.rIni) - cfg.rIni) > 0.01 ||
+                Math.abs(Number(prevRow.mc_capital || prevRow.min_quality_score || cfg.capIni) - cfg.capIni) > 1.0
+            );
+            const conservarEstadoVivo = Boolean(prevRow && !cambioBasePartida);
+
+            const rVivaGuardar = conservarEstadoVivo ? Number(prevRow.current_risk_r || cfg.rIni) : cfg.rIni;
+            const capVivoGuardar = conservarEstadoVivo ? Number(prevRow.current_capital || cfg.capIni) : cfg.capIni;
+            const retiradoGuardar = conservarEstadoVivo ? Number(prevRow.withdrawn_usd || 0) : 0.0;
+            const rachaGuardar = conservarEstadoVivo ? parseInt(prevRow.current_streak || 0) : 0;
+
             const payload = {
-                id: email,
+                id: prevRow?.id || email,
                 email: email,
                 telegram_chat_id: chatId,
-                alertas_activas: true,
-                ia_mode: "francotirador",
-                rr_ratio: 1.0,
-                entry_offset_pct: -6.0,
-                sl_buffer_pct: 0.20,
-                max_limit_atr: 3.5,
-                max_hours: 65,
-                aplus_mult: 1.25,
-                current_risk_r: cfg.rIni,
-                var_r_pct: cfg.varRPct * 100,
+                alertas_activas: prevRow?.alertas_activas ?? true,
+                quantfury_only: prevRow?.quantfury_only ?? false,
+                ia_mode: prevRow?.ia_mode || "francotirador",
+                rr_ratio: prevRow?.rr_ratio ?? 1.0,
+                entry_offset_pct: prevRow?.entry_offset_pct ?? -10.0,
+                sl_buffer_pct: prevRow?.sl_buffer_pct ?? 0.20,
+                max_limit_atr: prevRow?.max_limit_atr ?? 3.5,
+                max_hours: prevRow?.max_hours ?? 70,
+                aplus_mult: prevRow?.aplus_mult ?? 1.50,
+                initial_risk_r: cfg.rIni,
+                current_risk_r: rVivaGuardar,
+                var_r_pct: Number((cfg.varRPct * 100).toFixed(2)),
                 max_trades_wk: cfg.maxTradesWk,
                 min_quality_score: Math.round(cfg.capIni),
+                mc_capital: cfg.capIni,
+                current_capital: capVivoGuardar,
+                mc_cap_limit: cfg.capTop,
+                withdrawn_usd: retiradoGuardar,
+                mc_max_risk_cap: cfg.rMax,
+                mc_decay: prevRow?.mc_decay ?? 0.30,
+                current_streak: rachaGuardar,
                 updated_at: new Date().toISOString()
             };
 
             if (supabaseClient) {
-                const { error } = await supabaseClient.from("user_configs").upsert(payload, { onConflict: "id" });
+                let { error } = await supabaseClient.from("user_configs").upsert(payload, { onConflict: "id" });
+                if (error && String(error.message || "").includes("column")) {
+                    const legacyPayload = {
+                        id: payload.id,
+                        email: payload.email,
+                        telegram_chat_id: payload.telegram_chat_id,
+                        alertas_activas: payload.alertas_activas,
+                        ia_mode: payload.ia_mode,
+                        rr_ratio: payload.rr_ratio,
+                        entry_offset_pct: payload.entry_offset_pct,
+                        sl_buffer_pct: payload.sl_buffer_pct,
+                        max_limit_atr: payload.max_limit_atr,
+                        max_hours: payload.max_hours,
+                        aplus_mult: payload.aplus_mult,
+                        current_risk_r: payload.current_risk_r,
+                        var_r_pct: payload.var_r_pct,
+                        max_trades_wk: payload.max_trades_wk,
+                        min_quality_score: payload.min_quality_score,
+                        updated_at: payload.updated_at
+                    };
+                    const retry = await supabaseClient.from("user_configs").upsert(legacyPayload, { onConflict: "id" });
+                    error = retry.error;
+                }
                 if (error) {
                     msg.style.color = "var(--crimson)";
                     msg.innerText = "Error guardando en user_configs: " + error.message;
@@ -2825,7 +2882,50 @@
             const btnNav = document.getElementById("btn-nav-auth");
             if (btnNav) btnNav.innerHTML = `🟢 ${email}`;
             msg.style.color = "var(--emerald)";
-            msg.innerText = `✅ Cuenta y Bot sincronizados en Supabase (Capital $${cfg.capIni} | 1R = $${cfg.rIni}).`;
+            msg.innerText = `✅ Sincronizado (Cap Base $${cfg.capIni} | R0=$${cfg.rIni} | 1R Viva=$${rVivaGuardar.toFixed(2)}).`;
+        }
+
+        async function cargarMisDatosDesdeSupabase() {
+            const email = document.getElementById("sync-email")?.value.trim().toLowerCase();
+            const chatId = document.getElementById("sync-chat-id")?.value.trim();
+            const msg = document.getElementById("sync-msg");
+            if (!supabaseClient || (!email && !chatId)) {
+                msg.style.color = "var(--alfa-gold-light)";
+                msg.innerText = "Escribe tu Email o tu Telegram Chat ID para buscar tu ficha.";
+                return;
+            }
+            const filtroOr = (email && chatId)
+                ? `id.eq.${email},telegram_chat_id.eq.${chatId}`
+                : (email ? `id.eq.${email}` : `telegram_chat_id.eq.${chatId}`);
+
+            const { data: rows, error } = await supabaseClient
+                .from("user_configs")
+                .select("*")
+                .or(filtroOr)
+                .order("updated_at", { ascending: false })
+                .limit(1);
+
+            if (error || !rows || !rows.length) {
+                msg.style.color = "var(--crimson)";
+                msg.innerText = "No se encontró configuración guardada para ese usuario.";
+                return;
+            }
+            const data = rows[0];
+            const capBase = data.mc_capital ?? data.min_quality_score;
+            const rBase = data.initial_risk_r ?? data.current_risk_r;
+
+            if (capBase >= 50) document.getElementById("inp-cap-ini").value = capBase;
+            if (rBase) document.getElementById("inp-r-ini").value = rBase;
+            if (data.var_r_pct !== undefined) document.getElementById("inp-var-r").value = data.var_r_pct;
+            if (data.mc_cap_limit >= 500) document.getElementById("inp-cap-top").value = data.mc_cap_limit;
+            if (data.mc_max_risk_cap >= 25) document.getElementById("inp-r-max").value = data.mc_max_risk_cap;
+            if (data.max_trades_wk) document.getElementById("inp-max-trades").value = data.max_trades_wk;
+            if (data.telegram_chat_id) document.getElementById("sync-chat-id").value = data.telegram_chat_id;
+            if (data.email && !email) document.getElementById("sync-email").value = data.email;
+
+            ejecutarSimulacionCompleta();
+            msg.style.color = "var(--emerald)";
+            msg.innerText = `📥 Recuperado: Cap $${capBase} | R0=$${rBase} (1R viva en Telegram: $${Number(data.current_risk_r || rBase).toFixed(2)})`;
         }
 
         async function cargarMisDatosDesdeSupabase() {
